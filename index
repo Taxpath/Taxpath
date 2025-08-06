@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Home Page</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      color: #333;
+    }
+
+    header {
+      background-color: #0066cc;
+      color: white;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #004c99;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffcc00;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 20px;
+      color: #0066cc;
+    }
+
+    .hero p {
+      font-size: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .content {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+      text-align: center;
+    }
+
+    footer {
+      background-color: #003366;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      position: relative;
+      bottom: 0;
+      width: 100%;
+      margin-top: 50px;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      nav {
+        flex-direction: column;
+      }
+
+      nav a {
+        margin: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to My Website</h1>
+  </header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+    <a href="#">Blog</a>
+    <a href="#">Contact</a>
+  </nav>
+
+  <section class="hero">
+    <h1>Hello, Visitor!</h1>
+    <p>Explore my website to know more about what I do and how I can help you with your needs.</p>
+  </section>
+
+  <section class="content">
+    <h2>About This Site</h2>
+    <p>This homepage is built with simple HTML and CSS in a single file. You can edit the content and design as per your need to match your brand or personal style.</p>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 MyWebsite. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
