@@ -1,167 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TaxPath - Trusted Tax Experts</title>
-  <style>
-    * {
-      margin: 0; padding: 0; box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    body {
-      background-color: #f9f9f9;
-    }
-    header {
-      background-color: #2c3e50;
-      color: white;
-      padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .logo {
-      font-size: 1.8rem;
-      font-weight: bold;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 1rem;
-      font-weight: 500;
-    }
-    nav a:hover {
-      text-decoration: underline;
-    }
-    .btn {
-      background-color: #e67e22;
-      color: white;
-      padding: 0.5rem 1rem;
-      border: none;
-      cursor: pointer;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-    .hero {
-      padding: 3rem 2rem;
-      text-align: center;
-      background-color: #ecf0f1;
-    }
-    .hero h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-    }
-    .hero p {
-      font-size: 1.2rem;
-      color: #555;
-    }
-    section {
-      padding: 2rem;
-    }
-    h2 {
-      margin-bottom: 1rem;
-      color: #2c3e50;
-    }
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    input, textarea {
-      width: 100%;
-      padding: 0.7rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-    footer {
-      background-color: #2c3e50;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Tracker</title>
+
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <header>
-    <div class="logo">TaxPath</div>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#services">Services</a>
-      <a href="#blog">Blog</a>
-      <a href="#updates">Updates</a>
-      <a href="#contact">Contact</a>
-    </nav>
-    <button class="btn">Get Free Consultation</button>
-  </header>
+<div class="header">
+    <h2>ICMAI</h2>
+    <h3>CMA Rohit Chouhan</h3>
+    <h4>CMA Inter Group 3</h4>
+</div>
 
-  <section class="hero" id="home">
-    <h1>Trusted Tax Experts for You</h1>
-    <p>We simplify your Income Tax, GST, and Financial Compliance with ease and expertise.</p>
-  </section>
+<div class="countdown" id="countdown"></div>
+<div class="pendingTotal" id="pendingTotal"></div>
 
-  <section id="services">
-    <h2>Our Services</h2>
-    <ul>
-      <li>Income Tax Return Filing</li>
-      <li>GST Registration & Return Filing</li>
-      <li>Financial Statements Preparation</li>
-      <li>Tax Planning & Consultancy</li>
-    </ul>
-  </section>
+<input type="text" id="subjectName" placeholder="Subject Name">
+<input type="number" id="totalClasses" placeholder="Total Classes">
 
-  <section id="blog">
-    <h2>Blog</h2>
-    <p>📌 How to save tax legally in India?</p>
-    <p>📌 Differences between ITR-1 and ITR-4</p>
-    <p>📌 GST Audit: Who is liable and when?</p>
-  </section>
+<input type="text" id="startDate" placeholder="Start Date"
+    onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
 
-  <section id="updates">
-    <h2>Latest Updates</h2>
-    <ul>
-      <li>Last date for ITR Filing: 31st Aug</li>
-      <li>New GST Amnesty Scheme Announced</li>
-      <li>Advance Tax Payment Deadline Reminder</li>
-    </ul>
-  </section>
+<input type="text" id="endDate" placeholder="End Date"
+    onfocus="this.type='date'" onblur="if(!this.value)this.type='text'">
 
-  <section id="contact">
-    <h2>Contact Us</h2>
-    <form name="submit-to-google-sheet">
-      <div class="form-group">
-        <input type="text" name="Name" placeholder="Your Name" required />
-      </div>
-      <div class="form-group">
-        <input type="email" name="Email" placeholder="Your Email" required />
-      </div>
-      <div class="form-group">
-        <textarea name="Message" rows="4" placeholder="Your Message"></textarea>
-      </div>
-      <button class="btn" type="submit">Send</button>
-    </form>
-    <p id="msg" style="color: green; margin-top: 1rem;"></p>
-  </section>
+<button onclick="addSubject()">Add Subject</button>
 
-  <footer>
-    &copy; 2025 TaxPath. All rights reserved.
-  </footer>
+<div id="list"></div>
 
-  <script>
-    const scriptURL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'
-    const form = document.forms['submit-to-google-sheet']
-    const msg = document.getElementById("msg")
-
-    form.addEventListener('submit', e => {
-      e.preventDefault()
-      fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-        .then(response => {
-          msg.innerHTML = "Thanks! We'll contact you shortly."
-          form.reset()
-          setTimeout(() => msg.innerHTML = "", 5000)
-        })
-        .catch(error => console.error('Error!', error.message))
-    })
-  </script>
+<script src="app.js"></script>
 
 </body>
 </html>
