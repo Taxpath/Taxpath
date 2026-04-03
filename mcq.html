@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCQ App Final</title>
+
+<style>
+body {
+    font-family: Arial;
+    max-width: 600px;
+    margin: auto;
+    padding: 15px;
+    background: #f4f4f4;
+}
+
+textarea {
+    width: 100%;
+    height: 180px;
+    padding: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    border: none;
+    border-radius: 6px;
+}
+
+.load { background: blue; color: white; }
+.nav { background: #333; color: white; }
+.submit { background: green; color: white; }
+.check { background: purple; color: white; }
+.show { background: orange; color: white; }
+
+.question-box {
+    background: white;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+.correct { color: green; }
+.wrong { color: red; }
+</style>
+</head>
+
+<body>
+
+<h2>MCQ Test (Advanced)</h2>
+
+<textarea id="inputText"></textarea>
+<button class="load" onclick="loadQuestions()">Load Questions</button>
+
+<div id="quiz"></div>
+
+<button class="nav" onclick="prevPage()">⬅ Previous</button>
+<button class="nav" onclick="nextPage()">Next ➡</button>
+
+<button class="submit" onclick="submitQuiz()">Submit</button>
+
+<h3 id="result"></h3>
+
+<script>
+let questions = [];
+let currentPage = 0;
+const perPage = 20;
+let answers = {};
+
+function loadQuestions() {
+    const text = document.getElementById("inputText").value.trim();
+    const blocks = text.split("\n\n");
+
+    questions = [];
+    answers = {};
+    currentPage = 0;
+
+    blocks.forEach(block => {
+        const lines = block.split("\n");
+
+        if(lines.length >= 6){
+            const q = lines[0].replace("Question: ", "");
+            const options = [
+                lines[1].slice(3),
+                lines[2].slice(3),
+                lines[3].slice(3),
+                lines[4].slice(3)
+            ];
+            const ans = ["A","B","C","D"].indexOf(lines[5].replace("Answer: ", "").trim());
+
+            questions.push({ q, options, answer: ans });
+        }
+    });
+
+    renderPage();
+}
+
+function renderPage() {
+    const quizDiv = document.getElementById("quiz");
+    quizDiv.innerHTML = "";
+
+    let start = currentPage * perPage;
+    let end = start + perPage;
+
+    questions.slice(start, end).forEach((q, i) => {
+        let index = start + i;
+
+        let div = document.createElement("div");
+        div.className = "question-box";
+
+        let html = `<p><b>${index+1}. ${q.q}</b></p>`;
+
+        q.options.forEach((opt, j) => {
+            let checked = answers[index] == j ? "checked" : "";
+            html += `
+            <div>
+                <input type="radio" name="q${index}" value="${j}" ${checked}
+                onchange="saveAnswer(${index}, ${j})"> ${opt}
+            </div>`;
+        });
+
+        html += `
+        <button class="check" onclick="checkAnswer(${index})">Check Answer</button>
+        <button class="show" onclick="showAnswer(${index})">Show Answer</button>
+        <p id="feedback${index}"></p>
+        `;
+
+        div.innerHTML = html;
+        quizDiv.appendChild(div);
+    });
+}
+
+function saveAnswer(qIndex, value) {
+    answers[qIndex] = value;
+}
+
+function checkAnswer(index) {
+    let feedback = document.getElementById(`feedback${index}`);
+
+    if (answers[index] === undefined) {
+        feedback.innerHTML = "<span class='wrong'>Select option first</span>";
+        return;
+    }
+
+    if (answers[index] === questions[index].answer) {
+        feedback.innerHTML = "<span class='correct'>Correct ✅</span>";
+    } else {
+        feedback.innerHTML = "<span class='wrong'>Wrong ❌</span>";
+    }
+}
+
+function showAnswer(index) {
+    let feedback = document.getElementById(`feedback${index}`);
+    feedback.innerHTML = "Correct: " + questions[index].options[questions[index].answer];
+    feedback.className = "correct";
+}
+
+function nextPage() {
+    if ((currentPage + 1) * perPage < questions.length) {
+        currentPage++;
+        renderPage();
+    }
+}
+
+function prevPage() {
+    if (currentPage > 0) {
+        currentPage--;
+        renderPage();
+    }
+}
+
+function submitQuiz() {
+    let score = 0;
+    let attempted = 0;
+
+    questions.forEach((q, i) => {
+        if (answers[i] !== undefined) {
+            attempted++;
+            if (answers[i] === q.answer) score++;
+        }
+    });
+
+    let total = questions.length;
+    let unattempted = total - attempted;
+
+    document.getElementById("result").innerHTML =
+        `Total: ${total} <br>
+         Attempted: ${attempted} <br>
+         Unattempted: ${unattempted} <br>
+         Score: ${score}`;
+}
+</script>
+
+</body>
+</html>
