@@ -164,3 +164,7 @@ function render() {
 }
 
 render();
+
+function goToMCQ() {
+    window.location.href = "mcq.html";
+}
