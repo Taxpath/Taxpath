@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content="TaxPath – Expert ITR Filing, Tax Planning, GST, TDS Refunds & Notice Support in India. Trusted by salaried employees, freelancers & business owners."/>
+<meta name="keywords" content="ITR filing India, tax planning, GST filing, TDS refund, income tax consultant, TaxPath"/>
+<title>TaxPath – Tax Simplified, Savings Maximized</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --navy:#0a1628;
+  --navy-mid:#0f2040;
+  --navy-light:#162d56;
+  --blue:#1a4a8a;
+  --blue-bright:#2563eb;
+  --teal:#0d9488;
+  --green:#10b981;
+  --green-light:#34d399;
+  --gold:#d4a847;
+  --gold-light:#f0c060;
+  --white:#ffffff;
+  --off-white:#f0f4ff;
+  --gray:#8899bb;
+  --gray-light:#c8d4ea;
+  --card-bg:rgba(22,45,86,0.6);
+  --border:rgba(100,140,200,0.18);
+  --radius:18px;
+  --shadow:0 8px 40px rgba(10,22,40,0.45);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--navy);
+  color:var(--white);
+  overflow-x:hidden;
+  line-height:1.65;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:var(--navy);}
+::-webkit-scrollbar-thumb{background:var(--blue-bright);border-radius:3px;}
+
+/* ===== NAV ===== */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 5%;height:72px;
+  background:rgba(10,22,40,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:all .3s;
+}
+nav.scrolled{background:rgba(10,22,40,0.98);box-shadow:0 4px 30px rgba(0,0,0,0.4);}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.nav-logo-icon{
+  width:38px;height:38px;
+  background:linear-gradient(135deg,var(--blue-bright),var(--green));
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:800;font-size:18px;color:#fff;
+  box-shadow:0 4px 15px rgba(37,99,235,0.4);
+}
+.nav-logo-text{font-family:'Syne',sans-serif;font-weight:800;font-size:22px;
+  background:linear-gradient(90deg,#fff,var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-links{display:flex;align-items:center;gap:28px;}
+.nav-links a{
+  text-decoration:none;color:var(--gray-light);font-size:14px;font-weight:500;
+  font-family:'Outfit',sans-serif;letter-spacing:.3px;
+  transition:color .2s;
+}
+.nav-links a:hover{color:var(--white);}
+.nav-cta{
+  background:linear-gradient(135deg,var(--blue-bright),var(--teal));
+  color:#fff!important;padding:9px 22px;border-radius:25px;
+  font-weight:600!important;box-shadow:0 4px 15px rgba(37,99,235,0.35);
+  transition:transform .2s,box-shadow .2s!important;
+}
+.nav-cta:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,0.5)!important;}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px;}
+.hamburger span{display:block;width:24px;height:2px;background:#fff;border-radius:2px;transition:.3s;}
+.mobile-menu{
+  display:none;position:fixed;top:72px;left:0;right:0;
+  background:rgba(10,22,40,0.98);backdrop-filter:blur(20px);
+  padding:20px 5%;border-bottom:1px solid var(--border);z-index:999;
+}
+.mobile-menu.open{display:block;}
+.mobile-menu a{
+  display:block;padding:14px 0;color:var(--gray-light);text-decoration:none;
+  font-family:'Outfit',sans-serif;font-size:16px;font-weight:500;
+  border-bottom:1px solid var(--border);transition:color .2s;
+}
+.mobile-menu a:hover{color:var(--white);}
+
+/* ===== HERO ===== */
+.hero{
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:100px 5% 60px;
+  position:relative;overflow:hidden;
+  background:radial-gradient(ellipse at 30% 40%,rgba(37,99,235,0.18) 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 20%,rgba(16,185,129,0.1) 0%,transparent 50%),
+             var(--navy);
+}
+.hero-grid-overlay{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(37,99,235,0.06) 1px,transparent 1px),
+                   linear-gradient(90deg,rgba(37,99,235,0.06) 1px,transparent 1px);
+  background-size:50px 50px;pointer-events:none;
+}
+.hero-blob{
+  position:absolute;border-radius:50%;filter:blur(80px);pointer-events:none;
+}
+.hero-blob-1{width:500px;height:500px;background:rgba(37,99,235,0.12);top:-100px;right:-100px;animation:blob-float 8s ease-in-out infinite;}
+.hero-blob-2{width:350px;height:350px;background:rgba(16,185,129,0.1);bottom:-80px;left:10%;animation:blob-float 10s ease-in-out infinite reverse;}
+@keyframes blob-float{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(20px,-20px) scale(1.05);}}
+.hero-content{max-width:600px;z-index:2;animation:fade-up .8s ease both;}
+@keyframes fade-up{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(37,99,235,0.15);border:1px solid rgba(37,99,235,0.3);
+  padding:6px 16px;border-radius:25px;margin-bottom:24px;
+  font-size:13px;font-family:'Outfit',sans-serif;color:var(--green-light);font-weight:500;
+  animation:fade-up .8s ease .1s both;
+}
+.hero-badge span{width:7px;height:7px;background:var(--green-light);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;};}
+.hero h1{
+  font-family:'Syne',sans-serif;font-size:clamp(36px,5.5vw,62px);
+  font-weight:800;line-height:1.1;margin-bottom:20px;
+  animation:fade-up .8s ease .2s both;
+}
+.hero h1 .accent{
+  background:linear-gradient(90deg,var(--blue-bright),var(--green-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero-sub{
+  font-size:clamp(15px,2vw,18px);color:var(--gray-light);
+  font-weight:400;margin-bottom:36px;max-width:520px;
+  animation:fade-up .8s ease .3s both;
+}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;animation:fade-up .8s ease .4s both;}
+.btn-primary{
+  padding:14px 28px;border-radius:12px;font-weight:600;font-size:15px;
+  font-family:'Outfit',sans-serif;cursor:pointer;border:none;
+  background:linear-gradient(135deg,var(--blue-bright),var(--teal));
+  color:#fff;box-shadow:0 6px 24px rgba(37,99,235,0.4);
+  transition:transform .2s,box-shadow .2s;text-decoration:none;display:inline-block;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(37,99,235,0.5);}
+.btn-secondary{
+  padding:14px 28px;border-radius:12px;font-weight:600;font-size:15px;
+  font-family:'Outfit',sans-serif;cursor:pointer;
+  background:transparent;color:var(--white);
+  border:1.5px solid rgba(100,160,255,0.35);
+  transition:all .2s;text-decoration:none;display:inline-block;
+}
+.btn-secondary:hover{background:rgba(37,99,235,0.15);border-color:rgba(100,160,255,0.6);}
+.hero-stats{
+  display:flex;gap:32px;margin-top:48px;flex-wrap:wrap;
+  animation:fade-up .8s ease .5s both;
+}
+.hero-stat h3{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-stat p{font-size:13px;color:var(--gray);font-weight:400;}
+.hero-visual{
+  flex:1;min-width:300px;display:flex;align-items:center;justify-content:center;
+  position:relative;z-index:2;animation:fade-up .8s ease .3s both;
+}
+.hero-card-float{
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:22px;min-width:280px;box-shadow:var(--shadow);
+}
+.hcf-header{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.hcf-icon{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;}
+.hcf-icon.green{background:rgba(16,185,129,0.2);}
+.hcf-icon.blue{background:rgba(37,99,235,0.2);}
+.hcf-icon.gold{background:rgba(212,168,71,0.2);}
+.hcf-title{font-family:'Outfit',sans-serif;font-weight:600;font-size:14px;}
+.hcf-sub{font-size:12px;color:var(--gray);}
+.hcf-amount{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;
+  color:var(--green-light);margin-bottom:4px;}
+.hcf-label{font-size:12px;color:var(--gray);}
+.hcf-bar-wrap{margin-top:14px;}
+.hcf-bar-label{display:flex;justify-content:space-between;font-size:12px;color:var(--gray);margin-bottom:6px;}
+.hcf-bar{height:6px;background:rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;}
+.hcf-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--blue-bright),var(--green));}
+.mini-cards{display:flex;gap:10px;margin-top:14px;}
+.mini-card{
+  flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--border);
+  border-radius:12px;padding:12px;text-align:center;
+}
+.mini-card .val{font-family:'Syne',sans-serif;font-weight:700;font-size:18px;color:var(--gold-light);}
+.mini-card .lbl{font-size:11px;color:var(--gray);margin-top:2px;}
+.float-badge{
+  position:absolute;bottom:-20px;right:20px;
+  background:linear-gradient(135deg,var(--green),var(--teal));
+  border-radius:14px;padding:12px 16px;
+  font-size:12px;font-family:'Outfit',sans-serif;font-weight:600;
+  box-shadow:0 8px 25px rgba(16,185,129,0.35);
+  animation:float-anim 3s ease-in-out infinite;
+}
+@keyframes float-anim{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+
+/* ===== SECTION COMMONS ===== */
+section{padding:80px 5%;}
+.section-tag{
+  display:inline-block;padding:5px 16px;border-radius:25px;
+  background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.25);
+  font-size:12px;font-family:'Outfit',sans-serif;font-weight:600;
+  color:var(--blue-bright);letter-spacing:.8px;text-transform:uppercase;
+  margin-bottom:16px;
+}
+.section-title{
+  font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,44px);
+  font-weight:800;line-height:1.15;margin-bottom:14px;
+}
+.section-title .grad{
+  background:linear-gradient(90deg,var(--blue-bright),var(--green-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.section-sub{font-size:16px;color:var(--gray-light);max-width:560px;line-height:1.7;}
+.section-header{margin-bottom:56px;}
+.text-center{text-align:center;}
+.text-center .section-sub{margin:0 auto;}
+
+/* ===== SERVICES ===== */
+.services{background:linear-gradient(180deg,var(--navy) 0%,var(--navy-mid) 100%);}
+.services-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:20px;
+}
+.svc-card{
+  background:var(--card-bg);backdrop-filter:blur(12px);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:28px;cursor:pointer;
+  transition:transform .25s,box-shadow .25s,border-color .25s;
+  position:relative;overflow:hidden;
+}
+.svc-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(37,99,235,0.06),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.svc-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(0,0,0,0.4);border-color:rgba(37,99,235,0.4);}
+.svc-card:hover::before{opacity:1;}
+.svc-icon{
+  width:54px;height:54px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;font-size:26px;
+  margin-bottom:18px;
+}
+.svc-card h3{font-family:'Outfit',sans-serif;font-size:17px;font-weight:700;margin-bottom:10px;}
+.svc-card p{font-size:14px;color:var(--gray-light);line-height:1.65;}
+.svc-arrow{
+  display:inline-flex;align-items:center;gap:5px;margin-top:14px;
+  font-size:13px;font-family:'Outfit',sans-serif;font-weight:600;
+  color:var(--blue-bright);text-decoration:none;transition:gap .2s;
+}
+.svc-card:hover .svc-arrow{gap:9px;}
+
+/* ===== WHY CHOOSE ===== */
+.why{
+  background:radial-gradient(ellipse at 50% 0%,rgba(37,99,235,0.12) 0%,transparent 60%),
+             var(--navy-mid);
+}
+.why-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;}
+.why-item{
+  display:flex;gap:18px;align-items:flex-start;
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;
+  transition:border-color .3s;
+}
+.why-item:hover{border-color:rgba(16,185,129,0.35);}
+.why-icon{
+  width:50px;height:50px;border-radius:13px;
+  background:linear-gradient(135deg,rgba(37,99,235,0.2),rgba(16,185,129,0.15));
+  display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
+}
+.why-text h4{font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;margin-bottom:6px;}
+.why-text p{font-size:14px;color:var(--gray-light);line-height:1.65;}
+
+/* ===== MISTAKES ===== */
+.mistakes{background:var(--navy);}
+.mistakes-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:52px;}
+.mistake-card{
+  background:var(--card-bg);border:1px solid rgba(220,60,60,0.18);
+  border-radius:var(--radius);padding:26px;
+  border-left:3px solid #e53e3e;
+  transition:transform .25s;
+}
+.mistake-card:hover{transform:translateY(-4px);}
+.mistake-num{
+  font-family:'Syne',sans-serif;font-size:42px;font-weight:800;
+  color:rgba(229,62,62,0.15);line-height:1;margin-bottom:8px;
+}
+.mistake-card h4{font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;margin-bottom:8px;}
+.mistake-card p{font-size:13.5px;color:var(--gray-light);line-height:1.65;}
+.mistake-tag{
+  display:inline-block;margin-bottom:10px;
+  padding:3px 10px;background:rgba(229,62,62,0.15);border-radius:20px;
+  font-size:11px;color:#fc8181;font-family:'Outfit',sans-serif;font-weight:600;
+}
+
+/* ===== CALCULATOR ===== */
+.calculator-section{
+  background:radial-gradient(ellipse at 70% 50%,rgba(16,185,129,0.1) 0%,transparent 60%),
+             var(--navy-mid);
+}
+.calc-wrapper{
+  max-width:700px;margin:0 auto;
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:24px;
+  padding:clamp(24px,4vw,48px);box-shadow:var(--shadow);
+}
+.calc-tabs{display:flex;gap:10px;margin-bottom:28px;flex-wrap:wrap;}
+.calc-tab{
+  padding:8px 20px;border-radius:25px;border:1px solid var(--border);
+  background:transparent;color:var(--gray-light);font-family:'Outfit',sans-serif;
+  font-size:14px;font-weight:500;cursor:pointer;transition:.2s;
+}
+.calc-tab.active{background:linear-gradient(135deg,var(--blue-bright),var(--teal));
+  color:#fff;border-color:transparent;box-shadow:0 4px 15px rgba(37,99,235,0.3);}
+.calc-row{display:flex;gap:18px;margin-bottom:18px;flex-wrap:wrap;}
+.calc-field{flex:1;min-width:200px;}
+.calc-field label{display:block;font-size:13px;color:var(--gray-light);
+  font-family:'Outfit',sans-serif;margin-bottom:8px;font-weight:500;}
+.calc-field input,
+.calc-field select{
+  width:100%;padding:12px 16px;border-radius:10px;
+  background:rgba(255,255,255,0.06);border:1px solid var(--border);
+  color:#fff;font-size:15px;font-family:'DM Sans',sans-serif;
+  outline:none;transition:border-color .2s;appearance:none;
+}
+.calc-field input:focus,
+.calc-field select:focus{border-color:var(--blue-bright);}
+.calc-field select option{background:var(--navy-mid);}
+.calc-btn{
+  width:100%;padding:15px;border-radius:12px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--blue-bright),var(--teal));
+  color:#fff;font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;
+  box-shadow:0 6px 24px rgba(37,99,235,0.35);transition:.2s;margin-top:8px;
+}
+.calc-btn:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(37,99,235,0.5);}
+.calc-result{
+  margin-top:24px;padding:24px;border-radius:14px;
+  background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);
+  display:none;
+}
+.calc-result.show{display:block;}
+.calc-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.calc-result-item h4{font-size:12px;color:var(--gray);font-family:'Outfit',sans-serif;margin-bottom:4px;}
+.calc-result-item .val{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;}
+.val.green{color:var(--green-light);}
+.val.red{color:#fc8181;}
+.val.gold{color:var(--gold-light);}
+.calc-savings-bar{margin-top:16px;}
+.csb-label{display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px;color:var(--gray-light);}
+.csb-track{height:10px;background:rgba(255,255,255,0.08);border-radius:5px;overflow:hidden;}
+.csb-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--blue-bright),var(--green));transition:width .8s ease;}
+
+/* ===== PROCESS ===== */
+.process{background:var(--navy);}
+.process-steps{
+  display:flex;align-items:flex-start;justify-content:center;
+  gap:0;flex-wrap:wrap;margin-top:56px;
+}
+.step-item{flex:1;min-width:200px;max-width:260px;text-align:center;position:relative;padding:0 12px;}
+.step-item:not(:last-child)::after{
+  content:'';position:absolute;top:36px;right:-10px;
+  width:20px;height:2px;background:linear-gradient(90deg,var(--blue-bright),rgba(37,99,235,0.2));
+}
+.step-circle{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));
+  border:2px solid rgba(37,99,235,0.35);
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  margin:0 auto 18px;position:relative;
+  box-shadow:0 0 30px rgba(37,99,235,0.2);
+}
+.step-num{
+  position:absolute;top:-6px;right:-6px;
+  width:22px;height:22px;border-radius:50%;
+  background:linear-gradient(135deg,var(--blue-bright),var(--teal));
+  font-size:11px;font-weight:800;font-family:'Syne',sans-serif;
+  display:flex;align-items:center;justify-content:center;
+}
+.step-item h4{font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;margin-bottom:8px;}
+.step-item p{font-size:13.5px;color:var(--gray-light);line-height:1.6;}
+
+/* ===== TESTIMONIALS ===== */
+.testimonials{
+  background:radial-gradient(ellipse at 30% 70%,rgba(37,99,235,0.1) 0%,transparent 50%),
+             var(--navy-mid);
+}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px;}
+.testi-card{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);padding:28px;
+  transition:transform .25s,box-shadow .25s;
+}
+.testi-card:hover{transform:translateY(-5px);box-shadow:0 20px 50px rgba(0,0,0,0.35);}
+.testi-stars{color:var(--gold);font-size:16px;margin-bottom:14px;letter-spacing:2px;}
+.testi-text{font-size:14.5px;color:var(--gray-light);line-height:1.7;margin-bottom:20px;font-style:italic;}
+.testi-author{display:flex;align-items:center;gap:12px;}
+.testi-avatar{
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;
+  font-family:'Syne',sans-serif;color:#fff;flex-shrink:0;
+}
+.testi-name{font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;}
+.testi-role{font-size:12px;color:var(--gray);}
+.testi-badge{
+  display:inline-block;margin-top:4px;padding:2px 8px;
+  background:rgba(16,185,129,0.15);border-radius:10px;
+  font-size:11px;color:var(--green-light);font-weight:600;
+}
+
+/* ===== BLOG ===== */
+.blog{background:var(--navy);}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:20px;}
+.blog-card{
+  background:var(--card-bg);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  transition:transform .25s,box-shadow .25s;
+}
+.blog-card:hover{transform:translateY(-5px);box-shadow:0 20px 40px rgba(0,0,0,0.35);}
+.blog-thumb{
+  height:160px;display:flex;align-items:center;justify-content:center;font-size:52px;
+  background:linear-gradient(135deg,var(--navy-light),var(--navy-mid));
+}
+.blog-body{padding:22px;}
+.blog-tag{
+  display:inline-block;margin-bottom:10px;
+  padding:3px 12px;border-radius:20px;font-size:11px;font-family:'Outfit',sans-serif;
+  font-weight:600;letter-spacing:.4px;
+}
+.blog-tag.itr{background:rgba(37,99,235,0.15);color:var(--blue-bright);}
+.blog-tag.gst{background:rgba(16,185,129,0.15);color:var(--green-light);}
+.blog-tag.tips{background:rgba(212,168,71,0.15);color:var(--gold-light);}
+.blog-card h3{font-family:'Outfit',sans-serif;font-weight:700;font-size:16px;line-height:1.4;margin-bottom:10px;}
+.blog-card p{font-size:13.5px;color:var(--gray-light);line-height:1.65;}
+.blog-meta{display:flex;align-items:center;justify-content:space-between;margin-top:16px;
+  padding-top:14px;border-top:1px solid var(--border);}
+.blog-date{font-size:12px;color:var(--gray);}
+.blog-read{font-size:12px;color:var(--blue-bright);font-weight:600;text-decoration:none;}
+
+/* ===== FAQ ===== */
+.faq{
+  background:radial-gradient(ellipse at 80% 50%,rgba(37,99,235,0.08) 0%,transparent 60%),
+             var(--navy-mid);
+}
+.faq-list{max-width:760px;margin:0 auto;}
+.faq-item{
+  border:1px solid var(--border);border-radius:14px;margin-bottom:12px;overflow:hidden;
+  transition:border-color .2s;
+}
+.faq-item.open{border-color:rgba(37,99,235,0.4);}
+.faq-q{
+  width:100%;display:flex;align-items:center;justify-content:space-between;
+  padding:18px 22px;background:var(--card-bg);border:none;cursor:pointer;
+  text-align:left;color:#fff;font-family:'Outfit',sans-serif;
+  font-size:15px;font-weight:600;gap:14px;
+}
+.faq-chevron{font-size:18px;transition:transform .3s;flex-shrink:0;color:var(--blue-bright);}
+.faq-item.open .faq-chevron{transform:rotate(180deg);}
+.faq-a{
+  max-height:0;overflow:hidden;transition:max-height .4s ease;
+  padding:0 22px;font-size:14.5px;color:var(--gray-light);line-height:1.7;
+  background:rgba(255,255,255,0.02);
+}
+.faq-item.open .faq-a{max-height:200px;padding:0 22px 18px;}
+
+/* ===== CONTACT ===== */
+.contact{background:var(--navy);}
+.contact-wrapper{
+  display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;
+}
+.contact-info h2{font-family:'Syne',sans-serif;font-size:clamp(24px,3.5vw,38px);
+  font-weight:800;margin-bottom:14px;line-height:1.2;}
+.contact-info p{font-size:15px;color:var(--gray-light);margin-bottom:32px;line-height:1.7;}
+.contact-link{
+  display:flex;align-items:center;gap:14px;padding:16px;
+  background:var(--card-bg);border:1px solid var(--border);border-radius:14px;
+  margin-bottom:12px;text-decoration:none;color:#fff;
+  transition:transform .2s,border-color .2s;
+}
+.contact-link:hover{transform:translateX(5px);border-color:rgba(37,99,235,0.4);}
+.cl-icon{
+  width:46px;height:46px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;
+}
+.cl-text strong{display:block;font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;}
+.cl-text span{font-size:13px;color:var(--gray-light);}
+.contact-form{
+  background:var(--card-bg);backdrop-filter:blur(20px);
+  border:1px solid var(--border);border-radius:24px;padding:36px;
+  box-shadow:var(--shadow);
+}
+.contact-form h3{font-family:'Outfit',sans-serif;font-weight:700;font-size:20px;margin-bottom:22px;}
+.form-row{display:flex;gap:14px;margin-bottom:14px;flex-wrap:wrap;}
+.form-field{flex:1;min-width:180px;}
+.form-field label{display:block;font-size:13px;color:var(--gray-light);margin-bottom:7px;
+  font-family:'Outfit',sans-serif;font-weight:500;}
+.form-field input,
+.form-field select,
+.form-field textarea{
+  width:100%;padding:12px 16px;border-radius:10px;
+  background:rgba(255,255,255,0.06);border:1px solid var(--border);
+  color:#fff;font-size:14px;font-family:'DM Sans',sans-serif;
+  outline:none;transition:border-color .2s;resize:vertical;
+}
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus{border-color:var(--blue-bright);}
+.form-field select option{background:var(--navy-mid);}
+
+/* ===== CTA BANNER ===== */
+.cta-banner{
+  background:linear-gradient(135deg,var(--blue-bright),var(--teal),var(--green));
+  padding:64px 5%;text-align:center;position:relative;overflow:hidden;
+}
+.cta-banner::before{
+  content:'';position:absolute;inset:0;
+  background-image:radial-gradient(circle at 30% 50%,rgba(255,255,255,0.08) 0%,transparent 50%),
+                   radial-gradient(circle at 70% 50%,rgba(255,255,255,0.05) 0%,transparent 50%);
+}
+.cta-banner h2{font-family:'Syne',sans-serif;font-size:clamp(26px,4vw,44px);font-weight:800;
+  margin-bottom:14px;position:relative;}
+.cta-banner p{font-size:17px;opacity:.9;margin-bottom:28px;position:relative;}
+.cta-banner-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;}
+.btn-white{
+  padding:14px 30px;border-radius:12px;font-weight:700;font-size:15px;
+  font-family:'Outfit',sans-serif;background:#fff;color:var(--blue-bright);
+  border:none;cursor:pointer;box-shadow:0 6px 20px rgba(0,0,0,0.15);
+  transition:.2s;text-decoration:none;display:inline-block;
+}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,0.2);}
+.btn-outline-white{
+  padding:14px 30px;border-radius:12px;font-weight:700;font-size:15px;
+  font-family:'Outfit',sans-serif;background:transparent;color:#fff;
+  border:2px solid rgba(255,255,255,0.6);cursor:pointer;
+  transition:.2s;text-decoration:none;display:inline-block;
+}
+.btn-outline-white:hover{background:rgba(255,255,255,0.1);}
+
+/* ===== FOOTER ===== */
+footer{background:var(--navy-mid);border-top:1px solid var(--border);padding:60px 5% 30px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px;}
+.footer-brand p{font-size:14px;color:var(--gray-light);line-height:1.7;margin:14px 0 20px;}
+.footer-socials{display:flex;gap:10px;flex-wrap:wrap;}
+.social-btn{
+  width:38px;height:38px;border-radius:10px;background:var(--card-bg);
+  border:1px solid var(--border);display:flex;align-items:center;justify-content:center;
+  font-size:18px;text-decoration:none;transition:.2s;
+}
+.social-btn:hover{background:rgba(37,99,235,0.2);border-color:rgba(37,99,235,0.4);}
+.footer-col h4{font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;
+  margin-bottom:16px;color:#fff;letter-spacing:.3px;}
+.footer-col a{
+  display:block;font-size:13.5px;color:var(--gray-light);text-decoration:none;
+  margin-bottom:10px;transition:color .2s;
+}
+.footer-col a:hover{color:#fff;}
+.footer-bottom{
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;
+  padding-top:24px;border-top:1px solid var(--border);
+}
+.footer-bottom p{font-size:13px;color:var(--gray);}
+.footer-bottom-links{display:flex;gap:20px;}
+.footer-bottom-links a{font-size:13px;color:var(--gray);text-decoration:none;transition:color .2s;}
+.footer-bottom-links a:hover{color:#fff;}
+
+/* ===== FLOATING WA ===== */
+.wa-float{
+  position:fixed;bottom:28px;right:24px;z-index:999;
+  width:58px;height:58px;border-radius:50%;
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  display:flex;align-items:center;justify-content:center;font-size:28px;
+  box-shadow:0 6px 25px rgba(37,211,102,0.45);
+  text-decoration:none;animation:wa-pulse 3s ease infinite;
+  transition:transform .2s;
+}
+.wa-float:hover{transform:scale(1.1);}
+@keyframes wa-pulse{0%,100%{box-shadow:0 6px 25px rgba(37,211,102,0.45);}50%{box-shadow:0 6px 40px rgba(37,211,102,0.7),0 0 0 8px rgba(37,211,102,0.08);}}
+
+/* ===== SCROLL ANIMATE ===== */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.visible{opacity:1;transform:none;}
+.reveal-left{opacity:0;transform:translateX(-30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-left.visible{opacity:1;transform:none;}
+.reveal-right{opacity:0;transform:translateX(30px);transition:opacity .7s ease,transform .7s ease;}
+.reveal-right.visible{opacity:1;transform:none;}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  .hero{flex-direction:column;padding-top:110px;}
+  .hero-visual{margin-top:40px;}
+  .contact-wrapper{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .process-steps{gap:24px;}
+  .step-item:not(:last-child)::after{display:none;}
+}
+@media(max-width:600px){
+  section{padding:60px 5%;}
+  .hero-stats{gap:24px;}
+  .calc-result-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">T</div>
+    <span class="nav-logo-text">TaxPath</span>
+  </a>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#why">Why Us</a>
+    <a href="#calculator">Calculator</a>
+    <a href="#faq">FAQ</a>
+    <a href="#blog">Blog</a>
+    <a href="#contact" class="nav-cta">Get Started →</a>
+  </div>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="toggleMenu()">Services</a>
+  <a href="#why" onclick="toggleMenu()">Why TaxPath</a>
+  <a href="#calculator" onclick="toggleMenu()">Tax Calculator</a>
+  <a href="#faq" onclick="toggleMenu()">FAQ</a>
+  <a href="#blog" onclick="toggleMenu()">Blog</a>
+  <a href="#contact" onclick="toggleMenu()">Contact Us</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" style="display:flex;gap:48px;flex-wrap:wrap;">
+  <div class="hero-grid-overlay"></div>
+  <div class="hero-blob hero-blob-1"></div>
+  <div class="hero-blob hero-blob-2"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span></span> Trusted by 5,000+ Taxpayers Across India</div>
+    <h1>Don't Pay Extra Tax <span class="accent">Unknowingly.</span></h1>
+    <p class="hero-sub">ITR Filing, Tax Planning, TDS/TCS Refunds & Notice Support — Done Right, Done Fast.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">📋 File Your ITR</a>
+      <a href="https://wa.me/918945089571" target="_blank" class="btn-secondary">💬 Free Consultation</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><h3>5000+</h3><p>Returns Filed</p></div>
+      <div class="hero-stat"><h3>₹2.8Cr+</h3><p>Tax Saved</p></div>
+      <div class="hero-stat"><h3>98%</h3><p>Client Satisfaction</p></div>
+    </div>
+  </div>
+  <div class="hero-visual reveal-right">
+    <div style="position:relative;">
+      <div class="hero-card-float">
+        <div class="hcf-header">
+          <div class="hcf-icon green">💰</div>
+          <div><div class="hcf-title">Tax Saved This Year</div><div class="hcf-sub">FY 2024-25 · New Regime</div></div>
+        </div>
+        <div class="hcf-amount">₹84,500</div>
+        <div class="hcf-label">Maximized via legal deductions</div>
+        <div class="hcf-bar-wrap">
+          <div class="hcf-bar-label"><span>Tax saved</span><span>78%</span></div>
+          <div class="hcf-bar"><div class="hcf-bar-fill" style="width:78%"></div></div>
+        </div>
+        <div class="mini-cards">
+          <div class="mini-card"><div class="val">₹42K</div><div class="lbl">TDS Refund</div></div>
+          <div class="mini-card"><div class="val">3 Days</div><div class="lbl">Avg Filing</div></div>
+          <div class="mini-card"><div class="val">✅</div><div class="lbl">ITR Verified</div></div>
+        </div>
+      </div>
+      <div class="float-badge">🎯 &nbsp;Max Refund Guaranteed</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="section-header text-center reveal">
+    <div class="section-tag">Our Services</div>
+    <h2 class="section-title">Everything Tax. <span class="grad">One Place.</span></h2>
+    <p class="section-sub">Expert solutions for individuals, freelancers, and businesses — handled by professionals who know Indian tax law inside out.</p>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:rgba(37,99,235,0.18);">📄</div>
+      <h3>ITR Filing</h3>
+      <p>Accurate and timely income tax return filing for salaried, business, freelancer, and NRI individuals. All ITR forms covered.</p>
+      <a class="svc-arrow" href="#contact">Get Started →</a>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:rgba(16,185,129,0.18);">🧩</div>
+      <h3>Tax Planning</h3>
+      <p>Strategic, legal tax-saving plans tailored to your income profile. Maximize deductions under 80C, 80D, HRA, NPS & more.</p>
+      <a class="svc-arrow" href="#contact">Plan Now →</a>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:rgba(212,168,71,0.18);">💸</div>
+      <h3>TDS/TCS Refund</h3>
+      <p>Claim your TDS & TCS refunds quickly. We track Form 26AS, AIS mismatches, and file refund requests efficiently.</p>
+      <a class="svc-arrow" href="#contact">Claim Refund →</a>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:rgba(139,92,246,0.18);">🧾</div>
+      <h3>GST Filing</h3>
+      <p>Monthly GSTR-1, GSTR-3B, annual return, GST registration, and reconciliation — all handled accurately and on time.</p>
+      <a class="svc-arrow" href="#contact">File GST →</a>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:rgba(239,68,68,0.18);">⚖️</div>
+      <h3>Notice & Compliance</h3>
+      <p>Received an income tax notice? We draft expert responses, handle scrutiny assessments, and protect your interests.</p>
+      <a class="svc-arrow" href="#contact">Get Help →</a>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:rgba(6,182,212,0.18);">🏢</div>
+      <h3>Business Registration</h3>
+      <p>Pvt Ltd, LLP, Partnership, Sole Proprietorship, MSME, and Startup India registration — fast and paperless.</p>
+      <a class="svc-arrow" href="#contact">Register Now →</a>
+    </div>
+    <div class="svc-card reveal">
+      <div class="svc-icon" style="background:rgba(245,158,11,0.18);">📊</div>
+      <h3>Accounting & Bookkeeping</h3>
+      <p>Monthly bookkeeping, P&L statements, balance sheets, and payroll processing for startups and small businesses.</p>
+      <a class="svc-arrow" href="#contact">Get Books Done →</a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY TAXPATH -->
+<section class="why" id="why">
+  <div class="section-header text-center reveal">
+    <div class="section-tag">Why TaxPath</div>
+    <h2 class="section-title">Tax Experts Who <span class="grad">Actually Care.</span></h2>
+    <p class="section-sub">We're not just filing returns. We're saving your money, protecting your compliance, and being there when it matters.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-item reveal">
+      <div class="why-icon">🎓</div>
+      <div class="why-text"><h4>Expert Guidance</h4><p>CA-led team with deep expertise in Indian income tax, GST, and corporate laws. Always updated with latest amendments.</p></div>
+    </div>
+    <div class="why-item reveal">
+      <div class="why-icon">⚡</div>
+      <div class="why-text"><h4>Lightning Fast Response</h4><p>Questions answered within hours, not days. WhatsApp-first communication for modern taxpayers.</p></div>
+    </div>
+    <div class="why-item reveal">
+      <div class="why-icon">💰</div>
+      <div class="why-text"><h4>Transparent Pricing</h4><p>Flat, affordable fees. No hidden charges. You know exactly what you pay before we begin.</p></div>
+    </div>
+    <div class="why-item reveal">
+      <div class="why-icon">🏆</div>
+      <div class="why-text"><h4>Maximum Legal Tax Saving</h4><p>We proactively identify deductions you're missing. Not just filing — optimizing every rupee legally.</p></div>
+    </div>
+    <div class="why-item reveal">
+      <div class="why-icon">🔒</div>
+      <div class="why-text"><h4>Data Privacy & Security</h4><p>Your financial data is encrypted, confidential, and never shared. Complete privacy, always.</p></div>
+    </div>
+    <div class="why-item reveal">
+      <div class="why-icon">🤝</div>
+      <div class="why-text"><h4>Personalized Support</h4><p>Every client gets a dedicated advisor. Not a chatbot. A real person who knows your tax story.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMON MISTAKES -->
+<section class="mistakes" id="mistakes">
+  <div class="section-header text-center reveal">
+    <div class="section-tag" style="background:rgba(229,62,62,0.1);border-color:rgba(229,62,62,0.25);color:#fc8181;">⚠️ Common Mistakes</div>
+    <h2 class="section-title">Most Taxpayers <span style="background:linear-gradient(90deg,#e53e3e,#fc8181);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Lose Money</span> Because They Ignore These</h2>
+    <p class="section-sub">Avoid these costly errors that drain thousands from your pocket every year.</p>
+  </div>
+  <div class="mistakes-grid">
+    <div class="mistake-card reveal">
+      <div class="mistake-tag">⚠️ AIS/TIS</div>
+      <div class="mistake-num">01</div>
+      <h4>Not Checking AIS / TIS</h4>
+      <p>Annual Information Statement contains all your financial transactions. Ignoring it causes mismatches and notices.</p>
+    </div>
+    <div class="mistake-card reveal">
+      <div class="mistake-tag">⚠️ Form 26AS</div>
+      <div class="mistake-num">02</div>
+      <h4>Ignoring Form 26AS Mismatches</h4>
+      <p>Differences in TDS credited vs 26AS leads to demand notices. Reconciliation is mandatory before filing.</p>
+    </div>
+    <div class="mistake-card reveal">
+      <div class="mistake-tag">⚠️ Deductions</div>
+      <div class="mistake-num">03</div>
+      <h4>Missing Deductions & Exemptions</h4>
+      <p>80C, 80D, HRA, LTA, NPS, home loan interest — lakhs left unclaimed every year due to poor planning.</p>
+    </div>
+    <div class="mistake-card reveal">
+      <div class="mistake-tag">⚠️ TCS Refund</div>
+      <div class="mistake-num">04</div>
+      <h4>Not Claiming TCS Refunds</h4>
+      <p>TCS on LRS, car purchases, and foreign remittances can be claimed back. Most people don't even know this.</p>
+    </div>
+    <div class="mistake-card reveal">
+      <div class="mistake-tag">⚠️ Wrong ITR</div>
+      <div class="mistake-num">05</div>
+      <h4>Filing Wrong ITR Form</h4>
+      <p>ITR-1, 2, 3, 4 — filing the wrong form makes your return defective and can attract scrutiny or penalties.</p>
+    </div>
+    <div class="mistake-card reveal">
+      <div class="mistake-tag">⚠️ Deadline</div>
+      <div class="mistake-num">06</div>
+      <h4>Missing Filing Deadlines</h4>
+      <p>Late filing means penalty up to ₹5,000, loss of carry-forward losses, and interest under 234A/234B/234C.</p>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:40px;">
+    <a href="#contact" class="btn-primary reveal">✅ Let TaxPath Handle It Right</a>
+  </div>
+</section>
+
+<!-- TAX CALCULATOR -->
+<section class="calculator-section" id="calculator">
+  <div class="section-header text-center reveal">
+    <div class="section-tag">Free Tool</div>
+    <h2 class="section-title">Income Tax <span class="grad">Calculator</span></h2>
+    <p class="section-sub">Compare Old vs New Regime instantly. See exactly how much you can save.</p>
+  </div>
+  <div class="calc-wrapper reveal">
+    <div class="calc-tabs">
+      <button class="calc-tab active" onclick="switchCalcTab('individual')">Individual</button>
+      <button class="calc-tab" onclick="switchCalcTab('senior')">Senior Citizen (60+)</button>
+      <button class="calc-tab" onclick="switchCalcTab('supersenior')">Super Senior (80+)</button>
+    </div>
+    <div class="calc-row">
+      <div class="calc-field">
+        <label>Annual Income (₹)</label>
+        <input type="number" id="calcIncome" placeholder="e.g. 1200000" min="0"/>
+      </div>
+      <div class="calc-field">
+        <label>HRA Exempt (₹)</label>
+        <input type="number" id="calcHRA" placeholder="e.g. 120000" min="0"/>
+      </div>
+    </div>
+    <div class="calc-row">
+      <div class="calc-field">
+        <label>80C Investments (₹)</label>
+        <input type="number" id="calc80C" placeholder="Max 1,50,000" min="0" max="150000"/>
+      </div>
+      <div class="calc-field">
+        <label>80D Medical Insurance (₹)</label>
+        <input type="number" id="calc80D" placeholder="Max 25,000" min="0" max="25000"/>
+      </div>
+    </div>
+    <div class="calc-row">
+      <div class="calc-field">
+        <label>Home Loan Interest (₹)</label>
+        <input type="number" id="calcHL" placeholder="Max 2,00,000" min="0" max="200000"/>
+      </div>
+      <div class="calc-field">
+        <label>NPS (80CCD 1B) (₹)</label>
+        <input type="number" id="calcNPS" placeholder="Max 50,000" min="0" max="50000"/>
+      </div>
+    </div>
+    <button class="calc-btn" onclick="calculateTax()">⚡ Calculate My Tax & Savings</button>
+    <div class="calc-result" id="calcResult">
+      <div class="calc-result-grid">
+        <div class="calc-result-item">
+          <h4>Tax — Old Regime</h4>
+          <div class="val red" id="resOld">—</div>
+        </div>
+        <div class="calc-result-item">
+          <h4>Tax — New Regime</h4>
+          <div class="val red" id="resNew">—</div>
+        </div>
+        <div class="calc-result-item">
+          <h4>Best Regime for You</h4>
+          <div class="val green" id="resBest">—</div>
+        </div>
+        <div class="calc-result-item">
+          <h4>You Save</h4>
+          <div class="val gold" id="resSave">—</div>
+        </div>
+      </div>
+      <div class="calc-savings-bar" id="calcBar" style="display:none;">
+        <div class="csb-label"><span>Old Regime</span><span>New Regime</span></div>
+        <div class="csb-track"><div class="csb-fill" id="csbFill" style="width:0%"></div></div>
+      </div>
+      <p style="font-size:12.5px;color:var(--gray);margin-top:14px;text-align:center;">
+        *Approximate estimate. Consult TaxPath for precise filing. Standard deduction of ₹50,000 applied.
+      </p>
+      <div style="text-align:center;margin-top:18px;">
+        <a href="#contact" class="btn-primary" style="font-size:14px;padding:12px 24px;">📋 File With TaxPath Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="section-header text-center reveal">
+    <div class="section-tag">How It Works</div>
+    <h2 class="section-title">Simple. Fast. <span class="grad">Done.</span></h2>
+    <p class="section-sub">Get your ITR filed in 4 easy steps — without stepping out of your home.</p>
+  </div>
+  <div class="process-steps">
+    <div class="step-item reveal">
+      <div class="step-circle">📁<span class="step-num">1</span></div>
+      <h4>Upload Documents</h4>
+      <p>Share your Form 16, Aadhaar, PAN, bank statements & investment proofs via WhatsApp or email.</p>
+    </div>
+    <div class="step-item reveal">
+      <div class="step-circle">🔍<span class="step-num">2</span></div>
+      <h4>Expert Review</h4>
+      <p>Our tax expert reviews your case, identifies all deductions, and selects the optimal ITR form.</p>
+    </div>
+    <div class="step-item reveal">
+      <div class="step-circle">✅<span class="step-num">3</span></div>
+      <h4>Filing & Verification</h4>
+      <p>We file your return and e-verify it for you. You receive the ITR-V acknowledgement instantly.</p>
+    </div>
+    <div class="step-item reveal">
+      <div class="step-circle">💳<span class="step-num">4</span></div>
+      <h4>Refund / Confirmation</h4>
+      <p>Tax refunds are credited directly to your account. We track processing and keep you updated.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="testimonials">
+  <div class="section-header text-center reveal">
+    <div class="section-tag">Client Stories</div>
+    <h2 class="section-title">Real People. <span class="grad">Real Savings.</span></h2>
+    <p class="section-sub">Over 5,000 taxpayers have trusted TaxPath. Here's what they say.</p>
+  </div>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"I had no idea I was losing ₹38,000 every year by filing wrong. TaxPath not only fixed my ITR but also helped me plan this year's taxes from scratch. Genuinely a game changer."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#2563eb,#0d9488);">A</div>
+        <div>
+          <div class="testi-name">Arjun Mehta</div>
+          <div class="testi-role">Software Engineer, Bengaluru</div>
+          <div class="testi-badge">₹38,000 Saved</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"As a freelancer, my taxes were always complicated. TaxPath handled everything — presumptive taxation, TDS claims, and GST registration. Super professional team!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#7c3aed,#db2777);">P</div>
+        <div>
+          <div class="testi-name">Priya Sharma</div>
+          <div class="testi-role">Freelance Designer, Mumbai</div>
+          <div class="testi-badge">GST + ITR ✓</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Got an income tax notice and panicked. TaxPath responded within 2 hours, explained everything clearly, and resolved the notice in a week. Absolutely reliable!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#d4a847,#f0c060);">R</div>
+        <div>
+          <div class="testi-name">Rahul Gupta</div>
+          <div class="testi-role">Small Business Owner, Delhi</div>
+          <div class="testi-badge">Notice Resolved ✓</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"TaxPath claimed ₹1.2 lakh TCS refund on my foreign remittance that I didn't even know I could get back. The team is incredibly knowledgeable and responsive."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#10b981,#0d9488);">S</div>
+        <div>
+          <div class="testi-name">Sneha Kapoor</div>
+          <div class="testi-role">CA Student, Pune</div>
+          <div class="testi-badge">₹1.2L TCS Refund</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Registered my startup, set up accounting, and filed GST — all through TaxPath. It's like having a full finance team at a fraction of the cost. Highly recommended!"</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#ef4444,#f97316);">K</div>
+        <div>
+          <div class="testi-name">Karan Singh</div>
+          <div class="testi-role">Startup Founder, Hyderabad</div>
+          <div class="testi-badge">Full Service ✓</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"Switched from my old CA to TaxPath and wish I had done it sooner. They found deductions I'd been missing for 3 years and saved me over ₹60,000 this cycle alone."</p>
+      <div class="testi-author">
+        <div class="testi-avatar" style="background:linear-gradient(135deg,#06b6d4,#2563eb);">N</div>
+        <div>
+          <div class="testi-name">Neha Verma</div>
+          <div class="testi-role">Government Employee, Jaipur</div>
+          <div class="testi-badge">₹60,000 Saved</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER 1 -->
+<div class="cta-banner reveal">
+  <h2>Ready to Stop Overpaying Taxes?</h2>
+  <p>Join 5,000+ Indians who maximized their refunds with TaxPath.</p>
+  <div class="cta-banner-btns">
+    <a href="#contact" class="btn-white">📋 File My ITR Now</a>
+    <a href="https://wa.me/918945089571" target="_blank" class="btn-outline-white">💬 WhatsApp Us</a>
+  </div>
+</div>
+
+<!-- BLOG -->
+<section class="blog" id="blog">
+  <div class="section-header text-center reveal">
+    <div class="section-tag">Tax Awareness</div>
+    <h2 class="section-title">Stay Ahead with <span class="grad">Tax Insights</span></h2>
+    <p class="section-sub">Free guides, tips, and updates to help every Indian understand and save on taxes.</p>
+  </div>
+  <div class="blog-grid">
+    <div class="blog-card reveal">
+      <div class="blog-thumb">📋</div>
+      <div class="blog-body">
+        <span class="blog-tag itr">ITR Filing</span>
+        <h3>Old Regime vs New Regime 2024-25: Which is Better for You?</h3>
+        <p>A complete comparison with real examples to help you decide the optimal tax regime based on your income and deductions.</p>
+        <div class="blog-meta">
+          <span class="blog-date">May 12, 2025</span>
+          <a href="#contact" class="blog-read">Read More →</a>
+        </div>
+      </div>
+    </div>
+    <div class="blog-card reveal">
+      <div class="blog-thumb">🧾</div>
+      <div class="blog-body">
+        <span class="blog-tag gst">GST</span>
+        <h3>GST for Freelancers in India: Everything You Must Know in 2025</h3>
+        <p>When to register, how to file returns, reverse charge mechanism, and how to avoid common GST mistakes as a freelancer.</p>
+        <div class="blog-meta">
+          <span class="blog-date">Apr 28, 2025</span>
+          <a href="#contact" class="blog-read">Read More →</a>
+        </div>
+      </div>
+    </div>
+    <div class="blog-card reveal">
+      <div class="blog-thumb">💡</div>
+      <div class="blog-body">
+        <span class="blog-tag tips">Tax Tips</span>
+        <h3>10 Legal Ways to Save Income Tax in India That Most People Miss</h3>
+        <p>NPS, ELSS, home loan interest, rent agreements, LTA — discover hidden tax-saving strategies that can save lakhs legally.</p>
+        <div class="blog-meta">
+          <span class="blog-date">Apr 10, 2025</span>
+          <a href="#contact" class="blog-read">Read More →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="section-header text-center reveal">
+    <div class="section-tag">FAQ</div>
+    <h2 class="section-title">Frequently Asked <span class="grad">Questions</span></h2>
+    <p class="section-sub">Quick answers to the questions every taxpayer has. Still confused? WhatsApp us.</p>
+  </div>
+  <div class="faq-list">
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        Who should file an ITR in India?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-a">Anyone whose income exceeds the basic exemption limit (₹2.5L for general, ₹3L for senior citizens, ₹5L for super seniors), or who has foreign income, capital gains, or is carrying forward losses. Even if tax is zero, filing is recommended for loan applications and visa processing.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        What is AIS and why is it important before filing ITR?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-a">Annual Information Statement (AIS) is a detailed record of all your financial transactions — salary, interest, dividends, mutual fund transactions, property, and more. It must be reviewed before filing to avoid mismatches that can trigger notices or demand from the IT department.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        How long does it take to get my income tax refund?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-a">After filing and e-verification, most refunds are processed within 2–6 weeks if there are no mismatches. Pre-validated bank account and correct details speed up the process. TaxPath tracks your refund status and alerts you at every stage.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        What is Form 26AS and how is it different from AIS?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-a">Form 26AS shows TDS/TCS credited against your PAN. AIS is a broader statement that includes savings account interest, dividends, foreign remittances, and more. Both should match your ITR data to avoid issues. TaxPath reconciles both before filing.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        Do freelancers need to register for GST?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-a">GST registration is mandatory if your annual turnover exceeds ₹20 lakhs (₹10 lakhs for special category states). If you export services or work with foreign clients, GST registration is required regardless of turnover for LUT filing.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        I received an income tax notice. What should I do?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-a">Don't panic. Contact TaxPath immediately. We review the notice, identify the cause (mismatch, non-filing, scrutiny), and draft a professional response within 24-48 hours. Acting fast is critical — notices have strict timelines.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        Can I claim TCS refund on foreign travel or education?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-a">Yes! TCS collected on foreign remittance under LRS (Liberalized Remittance Scheme), overseas education, or tour packages can be claimed as credit against your tax liability. Any excess is refunded when you file ITR. TaxPath handles this regularly.</div>
+    </div>
+    <div class="faq-item reveal">
+      <button class="faq-q" onclick="toggleFAQ(this)">
+        What documents do I need for ITR filing?
+        <span class="faq-chevron">⌄</span>
+      </button>
+      <div class="faq-a">Typically: PAN, Aadhaar, Form 16 (from employer), Form 26AS & AIS, bank statements, investment proof (80C/80D), home loan certificate, rent receipts, and capital gains statement if applicable. TaxPath sends you a complete checklist once you onboard.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="section-header reveal">
+    <div class="section-tag">Contact Us</div>
+    <h2 class="section-title">Let's Sort Your <span class="grad">Taxes Today.</span></h2>
+    <p class="section-sub">Reach out via WhatsApp, phone, or email. Or fill the form and we'll call you back.</p>
+  </div>
+  <div class="contact-wrapper">
+    <div class="contact-info reveal-left">
+      <a href="https://wa.me/918945089571" target="_blank" class="contact-link">
+        <div class="cl-icon" style="background:rgba(37,211,102,0.15);">💬</div>
+        <div class="cl-text"><strong>WhatsApp (Preferred)</strong><span>+91 89450 89571 — Instant Response</span></div>
+      </a>
+      <a href="tel:+918945089571" class="contact-link">
+        <div class="cl-icon" style="background:rgba(37,99,235,0.15);">📞</div>
+        <div class="cl-text"><strong>Call Us</strong><span>+91 89450 89571</span></div>
+      </a>
+      <a href="mailto:snackssangam@gmail.com" class="contact-link">
+        <div class="cl-icon" style="background:rgba(212,168,71,0.15);">✉️</div>
+        <div class="cl-text"><strong>Email</strong><span>snackssangam@gmail.com</span></div>
+      </a>
+      <a href="https://instagram.com" target="_blank" class="contact-link">
+        <div class="cl-icon" style="background:rgba(219,39,119,0.15);">📸</div>
+        <div class="cl-text"><strong>Instagram</strong><span>@taxpath_official</span></div>
+      </a>
+      <div style="margin-top:28px;padding:20px;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:14px;">
+        <p style="font-size:14px;color:var(--green-light);font-weight:600;margin-bottom:6px;">🕐 Response Hours</p>
+        <p style="font-size:13.5px;color:var(--gray-light);">Monday – Saturday: 9 AM – 8 PM<br/>Sunday: 10 AM – 4 PM<br/>WhatsApp available 24/7 for urgent matters.</p>
+      </div>
+    </div>
+    <div class="contact-form reveal-right">
+      <h3>📋 Get a Free Consultation</h3>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Your Name</label>
+          <input type="text" id="fname" placeholder="Rahul Sharma"/>
+        </div>
+        <div class="form-field">
+          <label>Phone Number</label>
+          <input type="tel" id="fphone" placeholder="+91 98765 43210"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label>Email Address</label>
+          <input type="email" id="femail" placeholder="rahul@email.com"/>
+        </div>
+        <div class="form-field">
+          <label>Service Needed</label>
+          <select id="fservice">
+            <option value="">Select a service</option>
+            <option>ITR Filing</option>
+            <option>Tax Planning</option>
+            <option>TDS/TCS Refund</option>
+            <option>GST Filing</option>
+            <option>Notice Support</option>
+            <option>Business Registration</option>
+            <option>Accounting & Bookkeeping</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field" style="flex:1;">
+          <label>Your Message (Optional)</label>
+          <textarea id="fmsg" rows="3" placeholder="Tell us a bit about your tax situation..."></textarea>
+        </div>
+      </div>
+      <button class="calc-btn" onclick="submitForm()" style="margin-top:0;">🚀 Submit — Get Free Consultation</button>
+      <p id="formMsg" style="text-align:center;margin-top:12px;font-size:14px;display:none;color:var(--green-light);">✅ Message sent! We'll reach out within 2 hours.</p>
+      <p style="text-align:center;font-size:12px;color:var(--gray);margin-top:12px;">🔒 Your data is 100% confidential & never shared.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER 2 -->
+<div class="cta-banner reveal">
+  <h2>Your Tax Deadline Won't Wait.</h2>
+  <p>File now, avoid penalties, and claim every rupee you're owed.</p>
+  <div class="cta-banner-btns">
+    <a href="https://wa.me/918945089571" target="_blank" class="btn-white">💬 WhatsApp Now</a>
+    <a href="tel:+918945089571" class="btn-outline-white">📞 Call Us</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo" style="margin-bottom:14px;display:inline-flex;">
+        <div class="nav-logo-icon">T</div>
+        <span class="nav-logo-text" style="font-size:20px;">TaxPath</span>
+      </a>
+      <p>India's modern tax consultancy — helping individuals, freelancers, and businesses maximize savings and stay compliant.</p>
+      <div class="footer-socials">
+        <a href="https://wa.me/918945089571" target="_blank" class="social-btn" title="WhatsApp">💬</a>
+        <a href="tel:+918945089571" class="social-btn" title="Call">📞</a>
+        <a href="mailto:snackssangam@gmail.com" class="social-btn" title="Email">✉️</a>
+        <a href="https://instagram.com" target="_blank" class="social-btn" title="Instagram">📸</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <a href="#services">ITR Filing</a>
+      <a href="#services">Tax Planning</a>
+      <a href="#services">TDS/TCS Refund</a>
+      <a href="#services">GST Filing</a>
+      <a href="#services">Notice Support</a>
+      <a href="#services">Business Registration</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#why">Why TaxPath</a>
+      <a href="#process">How It Works</a>
+      <a href="#testimonials">Client Reviews</a>
+      <a href="#blog">Blog</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact Us</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Service</a>
+      <a href="#">Refund Policy</a>
+      <a href="#">Disclaimer</a>
+      <a href="#" style="color:var(--green-light);margin-top:8px;">📞 +91 89450 89571</a>
+      <a href="#" style="color:var(--gray-light);">snackssangam@gmail.com</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 TaxPath. All rights reserved. | Not a registered CA firm. Tax advice provided by experienced professionals.</p>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Sitemap</a>
+    </div>
+  </div>
+</footer>
+
+<!-- FLOATING WHATSAPP -->
+<a href="https://wa.me/918945089571" target="_blank" class="wa-float" title="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
+<script>
+// NAV SCROLL
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50);
+});
+
+// HAMBURGER
+function toggleMenu(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+
+// FAQ
+function toggleFAQ(btn){
+  const item=btn.closest('.faq-item');
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen)item.classList.add('open');
+}
+
+// CALC TAB
+let calcAgeGroup='individual';
+function switchCalcTab(type){
+  calcAgeGroup=type;
+  document.querySelectorAll('.calc-tab').forEach(t=>t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('calcResult').classList.remove('show');
+}
+
+// TAX CALCULATION
+function calculateTax(){
+  const income=parseFloat(document.getElementById('calcIncome').value)||0;
+  const hra=parseFloat(document.getElementById('calcHRA').value)||0;
+  const c80=Math.min(parseFloat(document.getElementById('calc80C').value)||0,150000);
+  const d80=Math.min(parseFloat(document.getElementById('calc80D').value)||0,25000);
+  const hl=Math.min(parseFloat(document.getElementById('calcHL').value)||0,200000);
+  const nps=Math.min(parseFloat(document.getElementById('calcNPS').value)||0,50000);
+  if(income<=0){alert('Please enter your annual income.');return;}
+
+  const stdDed=50000;
+  // OLD REGIME
+  let oldTaxable=income-stdDed-hra-c80-d80-hl-nps;
+  oldTaxable=Math.max(0,oldTaxable);
+  const oldTax=computeOldTax(oldTaxable,calcAgeGroup);
+
+  // NEW REGIME
+  let newTaxable=income-stdDed;
+  newTaxable=Math.max(0,newTaxable);
+  const newTax=computeNewTax(newTaxable,calcAgeGroup);
+
+  const best=oldTax<=newTax?'Old Regime':'New Regime';
+  const save=Math.abs(oldTax-newTax);
+
+  document.getElementById('resOld').textContent='₹'+fmt(Math.round(oldTax));
+  document.getElementById('resNew').textContent='₹'+fmt(Math.round(newTax));
+  document.getElementById('resBest').textContent=best+' ✓';
+  document.getElementById('resSave').textContent='₹'+fmt(Math.round(save));
+
+  const pct=oldTax+newTax>0?Math.round((Math.min(oldTax,newTax)/(oldTax+newTax))*100):50;
+  document.getElementById('csbFill').style.width=pct+'%';
+  document.getElementById('calcBar').style.display='block';
+  document.getElementById('calcResult').classList.add('show');
+}
+
+function computeOldTax(inc,grp){
+  let exemption=250000;
+  if(grp==='senior')exemption=300000;
+  if(grp==='supersenior')exemption=500000;
+  if(inc<=exemption)return 0;
+  let tax=0;
+  const slabs=[
+    [exemption,500000,0.05],
+    [500000,1000000,0.2],
+    [1000000,Infinity,0.3]
+  ];
+  for(const [low,high,rate]of slabs){
+    if(inc>low){tax+=(Math.min(inc,high)-low)*rate;}
+  }
+  if(inc<=500000&&tax>0)tax=0; // 87A rebate
+  return tax*1.04; // 4% cess
+}
+
+function computeNewTax(inc,grp){
+  if(inc<=300000)return 0;
+  let tax=0;
+  const slabs=[
+    [300000,700000,0.05],
+    [700000,1000000,0.10],
+    [1000000,1200000,0.15],
+    [1200000,1500000,0.20],
+    [1500000,Infinity,0.30]
+  ];
+  for(const [low,high,rate]of slabs){
+    if(inc>low){tax+=(Math.min(inc,high)-low)*rate;}
+  }
+  if(inc<=700000&&tax>0)tax=0; // 87A new regime
+  return tax*1.04;
+}
+
+function fmt(n){return n.toLocaleString('en-IN');}
+
+// SCROLL REVEAL
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
+},{threshold:.12});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));
+
+// FORM SUBMIT
+function submitForm(){
+  const name=document.getElementById('fname').value.trim();
+  const phone=document.getElementById('fphone').value.trim();
+  if(!name||!phone){alert('Please enter your name and phone number.');return;}
+  const msg=document.getElementById('formMsg');
+  msg.style.display='block';
+  const service=document.getElementById('fservice').value||'General Inquiry';
+  const waMsg=encodeURIComponent(`Hi TaxPath! My name is ${name} (${phone}). I need help with: ${service}`);
+  setTimeout(()=>{window.open(`https://wa.me/918945089571?text=${waMsg}`,'_blank');},500);
+}
+</script>
+</body>
+</html>
