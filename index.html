@@ -3,7 +3,27 @@
 .brand{display:flex;align-items:center;gap:14px}
 .cma-logo{width:62px;height:62px;border:3px solid var(--teal);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--teal);font-family:Arial,sans-serif;font-weight:900;font-size:1.05rem;letter-spacing:-.5px}
 .full-form{font-size:1.05rem;font-weight:700;color:var(--teal);margin:2px 0 5px}
-</style></head><body><div class="wrap"><header><h1>CMA</h1><div class="sub">MCQ Practice & Full-Fledged Test</div></header><div class="grid"><a class="card" href="scm/index.html"><b>1. Strategic Cost Management</b><span>SCM chapter-wise MCQ practice</span></a><a class="card" href="sfm/index.html"><b>2. Strategic Financial Management</b><span>SFM topic-wise MCQ practice</span></a><a class="card" href="direct-tax/index.html"><b>3. Direct Tax & International Laws</b><span>Direct Tax and International Taxation practice</span></a><a class="card" href="corporate-economic-laws/index.html"><b>4. Corporate & Economic Laws</b><span>Corporate and Economic Laws practice</span></a><a class="card full" href="full-test/index.html"><b>📝 Full-Fledged Test — December 2026</b><span>Combined test area for CMA</span></a></div><div class="pdf"><strong>December 2026 Supplement</strong><br><span>Use the supplement PDF for the December 2026 test workflow and answer sheet.</span><br><br><a href="supplement-dec-2026.pdf" target="_blank">Open Supplement PDF</a></div></div>
+</style></head><body>
+<div id="authScreen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#f6f3ec;">
+  <div style="width:min(420px,100%);background:#fffaf0;border:1px solid #d8d0bd;border-radius:18px;padding:32px 24px;text-align:center;box-shadow:0 10px 35px rgba(0,0,0,.08);">
+    <div style="width:68px;height:68px;margin:0 auto 16px;border:3px solid #12484a;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#12484a;font-family:Arial,sans-serif;font-weight:900;font-size:20px;">CMA</div>
+    <h1 style="margin:0 0 8px;color:#1c2a2e;">CMA MCQ Portal</h1>
+    <p style="margin:0 0 24px;color:#6f6a5c;">Sign in with an authorised Google account to continue.</p>
+    <button id="googleLogin" style="width:100%;border:0;border-radius:10px;padding:13px 18px;background:#12484a;color:white;font-size:16px;font-weight:700;cursor:pointer;">
+      Continue with Google
+    </button>
+    <p id="authMessage" style="margin:16px 0 0;color:#8a6a1f;font-size:14px;"></p>
+  </div>
+</div>
+<div id="appContent" style="display:none;">
+
+</div>
+
+<div id="userBar" style="max-width:760px;margin:0 auto;padding:10px 16px;text-align:right;font-family:Arial,sans-serif;font-size:13px;">
+  <span id="userEmail" style="color:#6f6a5c;"></span>
+  <button id="logoutBtn" style="margin-left:10px;border:1px solid #d8d0bd;background:#fffaf0;border-radius:8px;padding:6px 10px;cursor:pointer;">Sign out</button>
+</div>
+<div id="pageContent" style="display:none;"><div class="wrap"><header><h1>CMA</h1><div class="sub">MCQ Practice & Full-Fledged Test</div></header><div class="grid"><a class="card" href="scm/index.html"><b>1. Strategic Cost Management</b><span>SCM chapter-wise MCQ practice</span></a><a class="card" href="sfm/index.html"><b>2. Strategic Financial Management</b><span>SFM topic-wise MCQ practice</span></a><a class="card" href="direct-tax/index.html"><b>3. Direct Tax & International Laws</b><span>Direct Tax and International Taxation practice</span></a><a class="card" href="corporate-economic-laws/index.html"><b>4. Corporate & Economic Laws</b><span>Corporate and Economic Laws practice</span></a><a class="card full" href="full-test/index.html"><b>📝 Full-Fledged Test — December 2026</b><span>Combined test area for CMA</span></a></div><div class="pdf"><strong>December 2026 Supplement</strong><br><span>Use the supplement PDF for the December 2026 test workflow and answer sheet.</span><br><br><a href="supplement-dec-2026.pdf" target="_blank">Open Supplement PDF</a></div></div>
 <section style="margin:32px auto;max-width:1100px;padding:0 20px;">
   <h2 style="margin-bottom:16px;">Coming Soon</h2>
   <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
@@ -25,4 +45,82 @@
   </div>
 </section>
 
-</body></html>
+</div></body>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA7tGvsDYyYLSWFPe6Slx1P8GL0w53Wrk",
+  authDomain: "cma-mcq-portal.firebaseapp.com",
+  projectId: "cma-mcq-portal",
+  storageBucket: "cma-mcq-portal.firebasestorage.app",
+  messagingSenderId: "734935438365",
+  appId: "1:734935438365:web:40ea0a7677ef572234a2f4",
+  measurementId: "G-H6DGK7Y3RJ"
+};
+
+/*
+  IMPORTANT:
+  Add the Google email addresses you want to permit here.
+  Example:
+  const ALLOWED_EMAILS = [
+    "yourmail@gmail.com",
+    "student1@gmail.com"
+  ];
+*/
+const ALLOWED_EMAILS = [
+  "taxxpath@gmail.com"
+];
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+
+const authScreen = document.getElementById("authScreen");
+const pageContent = document.getElementById("pageContent");
+const googleLogin = document.getElementById("googleLogin");
+const authMessage = document.getElementById("authMessage");
+const userEmail = document.getElementById("userEmail");
+const logoutBtn = document.getElementById("logoutBtn");
+
+function isAllowed(email) {
+  return ALLOWED_EMAILS.map(e => e.trim().toLowerCase()).includes(
+    (email || "").trim().toLowerCase()
+  );
+}
+
+googleLogin.addEventListener("click", async () => {
+  authMessage.textContent = "Opening Google sign-in...";
+  try {
+    await auth.signInWithPopup(provider);
+  } catch (error) {
+    console.error(error);
+    authMessage.textContent = error.message || "Google sign-in failed.";
+  }
+});
+
+logoutBtn.addEventListener("click", () => auth.signOut());
+
+auth.onAuthStateChanged((user) => {
+  if (!user) {
+    authScreen.style.display = "flex";
+    pageContent.style.display = "none";
+    userEmail.textContent = "";
+    return;
+  }
+
+  if (!isAllowed(user.email)) {
+    authScreen.style.display = "flex";
+    pageContent.style.display = "none";
+    authMessage.textContent = "Access denied for " + (user.email || "this account") + ".";
+    auth.signOut();
+    return;
+  }
+
+  authScreen.style.display = "none";
+  pageContent.style.display = "block";
+  userEmail.textContent = user.email;
+});
+</script>
+
+</html>
