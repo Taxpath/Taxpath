@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111827">
+<title>CMA Final Study Hub</title>
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f5f7fb;
+  color:#111827;
+}
+.header{
+  background:#111827;
+  color:#fff;
+  padding:42px 20px 38px;
+  text-align:center;
+}
+.header h1{margin:0 0 10px;font-size:32px}
+.header p{margin:0;color:#d1d5db;font-size:16px}
+.container{
+  max-width:1000px;
+  margin:0 auto;
+  padding:30px 18px 50px;
+}
+.section-title{
+  text-align:center;
+  margin:0 0 24px;
+  font-size:24px;
+}
+.subject-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+}
+.subject{
+  display:block;
+  text-decoration:none;
+  color:#111827;
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:16px;
+  padding:24px;
+  box-shadow:0 4px 14px rgba(0,0,0,.06);
+  transition:.2s;
+}
+.subject:hover{
+  transform:translateY(-3px);
+  box-shadow:0 8px 22px rgba(0,0,0,.1);
+}
+.paper{
+  font-size:13px;
+  font-weight:700;
+  color:#6b7280;
+  letter-spacing:.5px;
+  margin-bottom:10px;
+}
+.subject h2{
+  margin:0 0 10px;
+  font-size:21px;
+}
+.subject p{
+  margin:0 0 18px;
+  color:#6b7280;
+  line-height:1.5;
+}
+.open{
+  display:inline-block;
+  background:#111827;
+  color:#fff;
+  padding:10px 15px;
+  border-radius:9px;
+  font-weight:600;
+  font-size:14px;
+}
+.footer{
+  text-align:center;
+  color:#9ca3af;
+  font-size:13px;
+  margin-top:35px;
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <h1>CMA Final Study Hub</h1>
+  <p>Select a subject to continue</p>
+</header>
+
+<main class="container">
+  <h2 class="section-title">Choose Your Subject</h2>
+
+  <div class="subject-grid">
+
+    <!-- SFM -->
+    <a class="subject" href="./sfm/">
+      <div class="paper">PAPER 14</div>
+      <h2>Strategic Financial Management</h2>
+      <p>MCQ practice, chapter-wise tests, mock tests, bookmarks and wrong-question practice.</p>
+      <span class="open">Open Subject →</span>
+    </a>
+
+    <!-- SCM -->
+    <a class="subject" href="./scm/">
+      <div class="paper">PAPER 16</div>
+      <h2>Strategic Cost Management</h2>
+      <p>Practice MCQs and revise questions by chapter, bookmarks and wrong questions.</p>
+      <span class="open">Open Subject →</span>
+    </a>
+
+    <!-- Direct Tax -->
+    <a class="subject" href="./dt/">
+      <div class="paper">CMA FINAL GROUP 3</div>
+      <h2>Direct Tax</h2>
+      <p>Direct Tax study and practice resources.</p>
+      <span class="open">Open Subject →</span>
+    </a>
+
+    <!-- International Laws and Corporate & Economic Laws -->
+    <a class="subject" href="./laws/">
+      <div class="paper">CMA FINAL GROUP 3</div>
+      <h2>International Laws and Corporate & Economic Laws</h2>
+      <p>Study and practice resources for International Laws and Corporate & Economic Laws.</p>
+      <span class="open">Open Subject →</span>
+    </a>
+
+    <!-- More subjects -->
+    <a class="subject" href="#" onclick="return comingSoon(event)">
+      <div class="paper">MORE SUBJECTS</div>
+      <h2>More Subjects</h2>
+      <p>Additional CMA Final papers can be added here later.</p>
+      <span class="open">Coming Soon</span>
+    </a>
+
+  </div>
+
+  <div class="footer">
+    CMA Final Study Hub
+  </div>
+</main>
+
+<script>
+function comingSoon(e){
+  e.preventDefault();
+  alert("This subject will be added soon.");
+  return false;
+}
+</script>
+
+</body>
+</html>
