@@ -9,14 +9,9 @@
     <div style="width:68px;height:68px;margin:0 auto 16px;border:3px solid #12484a;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#12484a;font-family:Arial,sans-serif;font-weight:900;font-size:20px;">CMA</div>
     <h1 style="margin:0 0 8px;color:#1c2a2e;">CMA MCQ Portal</h1>
     <p style="margin:0 0 24px;color:#6f6a5c;">Sign in with an authorised Google account to continue.</p>
-    <button id="googleLogin" style="width:100%;border:0;border-radius:10px;padding:13px 18px;background:#12484a;color:white;font-size:16px;font-weight:700;cursor:pointer;">
-      Continue with Google
-    </button>
+    <button id="googleLogin" style="width:100%;border:0;border-radius:10px;padding:13px 18px;background:#12484a;color:white;font-size:16px;font-weight:700;cursor:pointer;">Continue with Google</button>
     <p id="authMessage" style="margin:16px 0 0;color:#8a6a1f;font-size:14px;"></p>
   </div>
-</div>
-<div id="appContent" style="display:none;">
-
 </div>
 
 <div id="userBar" style="max-width:760px;margin:0 auto;padding:10px 16px;text-align:right;font-family:Arial,sans-serif;font-size:13px;">
@@ -50,24 +45,15 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
 <script>
 const firebaseConfig = {
-  apiKey: "AIzaSyA7tGvsDYyYLSWFPe6Slx1P8GL0w53Wrk",
+  apiKey: "AIzaSyA7tGvsDYyYLSWFPeS6lsxlP8gLOw53Wrk",
   authDomain: "cma-mcq-portal.firebaseapp.com",
   projectId: "cma-mcq-portal",
   storageBucket: "cma-mcq-portal.firebasestorage.app",
   messagingSenderId: "734935438365",
   appId: "1:734935438365:web:40ea0a7677ef572234a2f4",
-  measurementId: "G-H6DGK7Y3RJ"
+  measurementId: "G-H6GDK7Y3RJ"
 };
 
-/*
-  IMPORTANT:
-  Add the Google email addresses you want to permit here.
-  Example:
-  const ALLOWED_EMAILS = [
-    "yourmail@gmail.com",
-    "student1@gmail.com"
-  ];
-*/
 const ALLOWED_EMAILS = [
   "taxxpath@gmail.com"
 ];
