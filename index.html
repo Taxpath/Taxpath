@@ -1,155 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#111827">
-<title>CMA Final Study Hub</title>
-<style>
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:#f5f7fb;
-  color:#111827;
-}
-.header{
-  background:#111827;
-  color:#fff;
-  padding:42px 20px 38px;
-  text-align:center;
-}
-.header h1{margin:0 0 10px;font-size:32px}
-.header p{margin:0;color:#d1d5db;font-size:16px}
-.container{
-  max-width:1000px;
-  margin:0 auto;
-  padding:30px 18px 50px;
-}
-.section-title{
-  text-align:center;
-  margin:0 0 24px;
-  font-size:24px;
-}
-.subject-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:18px;
-}
-.subject{
-  display:block;
-  text-decoration:none;
-  color:#111827;
-  background:#fff;
-  border:1px solid #e5e7eb;
-  border-radius:16px;
-  padding:24px;
-  box-shadow:0 4px 14px rgba(0,0,0,.06);
-  transition:.2s;
-}
-.subject:hover{
-  transform:translateY(-3px);
-  box-shadow:0 8px 22px rgba(0,0,0,.1);
-}
-.paper{
-  font-size:13px;
-  font-weight:700;
-  color:#6b7280;
-  letter-spacing:.5px;
-  margin-bottom:10px;
-}
-.subject h2{
-  margin:0 0 10px;
-  font-size:21px;
-}
-.subject p{
-  margin:0 0 18px;
-  color:#6b7280;
-  line-height:1.5;
-}
-.open{
-  display:inline-block;
-  background:#111827;
-  color:#fff;
-  padding:10px 15px;
-  border-radius:9px;
-  font-weight:600;
-  font-size:14px;
-}
-.footer{
-  text-align:center;
-  color:#9ca3af;
-  font-size:13px;
-  margin-top:35px;
-}
-</style>
-</head>
-<body>
-
-<header class="header">
-  <h1>CMA Final Study Hub</h1>
-  <p>Select a subject to continue</p>
-</header>
-
-<main class="container">
-  <h2 class="section-title">Choose Your Subject</h2>
-
-  <div class="subject-grid">
-
-    <!-- SFM -->
-    <a class="subject" href="./sfm/">
-      <div class="paper">PAPER 14</div>
-      <h2>Strategic Financial Management</h2>
-      <p>MCQ practice, chapter-wise tests, mock tests, bookmarks and wrong-question practice.</p>
-      <span class="open">Open Subject →</span>
-    </a>
-
-    <!-- SCM -->
-    <a class="subject" href="./scm/">
-      <div class="paper">PAPER 16</div>
-      <h2>Strategic Cost Management</h2>
-      <p>Practice MCQs and revise questions by chapter, bookmarks and wrong questions.</p>
-      <span class="open">Open Subject →</span>
-    </a>
-
-    <!-- Direct Tax -->
-    <a class="subject" href="./dt/">
-      <div class="paper">CMA FINAL GROUP 3</div>
-      <h2>Direct Tax</h2>
-      <p>Direct Tax study and practice resources.</p>
-      <span class="open">Open Subject →</span>
-    </a>
-
-    <!-- International Laws and Corporate & Economic Laws -->
-    <a class="subject" href="./laws/">
-      <div class="paper">CMA FINAL GROUP 3</div>
-      <h2>International Laws and Corporate & Economic Laws</h2>
-      <p>Study and practice resources for International Laws and Corporate & Economic Laws.</p>
-      <span class="open">Open Subject →</span>
-    </a>
-
-    <!-- More subjects -->
-    <a class="subject" href="#" onclick="return comingSoon(event)">
-      <div class="paper">MORE SUBJECTS</div>
-      <h2>More Subjects</h2>
-      <p>Additional CMA Final papers can be added here later.</p>
-      <span class="open">Coming Soon</span>
-    </a>
-
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CMA — MCQ Practice</title><style>:root{--ink:#1c2a2e;--paper:#f6f3ec;--rule:#d8d0bd;--teal:#12484a;--brass:#8a6a1f}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,serif}.wrap{max-width:760px;margin:auto;padding:24px 16px 50px}header{border-bottom:3px double var(--rule);padding-bottom:18px;margin-bottom:24px}h1{margin:0 0 6px;font-size:clamp(1.7rem,5vw,2.5rem)}.sub{color:#6f6a5c}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card{display:block;text-decoration:none;color:inherit;background:#fffaf0;border:1px solid var(--rule);border-radius:12px;padding:20px}.card b{display:block;font-size:1.1rem;color:var(--teal);margin-bottom:7px}.card span{font-size:.9rem;color:#6f6a5c}.full{grid-column:1/-1;background:#eef7f5}.pdf{margin-top:18px;padding:16px;border:1px dashed var(--brass);border-radius:10px;background:#fffdf8}.pdf a{color:var(--teal);font-weight:bold}@media(max-width:560px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
+.brand{display:flex;align-items:center;gap:14px}
+.cma-logo{width:62px;height:62px;border:3px solid var(--teal);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--teal);font-family:Arial,sans-serif;font-weight:900;font-size:1.05rem;letter-spacing:-.5px}
+.full-form{font-size:1.05rem;font-weight:700;color:var(--teal);margin:2px 0 5px}
+</style></head><body><div class="wrap"><header><h1>CMA</h1><div class="sub">MCQ Practice & Full-Fledged Test</div></header><div class="grid"><a class="card" href="scm/index.html"><b>1. Strategic Cost Management</b><span>SCM chapter-wise MCQ practice</span></a><a class="card" href="sfm/index.html"><b>2. Strategic Financial Management</b><span>SFM topic-wise MCQ practice</span></a><a class="card" href="direct-tax/index.html"><b>3. Direct Tax & International Laws</b><span>Direct Tax and International Taxation practice</span></a><a class="card" href="corporate-economic-laws/index.html"><b>4. Corporate & Economic Laws</b><span>Corporate and Economic Laws practice</span></a><a class="card full" href="full-test/index.html"><b>📝 Full-Fledged Test — December 2026</b><span>Combined test area for CMA</span></a></div><div class="pdf"><strong>December 2026 Supplement</strong><br><span>Use the supplement PDF for the December 2026 test workflow and answer sheet.</span><br><br><a href="supplement-dec-2026.pdf" target="_blank">Open Supplement PDF</a></div></div>
+<section style="margin:32px auto;max-width:1100px;padding:0 20px;">
+  <h2 style="margin-bottom:16px;">Coming Soon</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+    <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
+      <div style="font-size:30px;margin-bottom:10px;">📘</div>
+      <h3 style="margin:0 0 8px;">CMA Foundation</h3>
+      <p style="margin:0;color:#666;">MCQ practice, chapter-wise tests and full-length tests — Coming Soon.</p>
+    </div>
+    <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
+      <div style="font-size:30px;margin-bottom:10px;">📚</div>
+      <h3 style="margin:0 0 8px;">CMA Intermediate</h3>
+      <p style="margin:0;color:#666;">Subject-wise MCQs, mock tests and practice tools — Coming Soon.</p>
+    </div>
+    <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
+      <div style="font-size:30px;margin-bottom:10px;">🎯</div>
+      <h3 style="margin:0 0 8px;">CMA Final Group 4</h3>
+      <p style="margin:0;color:#666;">MCQ practice, full-fledged tests and study resources — Coming Soon.</p>
+    </div>
   </div>
+</section>
 
-  <div class="footer">
-    CMA Final Study Hub
-  </div>
-</main>
-
-<script>
-function comingSoon(e){
-  e.preventDefault();
-  alert("This subject will be added soon.");
-  return false;
-}
-</script>
-
-</body>
-</html>
+</body></html>
