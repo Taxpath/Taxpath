@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>CMA MCQ Portal — Admin Login Activity</title>
+<style>
+:root{--cream:#faf6ee;--teal:#0d3b3e;--teal-dark:#082627;--gold:#c8a24a;--gold-light:#e4c98a;--text:#22302f;--card:#fff;--border:#e4dcc8}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Roboto,Arial,sans-serif;background:var(--cream);color:var(--text)}
+header{background:var(--teal);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.brand{font-size:20px;font-weight:800}.brand span{color:var(--gold)}
+button{border:0;border-radius:8px;padding:9px 14px;font-weight:700;cursor:pointer}
+#loginBtn{background:var(--gold);color:var(--teal-dark)}
+#logoutBtn{background:#fff;color:var(--teal-dark);display:none}
+main{max-width:1200px;margin:auto;padding:25px 16px 50px}
+#loginBox{max-width:420px;margin:80px auto;background:#fff;border:1px solid var(--border);border-radius:16px;padding:30px;text-align:center}
+#loginBox h1{color:var(--teal);margin-top:0}
+#msg{margin-top:14px;font-size:14px}
+.hidden{display:none!important}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:22px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px}
+.stat b{display:block;font-size:28px;color:var(--teal)}
+.stat span{font-size:13px;color:#687572}
+.panel{background:#fff;border:1px solid var(--border);border-radius:14px;margin:18px 0;overflow:hidden}
+.panel h2{font-size:17px;color:var(--teal-dark);margin:0;padding:16px 18px;border-bottom:1px solid var(--border)}
+.toolbar{padding:12px 18px;display:flex;gap:10px;flex-wrap:wrap}
+input{padding:10px 12px;border:1px solid var(--border);border-radius:8px;min-width:220px}
+.refresh{background:var(--teal);color:#fff}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{text-align:left;padding:11px 12px;border-top:1px solid #eee;font-size:13px;white-space:nowrap}
+th{background:#f7f3e9;color:var(--teal-dark)}
+.active{color:#177245;font-weight:800}.offline{color:#777}
+.empty{text-align:center;padding:25px;color:#777}
+.small{font-size:12px;color:#687572}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">CMA<span>.</span> MCQ Portal — Admin</div>
+  <div>
+    <span id="adminEmail" class="small"></span>
+    <button id="logoutBtn">Sign out</button>
+  </div>
+</header>
+
+<div id="loginBox">
+  <h1>Admin Portal</h1>
+  <p>Sign in with the authorised administrator account.</p>
+  <button id="loginBtn">Continue with Google</button>
+  <div id="msg"></div>
+</div>
+
+<main id="dashboard" class="hidden">
+  <div class="stats">
+    <div class="stat"><b id="totalUsers">0</b><span>Total users</span></div>
+    <div class="stat"><b id="activeUsers">0</b><span>Active in last 10 minutes</span></div>
+    <div class="stat"><b id="todayLogins">0</b><span>Logins today</span></div>
+    <div class="stat"><b id="totalLogins">0</b><span>Login records loaded</span></div>
+  </div>
+
+  <section class="panel">
+    <h2>Active / Registered Users</h2>
+    <div class="toolbar">
+      <input id="userSearch" placeholder="Search name or email">
+      <button class="refresh" id="refreshBtn">Refresh</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>User</th><th>Email</th><th>Last Login</th><th>Last Active</th><th>Logins</th><th>Status</th></tr></thead>
+        <tbody id="usersBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Complete Login History</h2>
+    <div class="toolbar">
+      <input id="loginSearch" placeholder="Search name or email">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>User</th><th>Email</th><th>Login Date & Time</th><th>Provider</th></tr></thead>
+        <tbody id="loginsBody"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script>
+(function(){
+"use strict";
+
+const firebaseConfig={
+ apiKey:"AIzaSyA7tGvsDYyYLSWFPeS6lsxlP8gLOw53Wrk",
+ authDomain:"cma-mcq-portal.firebaseapp.com",
+ projectId:"cma-mcq-portal",
+ storageBucket:"cma-mcq-portal.firebasestorage.app",
+ messagingSenderId:"734935438365",
+ appId:"1:734935438365:web:40ea0a7677ef572234a2f4",
+ measurementId:"G-H6GDK7Y3RJ"
+};
+const ADMIN_EMAIL="taxxpath@gmail.com";
+if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth(),db=firebase.firestore();
+const provider=new firebase.auth.GoogleAuthProvider();
+provider.setCustomParameters({prompt:"select_account"});
+
+const loginBox=document.getElementById("loginBox");
+const dashboard=document.getElementById("dashboard");
+const msg=document.getElementById("msg");
+const loginBtn=document.getElementById("loginBtn");
+const logoutBtn=document.getElementById("logoutBtn");
+const adminEmail=document.getElementById("adminEmail");
+const usersBody=document.getElementById("usersBody");
+const loginsBody=document.getElementById("loginsBody");
+let users=[],logins=[];
+
+function norm(v){return(v||"").toString().trim().toLowerCase();}
+function fmt(ts){
+  if(!ts)return "—";
+  const d=ts.toDate?ts.toDate():new Date(ts);
+  if(isNaN(d))return "—";
+  return d.toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"short"});
+}
+function active(ts){
+  if(!ts)return false;
+  const d=ts.toDate?ts.toDate():new Date(ts);
+  return Date.now()-d.getTime()<=10*60*1000;
+}
+function showMsg(t){msg.textContent=t||"";}
+
+async function loadData(){
+  const [uSnap,lSnap]=await Promise.all([
+    db.collection("portalUsers").get(),
+    db.collection("loginEvents").orderBy("loginAt","desc").limit(500).get()
+  ]);
+  users=uSnap.docs.map(d=>d.data());
+  logins=lSnap.docs.map(d=>d.data());
+
+  const now=Date.now();
+  const today=new Date();today.setHours(0,0,0,0);
+  const todayCount=logins.filter(x=>{
+    if(!x.loginAt)return false;
+    const d=x.loginAt.toDate?x.loginAt.toDate():new Date(x.loginAt);
+    return d>=today;
+  }).length;
+
+  document.getElementById("totalUsers").textContent=users.length;
+  document.getElementById("activeUsers").textContent=users.filter(x=>active(x.lastActive)).length;
+  document.getElementById("todayLogins").textContent=todayCount;
+  document.getElementById("totalLogins").textContent=logins.length;
+  renderUsers();
+  renderLogins();
+}
+
+function renderUsers(){
+  const q=norm(document.getElementById("userSearch").value);
+  const rows=users.filter(x=>!q||norm(x.email).includes(q)||norm(x.displayName).includes(q));
+  usersBody.innerHTML=rows.map(x=>{
+    const isA=active(x.lastActive);
+    return `<tr>
+      <td>${esc(x.displayName||"—")}</td>
+      <td>${esc(x.email||"—")}</td>
+      <td>${fmt(x.lastLogin)}</td>
+      <td>${fmt(x.lastActive)}</td>
+      <td>${x.loginCount||0}</td>
+      <td class="${isA?"active":"offline"}">${isA?"● Active":"Offline"}</td>
+    </tr>`;
+  }).join("")||`<tr><td colspan="6" class="empty">No users found.</td></tr>`;
+}
+
+function renderLogins(){
+  const q=norm(document.getElementById("loginSearch").value);
+  const rows=logins.filter(x=>!q||norm(x.email).includes(q)||norm(x.displayName).includes(q));
+  loginsBody.innerHTML=rows.map(x=>`<tr>
+    <td>${esc(x.displayName||"—")}</td>
+    <td>${esc(x.email||"—")}</td>
+    <td>${fmt(x.loginAt)}</td>
+    <td>${esc(x.provider||"—")}</td>
+  </tr>`).join("")||`<tr><td colspan="4" class="empty">No login records found.</td></tr>`;
+}
+function esc(v){
+  return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
+}
+
+loginBtn.onclick=async()=>{
+  loginBtn.disabled=true;
+  showMsg("Signing in…");
+  try{
+    await auth.signInWithPopup(provider);
+  }catch(e){
+    console.error(e);
+    showMsg("Admin sign-in failed: "+(e.code||e.message||"Unknown error"));
+    loginBtn.disabled=false;
+  }
+};
+logoutBtn.onclick=()=>auth.signOut();
+document.getElementById("refreshBtn").onclick=()=>loadData();
+document.getElementById("userSearch").oninput=renderUsers;
+document.getElementById("loginSearch").oninput=renderLogins;
+
+auth.onAuthStateChanged(async user=>{
+  if(!user){
+    loginBox.classList.remove("hidden");
+    dashboard.classList.add("hidden");
+    logoutBtn.style.display="none";
+    adminEmail.textContent="";
+    return;
+  }
+  if(norm(user.email)!==ADMIN_EMAIL){
+    await auth.signOut();
+    showMsg("Access denied. Only the administrator account can open this portal.");
+    loginBtn.disabled=false;
+    return;
+  }
+  loginBox.classList.add("hidden");
+  dashboard.classList.remove("hidden");
+  logoutBtn.style.display="inline-block";
+  adminEmail.textContent=user.email;
+  try{
+    await loadData();
+  }catch(e){
+    console.error(e);
+    alert("Could not load login data. Check Firestore Rules for loginEvents and portalUsers.");
+  }
+});
+})();
+</script>
+</body>
+</html>
