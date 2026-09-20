@@ -1,276 +1,585 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>CMA — MCQ Practice</title>
-  <style>
-    :root {
-      --ink: #1c2a2e;
-      --paper: #f6f3ec;
-      --rule: #d8d0bd;
-      --teal: #12484a;
-      --brass: #8a6a1f;
-    }
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font-family: Georgia, serif;
-    }
-    .wrap {
-      max-width: 760px;
-      margin: auto;
-      padding: 24px 16px 50px;
-    }
-    header {
-      border-bottom: 3px double var(--rule);
-      padding-bottom: 18px;
-      margin-bottom: 24px;
-    }
-    h1 {
-      margin: 0 0 6px;
-      font-size: clamp(1.7rem, 5vw, 2.5rem);
-    }
-    .sub {
-      color: #6f6a5c;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .card {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-      background: #fffaf0;
-      border: 1px solid var(--rule);
-      border-radius: 12px;
-      padding: 20px;
-    }
-    .card b {
-      display: block;
-      font-size: 1.1rem;
-      color: var(--teal);
-      margin-bottom: 7px;
-    }
-    .card span {
-      font-size: .9rem;
-      color: #6f6a5c;
-    }
-    .full {
-      grid-column: 1/-1;
-      background: #eef7f5;
-    }
-    .pdf {
-      margin-top: 18px;
-      padding: 16px;
-      border: 1px dashed var(--brass);
-      border-radius: 10px;
-      background: #fffdf8;
-    }
-    .pdf a {
-      color: var(--teal);
-      font-weight: bold;
-    }
-    @media(max-width: 560px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-      .full {
-        grid-column: auto;
-      }
-    }
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-    .cma-logo {
-      width: 62px;
-      height: 62px;
-      border: 3px solid var(--teal);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--teal);
-      font-family: Arial, sans-serif;
-      font-weight: 900;
-      font-size: 1.05rem;
-      letter-spacing: -.5px;
-    }
-    .full-form {
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: var(--teal);
-      margin: 2px 0 5px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CMA MCQ Portal</title>
+<style>
+  :root {
+    --cream: #faf6ee;
+    --teal: #0d3b3e;
+    --teal-dark: #082627;
+    --gold: #c8a24a;
+    --gold-light: #e4c98a;
+    --text: #22302f;
+    --card-bg: #ffffff;
+    --border: #e4dcc8;
+    --danger: #b3261e;
+    --danger-bg: #fdecea;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ===================== LOADING ===================== */
+  #loadingScreen {
+    position: fixed;
+    inset: 0;
+    background: var(--teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 999;
+    color: var(--gold-light);
+  }
+  #loadingScreen .spinner {
+    width: 44px;
+    height: 44px;
+    border: 4px solid rgba(255,255,255,0.2);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+    margin-bottom: 16px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===================== LOGIN SCREEN ===================== */
+  #authScreen {
+    display: none;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .login-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px 32px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(13,59,62,0.12);
+  }
+  .login-logo {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--teal);
+    letter-spacing: 1px;
+  }
+  .login-logo span { color: var(--gold); }
+  .login-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 10px;
+    color: var(--teal-dark);
+  }
+  .login-sub {
+    font-size: 14px;
+    color: #5b6b69;
+    margin: 10px 0 26px;
+    line-height: 1.5;
+  }
+  #googleLogin {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 13px 18px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: #fff;
+    color: #22302f;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+  }
+  #googleLogin:hover:not(:disabled) {
+    background: #f5f1e6;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+  }
+  #googleLogin:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  #googleLogin svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+  #authMessage {
+    margin-top: 18px;
+    font-size: 13.5px;
+    line-height: 1.5;
+    min-height: 18px;
+  }
+  #authMessage.error {
+    color: var(--danger);
+    background: var(--danger-bg);
+    border: 1px solid #f3c6c2;
+    padding: 10px 12px;
+    border-radius: 8px;
+  }
+  #authMessage.info {
+    color: var(--teal);
+  }
+
+  /* ===================== APP / HOME PAGE ===================== */
+  #pageContent { display: none; }
+
+  header.topbar {
+    background: var(--teal);
+    color: #fff;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .brand {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .brand span { color: var(--gold); }
+  .user-area {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13.5px;
+  }
+  #userEmail {
+    background: rgba(255,255,255,0.1);
+    padding: 6px 12px;
+    border-radius: 20px;
+    color: var(--gold-light);
+    word-break: break-all;
+  }
+  #logoutBtn {
+    background: var(--gold);
+    color: var(--teal-dark);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13.5px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+    white-space: nowrap;
+  }
+  #logoutBtn:hover:not(:disabled) { opacity: 0.85; }
+  #logoutBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 34px;
+  }
+  .hero h1 {
+    font-size: 30px;
+    color: var(--teal);
+    margin: 0 0 6px;
+    font-weight: 800;
+  }
+  .hero p {
+    color: #5b6b69;
+    font-size: 15px;
+    margin: 0;
+  }
+
+  h2.section-title {
+    font-size: 18px;
+    color: var(--teal-dark);
+    border-left: 4px solid var(--gold);
+    padding-left: 10px;
+    margin: 34px 0 16px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    box-shadow: 0 2px 8px rgba(13,59,62,0.05);
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px rgba(13,59,62,0.12);
+  }
+  .card h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+    color: var(--teal);
+  }
+  .card p {
+    margin: 0;
+    font-size: 13.5px;
+    color: #5b6b69;
+    line-height: 1.45;
+  }
+
+  .card.full-test {
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    color: #fff;
+    border: none;
+  }
+  .card.full-test h3 { color: var(--gold-light); }
+  .card.full-test p { color: #d9e5e4; }
+
+  .card.supplement {
+    border: 1px dashed var(--gold);
+    background: #fffaf0;
+  }
+  .card.supplement h3 { color: #8a6d1f; }
+
+  .card.coming-soon {
+    opacity: 0.7;
+    cursor: default;
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--gold);
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+
+  footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12.5px;
+    color: #8a938f;
+  }
+</style>
 </head>
 <body>
 
-<div id="authScreen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#f6f3ec;">
-  <div style="width:min(420px,100%);background:#fffaf0;border:1px solid #d8d0bd;border-radius:18px;padding:32px 24px;text-align:center;box-shadow:0 10px 35px rgba(0,0,0,.08);">
-    <div style="width:68px;height:68px;margin:0 auto 16px;border:3px solid #12484a;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#12484a;font-family:Arial,sans-serif;font-weight:900;font-size:20px;">CMA</div>
-    <h1 style="margin:0 0 8px;color:#1c2a2e;">CMA MCQ Portal</h1>
-    <p style="margin:0 0 24px;color:#6f6a5c;">Sign in with an authorised Google account to continue.</p>
-    <button id="googleLogin" style="width:100%;border:0;border-radius:10px;padding:13px 18px;background:#12484a;color:white;font-size:16px;font-weight:700;cursor:pointer;">Continue with Google</button>
-    <p id="authMessage" style="margin:16px 0 0;color:#8a6a1f;font-size:14px;"></p>
+<!-- ===================== LOADING SCREEN ===================== -->
+<div id="loadingScreen">
+  <div class="spinner"></div>
+  <div>Checking sign-in status…</div>
+</div>
+
+<!-- ===================== LOGIN SCREEN ===================== -->
+<div id="authScreen">
+  <div class="login-card">
+    <div class="login-logo">CMA<span>.</span></div>
+    <div class="login-title">CMA MCQ Portal</div>
+    <p class="login-sub">Sign in with an authorised Google account to continue.</p>
+
+    <button id="googleLogin" type="button">
+      <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.3 29.4 35 24 35c-6.1 0-11.2-4.1-13-9.6-.4-1.1-.6-2.3-.6-3.4s.2-2.3.6-3.4C12.8 13.1 17.9 9 24 9c3.1 0 5.9 1.1 8.1 3l6-6C34.5 2.5 29.5 0 24 0 14.6 0 6.5 5.4 2.5 13.2l7 5.4C11.4 13.4 17.2 9 24 9c-6.8 0-12.6 4.4-14.5 10.6z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 18.9 12 24 12c3.1 0 5.9 1.1 8.1 3l6-6C34.5 5.5 29.5 3.5 24 3.5c-8 0-14.9 4.5-18.4 11.2z"/><path fill="#4CAF50" d="M24 44c5.3 0 10.2-1.8 14-4.9l-6.5-5.3C29.4 35.6 26.8 36.5 24 36.5c-5.3 0-9.8-3.4-11.5-8.1l-6.6 5.1C9.4 39.5 16.1 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3-3.3 5.4-6.2 6.8l6.5 5.3C39.2 37.6 44 31.9 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
+      <span id="googleLoginLabel">Continue with Google</span>
+    </button>
+
+    <div id="authMessage"></div>
   </div>
 </div>
 
-<div id="userBar" style="max-width:760px;margin:0 auto;padding:10px 16px;text-align:right;font-family:Arial,sans-serif;font-size:13px;">
-  <span id="userEmail" style="color:#6f6a5c;"></span>
-  <button id="logoutBtn" style="margin-left:10px;border:1px solid #d8d0bd;background:#fffaf0;border-radius:8px;padding:6px 10px;cursor:pointer;">Sign out</button>
-</div>
+<!-- ===================== HOME PAGE ===================== -->
+<div id="pageContent">
+  <header class="topbar">
+    <div class="brand">CMA<span>.</span> MCQ Portal</div>
+    <div class="user-area">
+      <span id="userEmail"></span>
+      <button id="logoutBtn" type="button">Sign out</button>
+    </div>
+  </header>
 
-<div id="pageContent" style="display:none;">
-  <div class="wrap">
-    <header>
+  <main>
+    <div class="hero">
       <h1>CMA</h1>
-      <div class="sub">MCQ Practice & Full-Fledged Test</div>
-    </header>
-    <div class="grid">
-      <a class="card" href="scm/index.html"><b>1. Strategic Cost Management</b><span>SCM chapter-wise MCQ practice</span></a>
-      <a class="card" href="sfm/index.html"><b>2. Strategic Financial Management</b><span>SFM topic-wise MCQ practice</span></a>
-      <a class="card" href="direct-tax/index.html"><b>3. Direct Tax & International Laws</b><span>Direct Tax and International Taxation practice</span></a>
-      <a class="card" href="corporate-economic-laws/index.html"><b>4. Corporate & Economic Laws</b><span>Corporate and Economic Laws practice</span></a>
-      <a class="card full" href="full-test/index.html"><b>📝 Full-Fledged Test — December 2026</b><span>Combined test area for CMA</span></a>
+      <p>MCQ Practice &amp; Full-Fledged Test</p>
     </div>
-    <div class="pdf">
-      <strong>December 2026 Supplement</strong><br>
-      <span>Use the supplement PDF for the December 2026 test workflow and answer sheet.</span><br><br>
-      <a href="supplement-dec-2026.pdf" target="_blank">Open Supplement PDF</a>
-    </div>
-  </div>
 
-  <section style="margin:32px auto;max-width:1100px;padding:0 20px;">
-    <h2 style="margin-bottom:16px;">Coming Soon</h2>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
-      <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
-        <div style="font-size:30px;margin-bottom:10px;">📘</div>
-        <h3 style="margin:0 0 8px;">CMA Foundation</h3>
-        <p style="margin:0;color:#666;">MCQ practice, chapter-wise tests and full-length tests — Coming Soon.</p>
+    <h2 class="section-title">Subjects</h2>
+    <div class="grid">
+      <a class="card" href="scm/index.html">
+        <h3>Strategic Cost Management</h3>
+        <p>SCM chapter-wise MCQ practice</p>
+      </a>
+      <a class="card" href="sfm/index.html">
+        <h3>Strategic Financial Management</h3>
+        <p>SFM topic-wise MCQ practice</p>
+      </a>
+      <a class="card" href="direct-tax/index.html">
+        <h3>Direct Tax &amp; International Laws</h3>
+        <p>Direct Tax and International Taxation practice</p>
+      </a>
+      <a class="card" href="corporate-economic-laws/index.html">
+        <h3>Corporate &amp; Economic Laws</h3>
+        <p>Corporate and Economic Laws practice</p>
+      </a>
+    </div>
+
+    <h2 class="section-title">Full-Fledged Test</h2>
+    <div class="grid">
+      <a class="card full-test" href="full-test/index.html">
+        <h3>📝 Full-Fledged Test — December 2026</h3>
+        <p>Combined test area for CMA</p>
+      </a>
+      <a class="card supplement" href="supplement-dec-2026.pdf" target="_blank" rel="noopener noreferrer">
+        <h3>December 2026 Supplement</h3>
+        <p>Use the supplement PDF for the December 2026 test workflow and answer sheet.</p>
+      </a>
+    </div>
+
+    <h2 class="section-title">Coming Soon</h2>
+    <div class="grid">
+      <div class="card coming-soon">
+        <h3>CMA Foundation</h3>
+        <p>MCQ practice, chapter-wise tests and full-length tests.</p>
+        <span class="badge">Coming Soon</span>
       </div>
-      <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
-        <div style="font-size:30px;margin-bottom:10px;">📚</div>
-        <h3 style="margin:0 0 8px;">CMA Intermediate</h3>
-        <p style="margin:0;color:#666;">Subject-wise MCQs, mock tests and practice tools — Coming Soon.</p>
+      <div class="card coming-soon">
+        <h3>CMA Intermediate</h3>
+        <p>Subject-wise MCQs, mock tests and practice tools.</p>
+        <span class="badge">Coming Soon</span>
       </div>
-      <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
-        <div style="font-size:30px;margin-bottom:10px;">🎯</div>
-        <h3 style="margin:0 0 8px;">CMA Final Group 4</h3>
-        <p style="margin:0;color:#666;">MCQ practice, full-fledged tests and study resources — Coming Soon.</p>
+      <div class="card coming-soon">
+        <h3>CMA Final Group 4</h3>
+        <p>MCQ practice, full-fledged tests and study resources.</p>
+        <span class="badge">Coming Soon</span>
       </div>
     </div>
-  </section>
+  </main>
+
+  <footer>&copy; 2026 CMA MCQ Portal</footer>
 </div>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-auth-compat.js"></script>
+<!-- ===================== FIREBASE SDK (compat) ===================== -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyA7tGvsDYyYLSWFPeS6lsxlP8gLOw53Wrk",
-  authDomain: "cma-mcq-portal.firebaseapp.com",
-  projectId: "cma-mcq-portal",
-  storageBucket: "cma-mcq-portal.firebasestorage.app",
-  messagingSenderId: "734935438365",
-  appId: "1:734935438365:web:40ea0a7677ef572234a2f4",
-  measurementId: "G-H6GDK7Y3RJ"
-};
+(function () {
+  "use strict";
 
-const ALLOWED_EMAILS = [
-  "taxpath@gmail.com",
-  "rohit.fcg123@gmail.com",
-  "pritimishra62291@gmail.com"
-].map(e => e.trim().toLowerCase());
+  // ===================== FIREBASE CONFIG =====================
+  const firebaseConfig = {
+    apiKey: "AIzaSyA7tGvsDYyYLSWFPeS6lsxlP8gLOw53Wrk",
+    authDomain: "cma-mcq-portal.firebaseapp.com",
+    projectId: "cma-mcq-portal",
+    storageBucket: "cma-mcq-portal.firebasestorage.app",
+    messagingSenderId: "734935438365",
+    appId: "1:734935438365:web:40ea0a7677ef572234a2f4",
+    measurementId: "G-H6GDK7Y3RJ"
+  };
 
-firebase.initializeApp(firebaseConfig);
-
-const auth = firebase.auth();
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: "select_account" });
-
-const authScreen = document.getElementById("authScreen");
-const pageContent = document.getElementById("pageContent");
-const googleLogin = document.getElementById("googleLogin");
-const authMessage = document.getElementById("authMessage");
-const userEmail = document.getElementById("userEmail");
-const logoutBtn = document.getElementById("logoutBtn");
-
-function isAllowed(email) {
-  return ALLOWED_EMAILS.includes((email || "").trim().toLowerCase());
-}
-
-function showError(error) {
-  console.error("Google/Firebase error:", error);
-  const code = error?.code || "unknown-error";
-  const message = error?.message || "Google sign-in failed.";
-  authMessage.textContent = code + " — " + message;
-  googleLogin.disabled = false;
-}
-
-auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(showError);
-
-googleLogin.addEventListener("click", async () => {
-  googleLogin.disabled = true;
-  authMessage.textContent = "Opening Google sign-in...";
-  try {
-    await auth.signInWithPopup(provider);
-  } catch (error) {
-    showError(error);
+  // Prevent duplicate initialization
+  if (!firebase.apps || !firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
   }
-});
+  const auth = firebase.auth();
 
-logoutBtn.addEventListener("click", async () => {
-  logoutBtn.disabled = true;
-  logoutBtn.textContent = "Signing out...";
+  // ===================== AUTHORIZED USERS =====================
+  const AUTHORIZED_EMAILS = [
+    "taxpath@gmail.com",
+    "rohit.fcg123@gmail.com",
+    "pritimishra62291@gmail.com"
+  ];
 
-  try {
-    await auth.signOut();
-  } catch (error) {
-    console.error("Sign out error:", error);
-    authMessage.textContent = "Sign out failed. Please try again.";
-    logoutBtn.disabled = false;
-    logoutBtn.textContent = "Sign out";
+  function isAuthorized(email) {
+    if (!email) return false;
+    const clean = email.trim().toLowerCase();
+    return AUTHORIZED_EMAILS.some((e) => e.trim().toLowerCase() === clean);
   }
-});
 
-// Fixed: Added 'async' keyword to the callback function
-auth.onAuthStateChanged(async (user) => {
-  if (!user) {
+  // ===================== DOM ELEMENTS =====================
+  const loadingScreen = document.getElementById("loadingScreen");
+  const authScreen = document.getElementById("authScreen");
+  const pageContent = document.getElementById("pageContent");
+  const googleLoginBtn = document.getElementById("googleLogin");
+  const googleLoginLabel = document.getElementById("googleLoginLabel");
+  const authMessage = document.getElementById("authMessage");
+  const userEmailEl = document.getElementById("userEmail");
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  // ===================== UI STATE HELPERS =====================
+  function showLoading() {
+    loadingScreen.style.display = "flex";
+    authScreen.style.display = "none";
+    pageContent.style.display = "none";
+  }
+
+  function showLoginScreen() {
+    loadingScreen.style.display = "none";
     authScreen.style.display = "flex";
     pageContent.style.display = "none";
-    userEmail.textContent = "";
-    googleLogin.disabled = false;
-    return;
+    userEmailEl.textContent = "";
   }
 
-  const email = (user.email || "").trim().toLowerCase();
+  function showHomePage(email) {
+    loadingScreen.style.display = "none";
+    authScreen.style.display = "none";
+    pageContent.style.display = "block";
+    userEmailEl.textContent = email;
+  }
 
-  if (!isAllowed(email)) {
-    authScreen.style.display = "flex";
-    pageContent.style.display = "none";
-    authMessage.textContent = "Access denied for " + (user.email || "this account") + ".";
+  function setAuthMessage(text, type) {
+    authMessage.textContent = text || "";
+    authMessage.className = type ? type : "";
+  }
 
-    try {
-      await auth.signOut();
-    } catch (error) {
-      console.error("Unauthorized sign-out error:", error);
+  function setLoginButtonState(disabled, label) {
+    googleLoginBtn.disabled = disabled;
+    googleLoginLabel.textContent = label || "Continue with Google";
+  }
+
+  // ===================== ERROR MESSAGE MAPPING =====================
+  function friendlyAuthError(error) {
+    const code = error && error.code ? error.code : "";
+    switch (code) {
+      case "auth/popup-closed-by-user":
+        return "Google sign-in was cancelled.";
+      case "auth/popup-blocked":
+        return "Google sign-in was blocked by the browser. Please allow pop-ups and try again.";
+      case "auth/cancelled-popup-request":
+        return "Google sign-in was cancelled.";
+      case "auth/network-request-failed":
+        return "Network error. Please check your internet connection and try again.";
+      case "auth/operation-not-allowed":
+        return "Google sign-in is not enabled for this project. Please contact the administrator.";
+      case "auth/unauthorized-domain":
+        return "This website domain is not authorized in Firebase Authentication.";
+      case "auth/account-exists-with-different-credential":
+        return "An account already exists with a different sign-in method for this email.";
+      default:
+        return "Sign-in failed. Please try again. (" + (code || "unknown error") + ")";
+    }
+  }
+
+  // ===================== GOOGLE PROVIDER =====================
+  const provider = new firebase.auth.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
+
+  // ===================== AUTH PERSISTENCE =====================
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function (error) {
+    // Non-fatal: persistence failing should not block sign-in flow.
+    console.error("Failed to set auth persistence:", error);
+  });
+
+  // ===================== SIGN-IN HANDLER =====================
+  let signInInProgress = false;
+
+  googleLoginBtn.addEventListener("click", function () {
+    if (signInInProgress) return;
+    signInInProgress = true;
+
+    setAuthMessage("", "");
+    setLoginButtonState(true, "Signing in…");
+
+    auth.signInWithPopup(provider)
+      .then(function (result) {
+        // onAuthStateChanged will take care of the rest.
+        // Nothing else needed here; keep button disabled until state resolves.
+      })
+      .catch(function (error) {
+        console.error("Sign-in error:", error);
+        setAuthMessage(friendlyAuthError(error), "error");
+        setLoginButtonState(false, "Continue with Google");
+        signInInProgress = false;
+      });
+  });
+
+  // ===================== SIGN-OUT HANDLER =====================
+  let signOutInProgress = false;
+
+  logoutBtn.addEventListener("click", function () {
+    if (signOutInProgress) return;
+    signOutInProgress = true;
+
+    logoutBtn.disabled = true;
+    logoutBtn.textContent = "Signing out...";
+
+    auth.signOut()
+      .then(function () {
+        // onAuthStateChanged will move UI back to the login screen.
+      })
+      .catch(function (error) {
+        console.error("Sign-out error:", error);
+        // Even on error, reset button so user is not stuck.
+        logoutBtn.disabled = false;
+        logoutBtn.textContent = "Sign out";
+        signOutInProgress = false;
+        setAuthMessage("Sign-out failed. Please try again.", "error");
+      });
+  });
+
+  // ===================== MAIN AUTH STATE SOURCE OF TRUTH =====================
+  let authStateResolvedOnce = false;
+
+  auth.onAuthStateChanged(function (user) {
+    signInInProgress = false;
+
+    if (!authStateResolvedOnce) {
+      authStateResolvedOnce = true;
     }
 
-    return;
-  }
+    if (!user) {
+      // STATE A: not authenticated
+      signOutInProgress = false;
+      logoutBtn.disabled = false;
+      logoutBtn.textContent = "Sign out";
+      setLoginButtonState(false, "Continue with Google");
+      showLoginScreen();
+      return;
+    }
 
-  authScreen.style.display = "none";
-  pageContent.style.display = "block";
-  userEmail.textContent = user.email;
-});
+    const email = user.email || "";
+
+    if (isAuthorized(email)) {
+      // STATE B: authenticated AND authorized
+      setAuthMessage("", "");
+      setLoginButtonState(false, "Continue with Google");
+      showHomePage(email);
+    } else {
+      // Authenticated but NOT authorized -> sign out immediately
+      showLoading();
+      auth.signOut().finally(function () {
+        setLoginButtonState(false, "Continue with Google");
+        setAuthMessage("Access denied for " + email + ".", "error");
+        showLoginScreen();
+      });
+    }
+  }, function (error) {
+    console.error("onAuthStateChanged error:", error);
+    setLoginButtonState(false, "Continue with Google");
+    setAuthMessage("Unable to check sign-in status. Please refresh and try again.", "error");
+    showLoginScreen();
+  });
+
+  // Show a loading state until Firebase resolves the initial auth state.
+  showLoading();
+})();
 </script>
+
 </body>
 </html>
