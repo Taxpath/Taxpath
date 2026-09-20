@@ -1,1 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMA MCQ Portal - Admin Panel</title>
 
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f7fb;color:#172033}
+header{background:#111827;color:white;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+header h1{margin:0;font-size:20px}
+.container{max-width:900px;margin:25px auto;padding:0 16px}
+.card{background:white;border-radius:14px;padding:20px;margin-bottom:18px;box-shadow:0 4px 18px rgba(0,0,0,.07)}
+button{border:0;border-radius:9px;padding:11px 15px;cursor:pointer;font-weight:600}
+.primary{background:#2563eb;color:white}
+.danger{background:#dc2626;color:white}
+.secondary{background:#e5e7eb;color:#111827}
+input{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:9px;font-size:15px;margin:8px 0 12px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row input{flex:1;min-width:220px}
+.user{border:1px solid #e5e7eb;border-radius:10px;padding:14px;margin-top:10px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.email{font-weight:700;word-break:break-all}
+.meta{font-size:13px;color:#6b7280;margin-top:4px}
+.status{display:inline-block;padding:4px 8px;border-radius:999px;background:#dcfce7;color:#166534;font-size:12px;margin-left:6px}
+#message{margin-top:10px;font-weight:600}
+.hidden{display:none}
+.login{text-align:center;padding:50px 20px}
+@media(max-width:600px){header{align-items:flex-start;flex-direction:column}.user{align-items:flex-start;flex-direction:column}.user button{width:100%}}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>🔐 CMA MCQ Portal — Admin Panel</h1>
+  <button id="signOutBtn" class="secondary hidden">Sign out</button>
+</header>
+
+<div class="container">
+
+  <div id="loading" class="card">Checking admin access...</div>
+
+  <div id="loginBox" class="card login hidden">
+    <h2>Admin Login</h2>
+    <p>Sign in with the authorised administrator Google account.</p>
+    <button id="loginBtn" class="primary">Continue with Google</button>
+    <div id="loginMessage"></div>
+  </div>
+
+  <div id="deniedBox" class="card login hidden">
+    <h2>Access Denied</h2>
+    <p>This Google account is not the administrator account.</p>
+    <p id="deniedEmail"></p>
+    <button id="deniedSignOut" class="secondary">Sign out</button>
+  </div>
+
+  <main id="adminPanel" class="hidden">
+
+    <div class="card">
+      <h2>Add / Approve Student</h2>
+      <p>Enter the student's Google email. The email will be added to <b>approvedUsers</b>.</p>
+      <div class="row">
+        <input id="emailInput" type="email" placeholder="student@gmail.com">
+        <button id="addBtn" class="primary">Add Student</button>
+      </div>
+      <div id="message"></div>
+    </div>
+
+    <div class="card">
+      <h2>Approved Users</h2>
+      <p id="count">Loading...</p>
+      <div id="usersList"></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyA7tGvsDYyLSWFPeS6lsxlP8gLOw53Wrk",
+  authDomain: "cma-mcq-portal.firebaseapp.com",
+  projectId: "cma-mcq-portal",
+  storageBucket: "cma-mcq-portal.firebasestorage.app",
+  messagingSenderId: "734935438365",
+  appId: "1:734935438365:web:40ea0a7677ef572234a2f4",
+  measurementId: "G-H6GDK7Y3RJ"
+};
+
+const ADMIN_EMAIL = "taxxpath@gmail.com";
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const loading = document.getElementById("loading");
+const loginBox = document.getElementById("loginBox");
+const deniedBox = document.getElementById("deniedBox");
+const adminPanel = document.getElementById("adminPanel");
+const signOutBtn = document.getElementById("signOutBtn");
+const loginBtn = document.getElementById("loginBtn");
+const deniedSignOut = document.getElementById("deniedSignOut");
+const usersList = document.getElementById("usersList");
+const count = document.getElementById("count");
+const message = document.getElementById("message");
+
+function show(el){el.classList.remove("hidden")}
+function hide(el){el.classList.add("hidden")}
+
+loginBtn.onclick = async () => {
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await auth.signInWithPopup(provider);
+  } catch(e) {
+    document.getElementById("loginMessage").textContent = e.message;
+  }
+};
+
+async function signOut(){
+  await auth.signOut();
+}
+signOutBtn.onclick = signOut;
+deniedSignOut.onclick = signOut;
+
+auth.onAuthStateChanged(async user => {
+  hide(loading);
+  hide(loginBox);
+  hide(deniedBox);
+  hide(adminPanel);
+  hide(signOutBtn);
+
+  if(!user){
+    show(loginBox);
+    return;
+  }
+
+  if((user.email || "").toLowerCase() !== ADMIN_EMAIL.toLowerCase()){
+    document.getElementById("deniedEmail").textContent = "Signed in as: " + user.email;
+    show(deniedBox);
+    return;
+  }
+
+  show(signOutBtn);
+  show(adminPanel);
+  await loadUsers();
+});
+
+async function loadUsers(){
+  usersList.innerHTML = "";
+  try{
+    const snap = await db.collection("approvedUsers").get();
+    count.textContent = snap.size + " approved user(s)";
+
+    if(snap.empty){
+      usersList.innerHTML = "<p>No approved students yet.</p>";
+      return;
+    }
+
+    snap.forEach(doc => {
+      const data = doc.data();
+      const email = data.email || doc.id;
+      const role = data.role || "student";
+      const status = data.status || "active";
+
+      const div = document.createElement("div");
+      div.className = "user";
+      div.innerHTML = `
+        <div>
+          <div class="email">${escapeHtml(email)}
+            <span class="status">${escapeHtml(status)}</span>
+          </div>
+          <div class="meta">Role: ${escapeHtml(role)}</div>
+        </div>
+        ${email.toLowerCase() === ADMIN_EMAIL.toLowerCase()
+          ? "<strong>ADMIN</strong>"
+          : `<button class="danger" onclick="removeUser('${encodeURIComponent(doc.id)}','${encodeURIComponent(email)}')">Remove</button>`}
+      `;
+      usersList.appendChild(div);
+    });
+  }catch(e){
+    count.textContent = "Could not load users";
+    usersList.innerHTML = "<p style='color:#b91c1c'>" + escapeHtml(e.message) + "</p>";
+  }
+}
+
+document.getElementById("addBtn").onclick = async () => {
+  const input = document.getElementById("emailInput");
+  const email = input.value.trim().toLowerCase();
+
+  message.textContent = "";
+
+  if(!email || !email.includes("@")){
+    message.textContent = "Please enter a valid Google email.";
+    return;
+  }
+
+  if(email === ADMIN_EMAIL){
+    message.textContent = "Admin account is already authorised.";
+    return;
+  }
+
+  try{
+    await db.collection("approvedUsers").doc(email).set({
+      email: email,
+      role: "student",
+      status: "active",
+      addedAt: firebase.firestore.FieldValue.serverTimestamp()
+    }, {merge:true});
+
+    input.value = "";
+    message.style.color = "#166534";
+    message.textContent = "Student approved successfully.";
+    await loadUsers();
+  }catch(e){
+    message.style.color = "#b91c1c";
+    message.textContent = "Error: " + e.message;
+  }
+};
+
+window.removeUser = async function(encodedId, encodedEmail){
+  const id = decodeURIComponent(encodedId);
+  const email = decodeURIComponent(encodedEmail);
+
+  if(!confirm("Remove access for " + email + "?")) return;
+
+  try{
+    await db.collection("approvedUsers").doc(id).delete();
+    message.style.color = "#166534";
+    message.textContent = "Access removed for " + email;
+    await loadUsers();
+  }catch(e){
+    message.style.color = "#b91c1c";
+    message.textContent = "Error: " + e.message;
+  }
+};
+
+function escapeHtml(value){
+  return String(value).replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[ch]));
+}
+</script>
+</body>
+</html>
