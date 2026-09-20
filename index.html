@@ -56,7 +56,7 @@ const firebaseConfig = {
 };
 
 const ALLOWED_EMAILS = [
-  "taxxpath@gmail.com",
+  "taxpath@gmail.com",
   "rohit.fcg123@gmail.com",
   "pritimishra62291@gmail.com"
 ].map(e => e.trim().toLowerCase());
@@ -98,6 +98,20 @@ googleLogin.addEventListener("click", async () => {
   }
 });
 
+logoutBtn.addEventListener("click", async () => {
+  logoutBtn.disabled = true;
+  logoutBtn.textContent = "Signing out...";
+
+  try {
+    await auth.signOut();
+  } catch (error) {
+    console.error("Sign out error:", error);
+    authMessage.textContent = "Sign out failed. Please try again.";
+    logoutBtn.disabled = false;
+    logoutBtn.textContent = "Sign out";
+  }
+});
+
 auth.onAuthStateChanged((user) => {
   if (!user) {
     authScreen.style.display = "flex";
@@ -113,6 +127,13 @@ auth.onAuthStateChanged((user) => {
     authScreen.style.display = "flex";
     pageContent.style.display = "none";
     authMessage.textContent = "Access denied for " + (user.email || "this account") + ".";
+
+    try {
+      await auth.signOut();
+    } catch (error) {
+      console.error("Unauthorized sign-out error:", error);
+    }
+
     return;
   }
 
