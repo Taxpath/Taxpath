@@ -1,1 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SCM Paper 16 — MCQ Practice</title>
+<style>
+  :root{
+    --ink:#1c2a2e;
+    --paper:#f6f3ec;
+    --paper-2:#efe9dc;
+    --rule:#d8d0bd;
+    --brass:#8a6a1f;
+    --brass-deep:#6b5117;
+    --teal:#12484a;
+    --teal-deep:#0b3436;
+    --good:#2f6d3f;
+    --good-bg:#e4efe2;
+    --bad:#9c3b30;
+    --bad-bg:#f3e2df;
+    --muted:#6f6a5c;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#ece7da;
+      --paper:#171d1c;
+      --paper-2:#1e2624;
+      --rule:#333d3a;
+      --brass:#d8b45c;
+      --brass-deep:#e8c876;
+      --teal:#7fc3c1;
+      --teal-deep:#a6dbd9;
+      --good:#7fbf8f;
+      --good-bg:#1c2f22;
+      --bad:#e08b7d;
+      --bad-bg:#341f1c;
+      --muted:#a39d8c;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#ece7da;
+    --paper:#171d1c;
+    --paper-2:#1e2624;
+    --rule:#333d3a;
+    --brass:#d8b45c;
+    --brass-deep:#e8c876;
+    --teal:#7fc3c1;
+    --teal-deep:#a6dbd9;
+    --good:#7fbf8f;
+    --good-bg:#1c2f22;
+    --bad:#e08b7d;
+    --bad-bg:#341f1c;
+    --muted:#a39d8c;
+  }
+  html,body{height:100%;}
+  * { box-sizing: border-box; }
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Noto Serif",serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    max-width:640px;
+    margin:0 auto;
+    padding:18px 16px 40px;
+  }
 
+  /* ---------- Header / masthead ---------- */
+  .masthead{
+    border-bottom:3px double var(--rule);
+    padding-bottom:12px;
+    margin-bottom:18px;
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .masthead h1{
+    font-size:1.28rem;
+    margin:0;
+    letter-spacing:0.01em;
+    font-weight:600;
+    color:var(--teal-deep);
+  }
+  .masthead .sub{
+    font-family:"Courier New",ui-monospace,monospace;
+    font-size:0.72rem;
+    color:var(--muted);
+    letter-spacing:0.03em;
+  }
+  .home-btn{
+    background:transparent;
+    border:1px solid var(--rule);
+    color:var(--teal);
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:0.8rem;
+    font-weight:600;
+    padding:7px 12px;
+    border-radius:3px;
+    cursor:pointer;
+    flex:0 0 auto;
+  }
+
+  /* ---------- Screens ---------- */
+  .screen{ display:none; }
+  .screen.active{ display:block; }
+
+  /* ---------- Setup screen ---------- */
+  .lede{
+    font-size:0.98rem;
+    line-height:1.55;
+    color:var(--muted);
+    margin:0 0 22px;
+    max-width:52ch;
+  }
+  .card{
+    background:var(--paper-2);
+    border:1px solid var(--rule);
+    border-radius:2px;
+    padding:18px 18px 20px;
+    margin-bottom:16px;
+  }
+  .card h2{
+    font-size:0.72rem;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    font-weight:600;
+    color:var(--brass-deep);
+    margin:0 0 12px;
+    font-family:"Courier New",ui-monospace,monospace;
+  }
+  .opt-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    padding:10px 0;
+    border-bottom:1px solid var(--rule);
+  }
+  .opt-row:last-child{ border-bottom:none; }
+  .opt-row label{
+    font-size:0.95rem;
+    line-height:1.35;
+    flex:1;
+  }
+  .opt-row .desc{
+    display:block;
+    font-size:0.78rem;
+    color:var(--muted);
+    margin-top:2px;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+
+  /* toggle switch */
+  .switch{
+    position:relative;
+    width:44px;
+    height:26px;
+    flex:0 0 auto;
+  }
+  .switch input{ opacity:0; width:0; height:0; position:absolute; }
+  .switch .track{
+    position:absolute; inset:0;
+    background:var(--rule);
+    border-radius:20px;
+    transition:background .15s ease;
+    cursor:pointer;
+  }
+  .switch .track::after{
+    content:"";
+    position:absolute;
+    top:3px; left:3px;
+    width:20px; height:20px;
+    border-radius:50%;
+    background:var(--paper);
+    box-shadow:0 1px 2px rgba(0,0,0,.25);
+    transition:transform .15s ease;
+  }
+  .switch input:checked + .track{ background:var(--teal); }
+  .switch input:checked + .track::after{ transform:translateX(18px); }
+
+  /* number stepper */
+  .stepper{
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .stepper button{
+    width:30px;height:30px;
+    border-radius:50%;
+    border:1px solid var(--rule);
+    background:var(--paper);
+    color:var(--ink);
+    font-size:1rem;
+    line-height:1;
+    cursor:pointer;
+  }
+  .stepper button:active{ transform:scale(0.94); }
+  .stepper .count{
+    font-family:"Courier New",ui-monospace,monospace;
+    font-size:1rem;
+    min-width:2.6em;
+    text-align:center;
+  }
+
+  .primary-btn{
+    display:block;
+    width:100%;
+    padding:14px 18px;
+    background:var(--teal);
+    color:var(--paper);
+    border:none;
+    border-radius:3px;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:1rem;
+    font-weight:600;
+    letter-spacing:0.02em;
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .primary-btn:active{ transform:translateY(1px); }
+  .ghost-btn{
+    display:inline-block;
+    padding:10px 16px;
+    background:transparent;
+    color:var(--teal);
+    border:1px solid var(--teal);
+    border-radius:3px;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:0.9rem;
+    font-weight:600;
+    cursor:pointer;
+  }
+
+  /* ---------- Quiz screen ---------- */
+  .quiz-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:6px;
+    font-family:"Courier New",ui-monospace,monospace;
+    font-size:0.76rem;
+    color:var(--muted);
+  }
+  .progress-track{
+    width:100%;
+    height:4px;
+    background:var(--rule);
+    border-radius:2px;
+    overflow:hidden;
+    margin-bottom:20px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--brass);
+    width:0%;
+    transition:width .25s ease;
+  }
+  .timer-tag{
+    font-weight:600;
+    color:var(--teal);
+  }
+  .timer-tag.urgent{ color:var(--bad); }
+  .timer-track{
+    width:100%;
+    height:3px;
+    background:var(--rule);
+    border-radius:2px;
+    overflow:hidden;
+    margin:-16px 0 20px;
+  }
+  .timer-fill{
+    height:100%;
+    background:var(--teal);
+    width:100%;
+    transition:width 1s linear, background .3s ease;
+  }
+  .timer-fill.urgent{ background:var(--bad); }
+  .q-num{
+    font-family:"Courier New",ui-monospace,monospace;
+    color:var(--brass-deep);
+    font-size:0.8rem;
+    letter-spacing:0.04em;
+    margin-bottom:6px;
+  }
+  .q-text{
+    font-size:1.12rem;
+    line-height:1.5;
+    margin:0 0 18px;
+    font-weight:500;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .option{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    padding:13px 14px;
+    border:1px solid var(--rule);
+    border-radius:3px;
+    background:var(--paper-2);
+    cursor:pointer;
+    font-size:0.96rem;
+    line-height:1.4;
+    transition:border-color .12s ease, background .12s ease;
+  }
+  .option:active{ transform:translateY(1px); }
+  .option .tag{
+    flex:0 0 auto;
+    width:22px; height:22px;
+    border-radius:50%;
+    border:1px solid var(--muted);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:"Courier New",ui-monospace,monospace;
+    font-size:0.72rem;
+    color:var(--muted);
+  }
+  .option.selected{
+    border-color:var(--teal);
+    background:color-mix(in srgb, var(--teal) 10%, var(--paper-2));
+  }
+  .option.selected .tag{
+    border-color:var(--teal);
+    color:var(--teal);
+    background:color-mix(in srgb, var(--teal) 18%, transparent);
+  }
+  .option.correct{
+    border-color:var(--good);
+    background:var(--good-bg);
+  }
+  .option.correct .tag{
+    border-color:var(--good);
+    color:var(--good);
+    background:color-mix(in srgb, var(--good) 20%, transparent);
+  }
+  .option.wrong{
+    border-color:var(--bad);
+    background:var(--bad-bg);
+  }
+  .option.wrong .tag{
+    border-color:var(--bad);
+    color:var(--bad);
+    background:color-mix(in srgb, var(--bad) 20%, transparent);
+  }
+  .option.disabled{ cursor:default; }
+
+  .feedback{
+    display:none;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:0.88rem;
+    padding:10px 14px;
+    border-radius:3px;
+    margin-bottom:16px;
+  }
+  .feedback.show{ display:block; }
+  .feedback.right{ background:var(--good-bg); color:var(--good); }
+  .feedback.miss{ background:var(--bad-bg); color:var(--bad); }
+
+  .nav-row{
+    display:flex;
+    gap:10px;
+    margin-top:6px;
+  }
+  .nav-row button{ flex:1; }
+  .secondary{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid var(--rule);
+  }
+
+  .foot-link{
+    text-align:center;
+    margin-top:22px;
+  }
+  .foot-link button{
+    background:none;
+    border:none;
+    color:var(--muted);
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:0.82rem;
+    text-decoration:underline;
+    cursor:pointer;
+  }
+
+  /* ---------- Results screen ---------- */
+  .score-block{
+    text-align:center;
+    padding:26px 10px 20px;
+    border-bottom:1px solid var(--rule);
+    margin-bottom:18px;
+  }
+  .score-num{
+    font-size:3rem;
+    font-weight:600;
+    color:var(--teal-deep);
+    line-height:1;
+  }
+  .score-label{
+    font-family:"Courier New",ui-monospace,monospace;
+    font-size:0.78rem;
+    color:var(--muted);
+    letter-spacing:0.06em;
+    margin-top:8px;
+    text-transform:uppercase;
+  }
+  .score-pct{
+    font-size:1.1rem;
+    color:var(--brass-deep);
+    margin-top:4px;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-weight:600;
+  }
+  .breakdown{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .bd-item{
+    text-align:center;
+    padding:12px 6px;
+    border-radius:3px;
+    background:var(--paper-2);
+    border:1px solid var(--rule);
+  }
+  .bd-num{
+    font-size:1.4rem;
+    font-weight:600;
+    font-family:"Courier New",ui-monospace,monospace;
+  }
+  .bd-lbl{
+    font-size:0.72rem;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-top:2px;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  .bd-good .bd-num{ color:var(--good); }
+  .bd-bad .bd-num{ color:var(--bad); }
+  .bd-muted .bd-num{ color:var(--muted); }
+  .marks-block{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    background:var(--paper-2);
+    border:1px solid var(--rule);
+    border-radius:3px;
+    margin-bottom:18px;
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:0.94rem;
+  }
+  .marks-block strong{
+    font-size:1.15rem;
+    color:var(--brass-deep);
+    font-family:"Courier New",ui-monospace,monospace;
+  }
+  .review-item{
+    border:1px solid var(--rule);
+    border-radius:3px;
+    padding:14px 14px 12px;
+    margin-bottom:10px;
+    background:var(--paper-2);
+  }
+  .review-item .rq{
+    font-size:0.94rem;
+    line-height:1.4;
+    margin:0 0 8px;
+    font-weight:500;
+  }
+  .review-item .rmeta{
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size:0.82rem;
+    line-height:1.5;
+  }
+  .review-item .rmeta .yours{ color:var(--bad); }
+  .review-item .rmeta .correct-line{ color:var(--good); }
+  .review-item.ok{ border-left:3px solid var(--good); }
+  .review-item.no{ border-left:3px solid var(--bad); }
+  .review-item.skip{ border-left:3px solid var(--muted); }
+  .review-toggle{
+    text-align:center;
+    margin:20px 0 12px;
+  }
+  #reviewList{ display:none; }
+  #reviewList.show{ display:block; }
+
+  .btn-row{
+    display:flex;
+    gap:10px;
+    margin-top:10px;
+  }
+  .btn-row button{ flex:1; }
+
+  .chapter-select{
+    width:100%; padding:11px 12px; border:1px solid var(--rule); border-radius:3px;
+    background:var(--paper); color:var(--ink); font:inherit;
+  }
+  .quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .quick-actions button{margin:0}
+  .bookmark-btn{
+    width:100%; margin:0 0 14px; padding:9px 12px; background:transparent;
+    border:1px solid var(--rule); color:var(--teal); border-radius:3px;
+    font-family:ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;font-weight:600;
+  }
+  .bookmark-btn.on{border-color:var(--brass);color:var(--brass-deep)}
+
+</style>
+</head>
+<body>
+
+<div id="subjectNav" style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 18px;">
+  <button type="button" onclick="location.href='../index.html'"
+    style="padding:10px 16px;border:0;border-radius:8px;cursor:pointer;">
+    🏠 Home
+  </button>
+  <button type="button" onclick="location.href='../sfm/index.html'"
+    style="padding:10px 16px;border:0;border-radius:8px;cursor:pointer;">
+    📘 SFM
+  </button>
+</div>
+
+<div class="wrap">
+
+  <div class="masthead">
+    <div>
+      <h1>Strategic Cost Management</h1>
+      <div class="sub">PAPER&nbsp;16 · MCQ BANK · 303 Qs</div>
+    </div>
+    <button type="button" id="homeBtn" class="home-btn" style="display:none;">⌂ Home</button>
+  </div>
+
+  <!-- ============ SETUP SCREEN ============ -->
+  <section id="setupScreen" class="screen active">
+    <p class="lede">Practice questions from the ICAI Paper 16 MCQ bank. Set up a round below — questions are pulled at random from the full bank each time.</p>
+
+    <div class="card">
+      <h2>Chapter</h2>
+      <select id="chapterSelect" class="chapter-select">
+        <option value="all">All Chapters</option>
+        <option value="1">Cost of Quality</option>
+        <option value="2">Pareto Analysis</option>
+        <option value="3">Decision Making – CVP Analysis</option>
+        <option value="4">Decision Making – Limiting Factor</option>
+        <option value="5">Decision Making – Make or Buy</option>
+        <option value="6">Decision Making – Subcontracting</option>
+        <option value="7">Decision Making – Service Costing</option>
+        <option value="8">Transfer Pricing</option>
+        <option value="9">Relevant Costing</option>
+        <option value="10">Target Costing</option>
+        <option value="11">Product Life Cycle Costing</option>
+        <option value="12">Decision Making – Probability</option>
+        <option value="13">Activity Based Costing</option>
+        <option value="14">Just-in-Time (JIT)</option>
+        <option value="15">Throughput Accounting</option>
+        <option value="16">Back-Flush Accounting</option>
+        <option value="17">Standard Costing and Variance Analysis</option>
+        <option value="18">Linear Programming</option>
+        <option value="19">Transportation</option>
+        <option value="20">Assignment</option>
+        <option value="21">Game Theory</option>
+        <option value="22">Simulation</option>
+        <option value="23">Project Management</option>
+        <option value="24">Learning Curve</option>
+        <option value="25">Business Application of Maxima and Minima</option>
+        <option value="26">Business Forecasting Models</option>
+      </select>
+      <span class="desc" id="chapterCount" style="display:block;margin-top:8px;font-weight:600;">303 questions available in the full bank.</span>
+    </div>
+
+    <div class="quick-actions">
+      <button class="ghost-btn" id="wrongBtn" type="button">↻ Reattempt Wrong</button>
+      <button class="ghost-btn" id="bookmarkedBtn" type="button">★ Bookmarked</button>
+    </div>
+
+    <div class="card">
+      <h2>Round length</h2>
+      <div class="opt-row" style="border-bottom:none;">
+        <label>Number of questions
+          <span class="desc">Available in selected chapter</span>
+        </label>
+        <div class="stepper">
+          <button type="button" id="stepDown">–</button>
+          <span class="count" id="countDisplay">20</span>
+          <button type="button" id="stepUp">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Marks</h2>
+      <div class="opt-row" style="border-bottom:none;">
+        <label>Marks per question
+          <span class="desc">Total round score scales with this</span>
+        </label>
+        <div class="stepper">
+          <button type="button" id="marksDown">–</button>
+          <span class="count" id="marksDisplay">1</span>
+          <button type="button" id="marksUp">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Options</h2>
+      <div class="opt-row">
+        <label>Random order
+          <span class="desc">Draw a fresh random set each round</span>
+        </label>
+        <label class="switch">
+          <input type="checkbox" id="randomToggle" checked>
+          <span class="track"></span>
+        </label>
+      </div>
+      <div class="opt-row">
+        <label>Show answer immediately
+          <span class="desc">Reveal correct answer after each pick — turn off for exam-style mode</span>
+        </label>
+        <label class="switch">
+          <input type="checkbox" id="instantToggle" checked>
+          <span class="track"></span>
+        </label>
+      </div>
+      <div class="opt-row">
+        <label>Timer per question
+          <span class="desc">Auto-advances when time runs out</span>
+        </label>
+        <label class="switch">
+          <input type="checkbox" id="timerToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+      <div class="opt-row" id="timerSecondsRow" style="display:none;">
+        <label>Seconds per question
+          <span class="desc">Countdown shown during the round</span>
+        </label>
+        <div class="stepper">
+          <button type="button" id="secDown">–</button>
+          <span class="count" id="secDisplay">60</span>
+          <button type="button" id="secUp">+</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="primary-btn" id="startBtn">Start practice round</button>
+  </section>
+
+  <!-- ============ QUIZ SCREEN ============ -->
+  <section id="quizScreen" class="screen">
+    <div class="quiz-bar">
+      <span id="qPosition">Question 1 / 20</span>
+      <span id="qTimer" class="timer-tag"></span>
+      <span id="qRunningScore">Score 0</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="timer-track" id="timerTrackWrap" style="display:none;"><div class="timer-fill" id="timerFill"></div></div>
+
+    <div class="q-num" id="qSl"></div>
+    <button class="bookmark-btn" id="bookmarkBtn" type="button">☆ Bookmark question</button>
+    <p class="q-text" id="qText"></p>
+    <div class="options" id="qOptions"></div>
+
+    <div class="feedback" id="qFeedback"></div>
+
+    <div class="nav-row">
+      <button class="ghost-btn secondary" id="quitBtn" type="button">End round</button>
+      <button class="primary-btn" id="nextBtn" type="button" disabled>Next</button>
+    </div>
+
+    <div class="foot-link">
+      <button type="button" id="revealBtn">Reveal answer without answering</button>
+    </div>
+  </section>
+
+  <!-- ============ RESULTS SCREEN ============ -->
+  <section id="resultScreen" class="screen">
+    <div class="score-block">
+      <div class="score-num" id="finalScore">0 / 20</div>
+      <div class="score-pct" id="finalPct">0%</div>
+      <div class="score-label">Round complete</div>
+    </div>
+
+    <div class="breakdown">
+      <div class="bd-item bd-good">
+        <div class="bd-num" id="bdCorrect">0</div>
+        <div class="bd-lbl">Correct</div>
+      </div>
+      <div class="bd-item bd-bad">
+        <div class="bd-num" id="bdWrong">0</div>
+        <div class="bd-lbl">Wrong</div>
+      </div>
+      <div class="bd-item bd-muted">
+        <div class="bd-num" id="bdSkipped">0</div>
+        <div class="bd-lbl">Skipped</div>
+      </div>
+    </div>
+
+    <div class="marks-block">
+      <span>Marks obtained</span>
+      <strong id="finalMarksLabel">0 / 0</strong>
+    </div>
+
+    <div class="btn-row">
+      <button class="ghost-btn secondary" id="homeFromResultBtn" type="button">Home</button>
+      <button class="primary-btn" id="againBtn" type="button">New round</button>
+    </div>
+    <button class="ghost-btn" id="retryWrongBtn" type="button" style="width:100%;margin-top:10px;">↻ Reattempt Wrong Questions</button>
+
+    <div class="review-toggle">
+      <button class="ghost-btn" id="toggleReview" type="button">Review this round's answers</button>
+    </div>
+
+    <div id="reviewList"></div>
+  </section>
+
+</div>
+
+
+
+<script>
+const QUESTIONS = [{"sl":1,"q":"Which of the following is not a primary activity of Value Chain?","opts":["Inbound Logistics","Operations","Service","Infrastructure"],"ans":3,"ans_text":"Infrastructure","chapter":0},{"sl":2,"q":"Which of the following is not a secondary activity of Value Chain?","opts":["Procurement","Human Resource Development","Service","Technology Development"],"ans":2,"ans_text":"Service","chapter":0},{"sl":3,"q":"Which of the following is not a term normally used in value analysis?","opts":["Resale value","Use value","Esteem value","Cost value"],"ans":0,"ans_text":"Resale value","chapter":0},{"sl":4,"q":"A company has forecast sales and cost of goods sold for the coming year as Rs. 25 lakhs and Rs. 18 lakhs respectively. The inventory turnover has been taken as 9 times per year. In case the inventory turnover increases to 12 times and the short-term interest rate on working capital is taken as 10%, what will be the saving in cost?","opts":["Rs. 10,000","Rs. 20,000","Rs. 15,000","Rs. 5,000"],"ans":3,"ans_text":"Rs. 5,000","chapter":0},{"sl":5,"q":"Which of the following important pillars of Strategic Cost Management determines the company’s comparative position in the industry in terms of performance?","opts":["Cost Driver Analysis","Value Chain Analysis","Strategic Positioning Analysis","Competitive Value Analysis"],"ans":2,"ans_text":"Strategic Positioning Analysis","chapter":0},{"sl":6,"q":"_____________ is defined as the real and permanent reduction in the unit costs of goods manufactured or services rendered without impairing their suitability for the use intended.","opts":["Cost control","Cost reduction","Cost measurement","Cost strategy"],"ans":1,"ans_text":"Cost reduction","chapter":0},{"sl":7,"q":"There are three core areas to consider when developing the supply chain strategy and business case. These are:","opts":["People, Process & Systems","Control, Process & Systems","People, Planning & Systems","Control, Money & Systems"],"ans":0,"ans_text":"People, Process & Systems","chapter":0},{"sl":8,"q":"TQM stands for:","opts":["Technical Quantitative Management","Total Quality Management","Theory of Queuing Management","None of the Above"],"ans":1,"ans_text":"Total Quality Management","chapter":1},{"sl":9,"q":"Four Ps of Total Quality Management:","opts":["Principles, Project, Problem, & Process","People, Process, Problem & Preparation","Product identification, Product quality, Product utility & Product expectation","None of the Above"],"ans":1,"ans_text":"People, Process, Problem & Preparation","chapter":1},{"sl":10,"q":"PRAISE stands for:","opts":["Appreciating someone","Product, Recognition, Adoption, Invention, Solution & Evaporation","Problem Identification, Ranking, Analysis, Innovation, Solution & Evaluation","None of the Above"],"ans":2,"ans_text":"Problem Identification, Ranking, Analysis, Innovation, Solution & Evaluation","chapter":1},{"sl":11,"q":"DMIADV is a methodology associated with:","opts":["Pareto Analysis","PRAISE","Six Sigma","None of the Above"],"ans":2,"ans_text":"Six Sigma","chapter":1},{"sl":12,"q":"Pareto analysis recognizes:","opts":["80:20 Rule","50:50 Rule","20:80 Rule","None of the Above"],"ans":0,"ans_text":"80:20 Rule","chapter":2},{"sl":13,"q":"Cost of Rework is a cost related to:","opts":["Internal failure","Appraisal","Prevention","None of the Above"],"ans":0,"ans_text":"Internal failure","chapter":1},{"sl":14,"q":"The cost incurred to ensure that failures do not happen:","opts":["External failure cost","Internal failure cost","Prevention cost","None of the Above"],"ans":2,"ans_text":"Prevention cost","chapter":1},{"sl":15,"q":"The break-even point of a manufacturing company is Rs.1,60,000. Fixed cost is Rs.48,000. Variable cost is Rs.12 per unit. The PV ratio will be:","opts":["20%","40%","30%","25%"],"ans":2,"ans_text":"30%","chapter":3},{"sl":16,"q":"The higher the actual hours worked:","opts":["The lower the capacity usage ratio","The higher the capacity usage ratio","The lower the capacity utilization ratio","The higher the capacity utilization ratio"],"ans":3,"ans_text":"The higher the capacity utilization ratio","chapter":3},{"sl":17,"q":"XYZ Ltd. has the following alternative planned activity levels: Total cost (Rs.): 1,00,000 (Level E) 1,50,000 (Level F) 2,00,000 (Level G) No. of units produced: 5,000 (Level E) 10,000 (Level F) 15,000 (Level G) If fixed overhead remains constant, then fixed overhead cost per unit at Level E is:","opts":["Rs. 20","Rs. 15","Rs. 13.33","Rs. 10"],"ans":3,"ans_text":"Rs. 10","chapter":3},{"sl":18,"q":"T Ltd. produces and sells a product. The company expects the following revenues and costs in 2024: Revenues (400 sets sold @ Rs.600 per product) = Rs. 2,40,000 Variable costs = Rs. 1,60,000 Fixed costs = Rs. 50,000 What amount of sales must T Ltd. have to earn a target net income of Rs.63,000 if they have a tax rate of 30%?","opts":["Rs. 4,20,000","Rs. 4,29,000","Rs. 3,00,000","Rs. 4,89,000"],"ans":0,"ans_text":"Rs. 4,20,000","chapter":3},{"sl":19,"q":"Excel Products Ltd. manufactures four products e.g. Product E, Product F, Product G and Product H using same raw materials. The input requirements for Products E, F, G and H are 1kg, 2kgs, 5kgs and 7kgs, respectively. Product-wise Selling Price and Variable Cost data are given hereunder: Selling Price of Products E, F, G & H are Rs.100, Rs.150, Rs.200 & Rs.300 respectively and variable costs are Rs.50, Rs.70, Rs.100 & Rs.125 respectively. Assuming raw material availability is a limiting factor, the correct ranking of the products would be:","opts":["E, F, G & H","E, F, H & G","F, E, G & H","F, E, H & G"],"ans":1,"ans_text":"E, F, H & G","chapter":3},{"sl":20,"q":"A company has a breakeven point when sales are Rs. 3,20,000 and variable cost at that level of sales are Rs. 2,00,000. How much would p/v ratio increase or decrease if variable expenses are dropped by Rs.30,000?","opts":["Increase by 27.5%","Increase by 9.375%","Decrease by 9.375%","Increase by 37.5%"],"ans":1,"ans_text":"Increase by 9.375%","chapter":3},{"sl":21,"q":"The Tech Company has fixed costs of Rs.400,000 and variable costs are 75% of the selling price. To realize profits of Rs.100,000 from sales of 5,00,000 units, the selling price per unit:","opts":["must be Rs.1.00","must be Rs.4.80","must be Rs.4.00","cannot be determined"],"ans":2,"ans_text":"must be Rs.4.00","chapter":3},{"sl":22,"q":"A company makes components and sells internally to its subsidiary and also to external market. The external market price is Rs.24 per component, which gives a contribution of 40% of sales. For external sales, variable costs include Rs.1.50 per unit for distribution costs. This is, however not incurred in internal sales. There are no capacity constraints. To maximize company profit, the transfer price to subsidiary should be:","opts":["Rs. 9.60","Rs. 12.90","Rs. 14.40","None of these"],"ans":1,"ans_text":"Rs. 12.90","chapter":8},{"sl":23,"q":"H Group has two divisions, Division P and Division Q. Division P manufactures an item that is transferred to Division Q. The item has no external market and 6000 units produced are transferred internally each year. The costs of each division: Variable Cost: Rs.100 per unit & Rs.120 per unit for Division P & Q respectively. Fixed cost each year: Rs.1,20,000 & Rs.90,000 for Division P & Q respectively. Head Office management decided that a transfer price should be set that provides a profit of Rs. 30,000 to Division P. What should be the transfer price per unit?","opts":["Rs. 145","Rs. 125","Rs. 120","Rs. 135"],"ans":1,"ans_text":"Rs. 125","chapter":8},{"sl":24,"q":"A particular job required 800 kgs of material – P. 500 kgs. of the particular material is currently in stock. The original price of the material – P was Rs.300 but current resale value of the same has been determined as Rs.200. If the current replacement price of the material – P is Rs.0.80 per kg., the relevant cost of the material – P required for the job would be:","opts":["Rs. 640","Rs. 440","Rs. 300","None of these"],"ans":1,"ans_text":"Rs. 440","chapter":9},{"sl":25,"q":"What is the opportunity cost of making a component part in a factory given no alternative use of the capacity?","opts":["The variable manufacturing cost of the component","The total manufacturing cost of the component","The total variable cost of the component","Zero"],"ans":3,"ans_text":"Zero","chapter":9},{"sl":26,"q":"If project A has a net present value (NPV) of Rs.30,00,000 and project B has an NPV of Rs.50,00,000, what is the opportunity cost if project B is selected?","opts":["Rs. 23,00,000","Rs. 30,00,000","Rs. 20,00,000","Rs. 50,00,000"],"ans":1,"ans_text":"Rs. 30,00,000","chapter":9},{"sl":27,"q":"X Ltd. has 1000 units of an obsolete item which are carried in inventory at the original price of Rs.50,000. If these items are reworked for Rs. 20,000, they can be sold for Rs. 36,000. Alternatively, they can be sold as a scrap for Rs. 6,000 in the market. In a decision model used to analyse the reworking proposal, the opportunity cost should be taken as:","opts":["Rs. 16,000","Rs. 6,000","Rs. 30,000","Rs. 20,000"],"ans":1,"ans_text":"Rs. 6,000","chapter":9},{"sl":28,"q":"The shadow price of skilled labour for SD Ltd. is currently Rs. 10 per hour. What does this mean?","opts":["The cost of obtaining additional skilled labour is Rs. 10 per hour.","There is a hidden cost of Rs. 10 for each hour of skilled labour actively worked","Contribution will be increased by Rs. 10 per hour for each extra hour of skilled labour that can be obtained.","The total costs will be reduced by Rs. 10 for each additional hour of skilled labour that can be obtained."],"ans":2,"ans_text":"Contribution will be increased by Rs. 10 per hour for each extra hour of skilled labour that can be obtained.","chapter":4},{"sl":29,"q":"A factory can make only one of the three products X, Y or Z in a given production period. The selling price per unit of Product X, Y & Z is Rs.1,500, Rs.1,800 & Rs.2,000 respectively and variable cost per unit is Rs.700, Rs.950 & Rs.1,000 respectively. Assume that there is no constraint on resource utilization or demand and similar resources are consumed by X,Y and Z. The opportunity cost of making one unit of Z is:","opts":["Rs. 850","Rs. 800","Rs. 1,800","Rs. 1,500"],"ans":0,"ans_text":"Rs. 850","chapter":4},{"sl":30,"q":"A company has 2000 units of an obsolete item which are carried in inventory at the original purchase price of Rs. 30,000. If these items are reworked for Rs.10,000, they can be sold for Rs. 18,000. Alternatively, they can be sold as scrap for Rs.3,000 in the market. In a decision model used to analyse the reworking proposal, the opportunity cost should be taken as:","opts":["Rs. 8,000","Rs. 12,000","Rs. 3,000","Rs. 10,000"],"ans":2,"ans_text":"Rs. 3,000","chapter":0},{"sl":31,"q":"TM Company can make 100 units of a necessary component part with the following costs: Direct Materials - Rs.60,000 Direct Labour - Rs.10,000 Variable Overhead - Rs.30,000 Fixed Overhead - Rs.20,000 TM Company can purchase the component externally for Rs.1,10,000 and only Rs.5,000 of the fixed costs can be avoided, what is the correct make-or- buy decision?","opts":["Make and Save Rs.5000","Buy and save Rs.5,000","Make and Save Rs.15,000","Buy and save Rs.15,000"],"ans":0,"ans_text":"Make and Save Rs.5000","chapter":5},{"sl":32,"q":"AP Products sells product A at a selling price of Rs.40 per unit. AP’s cost per unit based on the full capacity of 5,00,000 units is as follows Direct Materials - Rs.6 Direct Labour - Rs.3 Indirect Manufacturing Expense 60% of which is fixed - Rs.10 A one-time only special order offering to buy 50,000 units was received from an overseas distributor. The only other costs that would be incurred on this order would be Rs. 4 per unit for shipping. AP has sufficient existing capacity to manufacture the additional units. In negotiating a price for the special order, AP should consider that the minimum selling price per unit should be:","opts":["Rs. 17","Rs. 19","Rs. 21","Rs. 23"],"ans":0,"ans_text":"Rs. 17","chapter":5},{"sl":33,"q":"In cost plus pricing, the markup consist of:","opts":["Manufacturing cost","Desired ROI","Selling and administrative cost","Total cost and desired ROI"],"ans":1,"ans_text":"Desired ROI","chapter":0},{"sl":34,"q":"MN paid Rs. 5,30,000 for a machine used to powder wheat. The machine can be sold for Rs. 1,30,000. The sale value of wheat is Rs. 8,00,000 and its variable cost is Rs. 4,00,000. The opportunity cost of producing wheat flour is:","opts":["Rs.5,30,000","Rs.1,30,000","Rs.3,50,000","Rs. 8,00,000"],"ans":1,"ans_text":"Rs.1,30,000","chapter":0},{"sl":35,"q":"A Ltd. Plans to introduce a new product and issuing the target cost approach. Projected sales revenue is Rs. 90,00,000 (Rs. 45 per unit) and target costs are Rs. 64,00,000. What is the desired profit per unit?","opts":["Rs. 13","Rs. 17","Rs. 32","Rs. 10"],"ans":0,"ans_text":"Rs. 13","chapter":10},{"sl":36,"q":"Target costing is the answer to:","opts":["Market driven prices","Sellers’ market","No Profit situation","None of the above"],"ans":0,"ans_text":"Market driven prices","chapter":10},{"sl":37,"q":"The product of XYZ company is sold at a fixed price of Rs. 1,500 per unit. As per company's estimate, 500 units of the product are expected to be sold in the coming year. If the value of investments of the company is Rs. 15 lakhs and it has a target ROI of 15%, the target cost would be:","opts":["Rs. 930","Rs. 950","Rs. 1050","Rs. 1130"],"ans":2,"ans_text":"Rs. 1050","chapter":10},{"sl":38,"q":"A company has the capacity of producing 80000 units and presently sells 20000 units at Rs. 100 each. The demand is sensitive to selling price and it has been observed that with every reduction of Rs. 10 in selling price the demand is doubled. What should be the target cost if the demand is doubled at full capacity and profit margin on sale is taken at 25%?","opts":["Rs.75","Rs.90","Rs.25","Rs.60"],"ans":3,"ans_text":"Rs.60","chapter":10},{"sl":39,"q":"120 units of semi-conductors are required to be sold to earn a profit of Rs.1,00,000 in a monopoly market. The fixed cost for the period is Rs.80,000. The contribution in the monopoly market is as high as 3/4th of its variable cost. Determine the target selling price per unit.","opts":["Rs. 4500","Rs.3250","Rs.4000","Rs.3500"],"ans":3,"ans_text":"Rs.3500","chapter":10},{"sl":40,"q":"Cost Driver is:","opts":["Grouping of costs on a particular activity which drives them","Item for which cost measurement is required.","Elements that would cause a change in the cost activity.","All of the above"],"ans":2,"ans_text":"Elements that would cause a change in the cost activity.","chapter":13},{"sl":41,"q":"ABC Management:","opts":["Accurately identifies sources of profit and loss","Assigns costs using measure of service consumed","Recognizes the casual relationship of cost drivers to activities","All of the above"],"ans":3,"ans_text":"All of the above","chapter":13},{"sl":42,"q":"Process of Cost allocation under Activity Based Costing is:","opts":["Cost of Activities → Activities → Cost Driver → Cost allocated to cost objects","Cost Driver → Cost of Activities → Cost allocated to cost objects → Activities","Activities → Cost of Activities → Cost Driver → Cost allocated to cost objects","Activities → Cost Driver → Cost allocated to cost objects → Cost of Activities"],"ans":2,"ans_text":"Activities → Cost of Activities → Cost Driver → Cost allocated to cost objects","chapter":13},{"sl":43,"q":"P operates an activity-based costing (ABC) system to attribute its overhead costs to cost objects. In its budget for the year ending 31st March 2022, the company expected to place a total of 2,895 purchase orders at a total cost of Rs. 1,10,010. This activity and its related costs were budgeted to occur at a constant rate throughout the budget year, which is divided into 13 four- week periods. During the four-week period ended 30 June 2021, a total of 210 purchase orders were placed at a cost of Rs. 7,650. The over- recovery of these costs for the four-week period was:","opts":["Rs. 330","Rs. 350","Rs. 370","Rs. 390"],"ans":0,"ans_text":"Rs. 330","chapter":13},{"sl":44,"q":"At KL Company, cost of personnel department has always been charged to production department based upon number of employees. Recently, opinion gathered from the department managers indicate that number of new hires might be better predictor of personnel cost, Total personnel department cost are Rs. 2,00,000. Department A B C Number of employees 30 270 100 The number of new hires 8 12 5 If number of new hires is considered the cost driver, what amount of cost will be allocated to Department A?","opts":["Rs. 15,000","Rs. 64,000","Rs. 72,000","Rs. 40,000"],"ans":1,"ans_text":"Rs. 64,000","chapter":13},{"sl":45,"q":"Which of the following is not suitable for a JIT production system?","opts":["Batch production","Jobbing production","Process production","Service production"],"ans":0,"ans_text":"Batch production","chapter":14},{"sl":46,"q":"JIT relates to:","opts":["Time Management","Inventory and product handling","Delivery systems","None of the above"],"ans":1,"ans_text":"Inventory and product handling","chapter":14},{"sl":47,"q":"Glasso, a manufacturer of large windows, is experiencing a bottleneck in its plant. Setup time at one of its workstations has been identified as the culprit. A manager has proposed a plan to reduce setup time at a cost of Rs. 7,20,000. The change will result in 800 additional windows. The selling price per window is Rs. 18,000, direct labour costs are Rs. 3000 per window, and the cost of direct materials is Rs. 7,000 per window. Assume all units produced can be sold. The change will result in an increase in the throughput contribution of ………………","opts":["Rs. 64,00,000","Rs. 88,00,000","Rs. 56,80,000","Rs. 1,44,00,000"],"ans":1,"ans_text":"Rs. 88,00,000","chapter":15},{"sl":48,"q":"Cost per unit under throughput accounting and marginal costing are mainly different because:","opts":["Labour is not considered in throughput accounting","Direct labour is considered fixed in throughput accounting","Total cost is considered in throughput accounting","Variable cost is considered in marginal costing"],"ans":1,"ans_text":"Direct labour is considered fixed in throughput accounting","chapter":15},{"sl":49,"q":"Ankit Ltd., operates throughput accounting system. The details of product A per unit are as under: Selling Price: Rs. 75 Material Cost: Rs. 30 Conversion Cost: Rs. 20 Time to bottleneck resources: 10 minutes What is the throughput contribution per bottleneck resource per hour?","opts":["Rs. 270","Rs. 150","Rs. 120","Rs. 90"],"ans":0,"ans_text":"Rs. 270","chapter":15},{"sl":50,"q":"Producing more non-bottleneck output:","opts":["Creates more inventory, but does not increase throughput contribution","Creates more inventory and increases throughput contribution","Creates less pressure for the bottleneck workstations","Allows for the maximization of overall contribution"],"ans":0,"ans_text":"Creates more inventory, but does not increase throughput contribution","chapter":15},{"sl":51,"q":"Twin Ltd. uses JIT and back flush accounting. It does not use a raw material stock control account. During September 2023, 10000 units were produced and sold. The standard cost per unit is Rs. 150 which includes materials of Rs. 60. During September 2023, Rs. 9,90,000 of conversion costs were incurred. The debit balance in cost of goods sold account for September 2023 is:","opts":["Rs. 14,00,000","Rs. 14,80,000","Rs. 15,90,000","Rs. 16,20,000"],"ans":2,"ans_text":"Rs. 15,90,000","chapter":16},{"sl":52,"q":"The companies that would benefit from back-flush costing include companies:","opts":["Which have fast manufacturing lead time","Whose inventory vary from period to period","Companies that require audit trails","None of these"],"ans":0,"ans_text":"Which have fast manufacturing lead time","chapter":16},{"sl":53,"q":"Bench marking is:","opts":["A continuous process","The practice of setting targets using external information","Method to provide performance assessment","All of the above"],"ans":3,"ans_text":"All of the above","chapter":0},{"sl":54,"q":"Kanban Japanese System under JIT approach ensures that:","opts":["Continuous supply of inventory or product","Minimum & maximum level of stock to be maintained","Inventory valuation","All of the above"],"ans":0,"ans_text":"Continuous supply of inventory or product","chapter":0},{"sl":55,"q":"The information relating to the direct material cost of a company is as follows: Standard price per unit: Rs. 7.20 Actual quantity purchased in units: 1600 Standard quantity allowed for actual production in units: 1450 Material price variance on purchase (Favourable): Rs. 480 What is the actual purchase price per unit?","opts":["Rs. 7.50","Rs. 6.40","Rs. 6.5","Rs. 6.90"],"ans":3,"ans_text":"Rs. 6.90","chapter":17},{"sl":56,"q":"In a factory where standard costing system is followed, the production department consumed 1100 kgs of a material @ Rs. 8 per kg for product X resulting in material price variance of Rs. 2200 (Fav) and material usage variance of Rs. 1000 (Adv). What is the standard material cost of actual production of product X?","opts":["11,000","20,000","14,000","10,000"],"ans":3,"ans_text":"10,000","chapter":17},{"sl":57,"q":"AB Ltd. uses standard cost system. The following information pertains to direct labour for Product X for the month of March, 2024: Standard rate per hour = Rs. 8 Actual rate per hour = Rs. 8.40 Standard hours allowed for actual production = 2000 hours Labour Efficiency variance = Rs. 1,600 (Adverse) What were the actual hours worked?","opts":["1,800","1,810","2,200","2,190"],"ans":2,"ans_text":"2,200","chapter":17},{"sl":58,"q":"Aderholt uses activity-based costing to allocate its overheads. The budgeted cost/ expected for the Supervisor cost pool was: Budgeted units: 5,000 Number of employees: 75 Budgeted Cost: Rs. 7,500 The actual costs incurred were: Actual Units: 5,500 Actual Employees: 77 Actual cost: Rs. 8,085 What was the total variance for the pool?","opts":["Rs. 585 Adverse","Rs. 165 Favourable","Rs. 5550 Favourable","Rs. 385 Adverse"],"ans":1,"ans_text":"Rs. 165 Favourable","chapter":17},{"sl":59,"q":"The following figures are extracted from the books of a company: Budgeted O/H Rs. 10,000 (Fixed Rs. 6,000, Variable Rs. 4,000) Budgeted Hours 2000 Actual O/H Rs. 10,400 (Fixed Rs. 6,100, Variable Rs. 4,300) Actual Hours 2100 Variable O/H cost variance and Fixed O/H cost variance will be:","opts":["100 (A) and 200 (A)","100 (F) and 200 (F)","100 (A) and 200 (F)","200 (A) and 100 (F)"],"ans":2,"ans_text":"100 (A) and 200 (F)","chapter":17},{"sl":60,"q":"A company uses standard absorbing costing. The following information is recorded by the company for October: Budgeted - Output and sales: 8,700 Selling Price per unit: Rs. 26 Variable Cost per unit: Rs.10 Total Fixed Overheads: Rs. 34800 Actuals - Output and sales: 8,200 Selling Price per unit: Rs.31 Variable Cost per unit: Rs.10 Total Fixed Overheads: Rs. 37000 The sales price variance for October was:","opts":["38,500 (A)","38,500 (F)","41,000 (A)","41,000 (F)"],"ans":3,"ans_text":"41,000 (F)","chapter":17},{"sl":61,"q":"Which of the following may be the cause of Material Price Variance?","opts":["Change in quantity of purchase or uneconomical size of purchase order","Failure to take advantage of off- season price or failure to purchase when price is cheaper","Change in basic purchase price of material","All of the above"],"ans":3,"ans_text":"All of the above","chapter":17},{"sl":62,"q":"Variance analysis involves breaking down and analysing the total variance to explain:","opts":["How much of the variance is caused by using the resources that are different from the standards, i.e., the quantity variance","How much of the variance is caused by using the cost of the resources being different from the standards, i.e., the rate variance","All of the Above","None of the above"],"ans":2,"ans_text":"All of the Above","chapter":17},{"sl":63,"q":"standard costing system consists of the following key elements:","opts":["Setting standards for each of the operations","Comparing the actual performance with the standard performance","Analyzing and reporting variances arising from the difference between actual and standard performance","All of the Above"],"ans":3,"ans_text":"All of the Above","chapter":17},{"sl":64,"q":"Which of the following statements is correct?","opts":["Standard costing facilitates the integration of accounts so that reconciliation between cost accounts and financial accounts may be eliminated","Standard costs are planned costs determined on a scientific basis and they are based upon certain assumed conditions of efficiency and other factors","Standard costing is defined as the preparation and use of standard cost, their comparison with actual cost and the measurement and analysis of variances to their cause and points of incidence","All of the Above"],"ans":3,"ans_text":"All of the Above","chapter":17},{"sl":65,"q":"Which of the following statements is true?","opts":["If the actual cost is more than the standard, we call it adverse variance and if the difference is less than the standard, we call it favourable variance.","In case of sales and profit, if the standard is more than actual, it is adverse variance and if the standard is less than the actual, it is favourable variance","Both (1) and (2)","None of the above"],"ans":2,"ans_text":"Both (1) and (2)","chapter":17},{"sl":66,"q":"Standard cost and budgeted cost are:","opts":["Interrelated but not interdependent","Interdependent but not interrelated","Interrelated and interdependent","None of the above"],"ans":0,"ans_text":"Interrelated but not interdependent","chapter":17},{"sl":67,"q":"Efficiency Ratio is:","opts":["Available working days ÷ Budgeted working days × 100","Budgeted hours ÷ Maximum hours in budgeted period × 100","Standard hours ÷ Actual hours × 100","None of the above"],"ans":2,"ans_text":"Standard hours ÷ Actual hours × 100","chapter":17},{"sl":68,"q":"Uniform Costing may not be successfully applied in the following case:","opts":["In a single enterprise having a number of branches, each of which manufactures the same set of products with the same facilities","In a number of entities in the same industry bound by a trade association","In a number of units across different geographical locations manufacturing one or more of a given set of products","In different branches of the same company, each branch making a different product using a unique process"],"ans":3,"ans_text":"In different branches of the same company, each branch making a different product using a unique process","chapter":17},{"sl":69,"q":"A constraint in an L.P. Model restricts:","opts":["Value of the Objective Function","Values of the Decision Variables","Use of the available resources","All the above"],"ans":3,"ans_text":"All the above","chapter":18},{"sl":70,"q":"A feasible solution of LPP –","opts":["Must satisfy all the constraints simultaneously.","Need not satisfy all the constraints, only some of them.","Must be a corner point of the feasible region","All the above."],"ans":0,"ans_text":"Must satisfy all the constraints simultaneously.","chapter":18},{"sl":71,"q":"The Objective Function of a LPP is Z = 3x₁+ 2x₂ . If x₁= 10 and x₂= 5 then the value of Z is –","opts":["35","40","45","50"],"ans":1,"ans_text":"40","chapter":18},{"sl":72,"q":"Multiple solution exist in a Linear Programming problem when –","opts":["One of the constraints is redundant","Objective Function is parallel to one of the constraints","Two constraints are parallel","All of the above"],"ans":1,"ans_text":"Objective Function is parallel to one of the constraints","chapter":18},{"sl":73,"q":"The linear function of the variables which is to be optimized is called –","opts":["Constraints","Objective Function","Decision variables","None of the above"],"ans":1,"ans_text":"Objective Function","chapter":18},{"sl":74,"q":"If the value of the Objective Function can be increased or decreased indefinitely then the solution is called –","opts":["Unbounded","Bounded","Infeasible","None of the above"],"ans":0,"ans_text":"Unbounded","chapter":18},{"sl":75,"q":"The best use of Linear Programming is to find the optimal use of –","opts":["Manpower","Material","Money","All of the above"],"ans":3,"ans_text":"All of the above","chapter":18},{"sl":76,"q":"Which of the following is assumption of Linear Programming Model?","opts":["Divisibility","Proportionality","Additivity","All of the above"],"ans":3,"ans_text":"All of the above","chapter":18},{"sl":77,"q":"Which of the following considers difference between least cost and the cost just before least for each row and column while finding Basic Feasible Solution in Transportation?","opts":["North West Corner Method","Least Cost Method","Vogel’s Approximation Method","Both (b) and (c) above"],"ans":2,"ans_text":"Vogel’s Approximation Method","chapter":19},{"sl":78,"q":"When the total allocation of a Transportation Problem match with supply and demand values, the solution is –","opts":["Non-degenerate","Feasible","Degenerate","None of the above"],"ans":1,"ans_text":"Feasible","chapter":19},{"sl":79,"q":"The solution to a Transportation Problem with ‘m’ sources and ‘n’ destinations is feasible if the number of cell allocations are –","opts":["m + n","mn","m – n -1","m + n – 1"],"ans":2,"ans_text":"m + n – 1","chapter":19},{"sl":80,"q":"To resolve Degeneracy in the solution of a Transportation Problem an infinitely small allocation is made to the solution already obtained. This allocation is known as –","opts":["Dummy","Epsilon","ε – the Greek letter","All of the above except (a)"],"ans":3,"ans_text":"All of the above except (a)","chapter":19},{"sl":81,"q":"Which of the following is not correct with respect to Transportation as a tool of Quantitative Technique?","opts":["Transportation technique is a special case of LP.","Transportation technique might give rise to solutions which are degenerate.","No Transportation problem can be given with supply ≠ demand.","Using Transportation technique one can maximize an Objective Function."],"ans":2,"ans_text":"No Transportation problem can be given with supply ≠ demand.","chapter":19},{"sl":82,"q":"Which of the following method is used to test optimality of a solution in Transportation?","opts":["Modified Distribution","Simplex","VAM","LCM"],"ans":0,"ans_text":"Modified Distribution","chapter":19},{"sl":83,"q":"In a solution of Transportation problem, empty cells are called –","opts":["Unoccupied cells","Unallocated cells","Empty cells","All of the above"],"ans":3,"ans_text":"All of the above","chapter":19},{"sl":84,"q":"The Transportation Problem deals with the transportation of –","opts":["Single product from a source to several destinations","Several products from a source to a destination.","Single product from several sources to a destination.","Single product from several sources to several destinations."],"ans":3,"ans_text":"Single product from several sources to several destinations.","chapter":19},{"sl":85,"q":"Which of the following methods is used to solve the Assignment problems?","opts":["Stepping Stone Method","Hungarian Method","North West Corner Method","Vogel's Approximation Method"],"ans":1,"ans_text":"Hungarian Method","chapter":20},{"sl":86,"q":"Assignment of work to men and machines is known as:","opts":["Scheduling","Loading","Balancing of Line","None of these"],"ans":1,"ans_text":"Loading","chapter":20},{"sl":87,"q":"In an Assignment matrix of size (5 × 5), the total number of decision variables in the objective function is –","opts":["10","5","25","15"],"ans":2,"ans_text":"25","chapter":20},{"sl":88,"q":"An Assignment problem is solved to minimise the total time required to complete three jobs on three different machines such that each job is processed by exactly one machine and each machine processes exactly one job. The minimum total processing time is found to be 480 minutes. After a few days of operation, there has been a change in the design of the second job. Due to this, the processing time of the second job is increased by 15 minutes in either of the machines. The revised minimum total processing time will be –","opts":["495 minutes","465 minutes","480 minutes","None of these"],"ans":0,"ans_text":"495 minutes","chapter":20},{"sl":89,"q":"Assignment problem can be considered as a particular case of -","opts":["Transportation problem","Sequencing problem","Queuing problem","All of these"],"ans":0,"ans_text":"Transportation problem","chapter":20},{"sl":90,"q":"Dummy row or column is added in an assignment problem –","opts":["To prevent a solution to become degenerate","To reduce the total cost of assignment","To increase the profit function","To balance total activities and total resources"],"ans":3,"ans_text":"To balance total activities and total resources","chapter":20},{"sl":91,"q":"While solving an assignment problem, an activity is assigned to a resource with zero opportunity cost because objective is to –","opts":["Reduce total cost of assignment to zero","Reduce cost of that assignment to zero","Minimise total cost of assignment","Maximise total cost of assignment"],"ans":2,"ans_text":"Minimise total cost of assignment","chapter":20},{"sl":92,"q":"In an assignment problem –","opts":["First activity is assigned to first resource","Any number of activities can be assigned to each resource","It depends on how many resources are available","Only one activity be assigned to each resource"],"ans":3,"ans_text":"Only one activity be assigned to each resource","chapter":20},{"sl":93,"q":"An assignment problem can be viewed as a special case of transportation problem in which the capacity from each source is ____ and the demand at each destination is ____.","opts":["Unlimited, unlimited","One, unlimited","One, one","Unlimited, one"],"ans":2,"ans_text":"One, one","chapter":20},{"sl":94,"q":"In marking assignments which of the following should be preferred?","opts":["Only row having single zero","Only column having single zero","Column having more than one zero","Only row / column having single zero"],"ans":3,"ans_text":"Only row / column having single zero","chapter":20},{"sl":95,"q":"The assignment matrix is always a ____","opts":["Rectangular matrix","Identity matrix","Square matrix","None of these"],"ans":2,"ans_text":"Square matrix","chapter":20},{"sl":96,"q":"Maximisation assignment problem is transformed into a minimisation problem by _____","opts":["Adding each entry of a column to the maximum value of that column","Subtracting each entry in a column from maximum value in that column","Subtracting each entry of the table from the maximum value of the table","Adding each entry of the table to the maximum value in the table"],"ans":2,"ans_text":"Subtracting each entry of the table from the maximum value of the table","chapter":20},{"sl":97,"q":"In the Hungarian Method of solving Assignment problem, the row reduction is obtained by","opts":["Dividing each row by the elements of the row above it","Subtracting the elements of the row from the elements of the row above it","Subtracting the smallest element from all other elements of the row","Subtracting all the elements of the row from the highest element in the matrix"],"ans":2,"ans_text":"Subtracting the smallest element from all other elements of the row","chapter":20},{"sl":98,"q":"The horizontal and vertical lines drawn to cover all zeros of the total opportunity matrix for an optimal solution must be –","opts":["Equal to m x n, where m = No. of rows & n = No. of columns","Equal to each other","Equal to m + n, where m = No. of rows & n = No. of columns","Equal to the Order of the matrix"],"ans":3,"ans_text":"Equal to the Order of the matrix","chapter":20},{"sl":99,"q":"The similarity between Assignment Problem and Transportation Problem is –","opts":["Both are rectangular matrices","Both are square matrices","Both can be solved by graphical method","Both have objective function and non- negativity constraints"],"ans":3,"ans_text":"Both have objective function and non- negativity constraints","chapter":20},{"sl":100,"q":"When we try to solve the Assignment problem by Transportation algorithm the following difficulty arises.","opts":["There will be a tie while making allocations","The problem will get alternate solution","The problem degenerates and we have to use epsilon to solve degeneracy","The Assignment problem cannot be solved by Transportation algorithm"],"ans":2,"ans_text":"The problem degenerates and we have to use epsilon to solve degeneracy","chapter":20},{"sl":101,"q":"The following character dictates that the Assignment matrix is a square one:","opts":["The allocations in Assignment problem are one to one","Because we find row opportunity cost matrix","Because we find column opportunity cost matrix","Because after making allocations, horizontal and vertical lines are to be drawn"],"ans":0,"ans_text":"The allocations in Assignment problem are one to one","chapter":20},{"sl":102,"q":"An Assignment problem can be solved by –","opts":["Simplex method","Transportation method","Both (1) and (2)","None of the above"],"ans":2,"ans_text":"Both (1) and (2)","chapter":20},{"sl":103,"q":"If there are n jobs and n workers, there would be –","opts":["n! solutions","(n – 1)! solutions","(n!).n solutions","n solutions"],"ans":0,"ans_text":"n! solutions","chapter":20},{"sl":104,"q":"The Assignment problem:","opts":["Requires that only one activity be assigned to each resource","Is a special case of Transportation problem","Can be used to maximise the resources","All of the above"],"ans":3,"ans_text":"All of the above","chapter":20},{"sl":105,"q":"To proceed with the MODI algorithm for solving an assignment problem, the number of dummy allocations need to be added are –","opts":["n","n -1","2n","2n – 1"],"ans":1,"ans_text":"n -1","chapter":20},{"sl":106,"q":"The procedure used to solve Assignment problems wherein one reduces the original assignment costs to a table of opportunity costs is called _____","opts":["Stepping Stone Method","Matrix Reduction","MODI Method","Northwest Reduction"],"ans":1,"ans_text":"Matrix Reduction","chapter":20},{"sl":107,"q":"When a maximisation assignment problem is converted to minimisation problem, the resultant matrix is called:","opts":["Cost matrix","Profit matrix","Regret matrix","Dummy matrix"],"ans":2,"ans_text":"Regret matrix","chapter":20},{"sl":108,"q":"Two person zero sum game means that:","opts":["The sum of losses of one player is equal to the sum of the gains of the other","The sum of losses of one player may not be equal to the sum of the gains of the other","No player gains or loses","None of the above"],"ans":0,"ans_text":"The sum of losses of one player is equal to the sum of the gains of the other","chapter":21},{"sl":109,"q":"Game theory models are classified by the:","opts":["Number of players","Sum of all payoffs","Number of strategies","All of these"],"ans":3,"ans_text":"All of these","chapter":21},{"sl":110,"q":"A game is said to be unfair if:","opts":["Upper and lower values of the game are not equal","Upper and lower values of the game are equal and the sum is zero","Both option (a) and option (b)","None of the above"],"ans":0,"ans_text":"Upper and lower values of the game are not equal","chapter":21},{"sl":111,"q":"What happens when the maximin and minimax values of the game are equal?","opts":["No solution exists","Solution is mixed","Saddle point exists","None of these"],"ans":2,"ans_text":"Saddle point exists","chapter":21},{"sl":112,"q":"A mixed strategy game can be solved by:","opts":["Arithmetic method","Graphical method","Dominance method","All of these"],"ans":3,"ans_text":"All of these","chapter":21},{"sl":113,"q":"The size of the payoff matrix of a game can be reduced by using the principle of:","opts":["Game inversion","Rotation reduction","Dominance","Game transpose"],"ans":2,"ans_text":"Dominance","chapter":21},{"sl":114,"q":"The payoff value for which each player in a game always selects the same strategy is called the:","opts":["Saddle point","Equilibrium point","Both option (a) and option (b)","None of the above"],"ans":0,"ans_text":"Saddle point","chapter":21},{"sl":115,"q":"Games which involve more than two players are called:","opts":["Conflicting games","Negotiable games","N person game","All of these"],"ans":2,"ans_text":"N person game","chapter":21},{"sl":116,"q":"Which of the following is first step for performing Simulation analysis?","opts":["Choose input variables.","Create entities for the simulation process.","Prepare a problem statement.","Determine the output variables."],"ans":2,"ans_text":"Prepare a problem statement.","chapter":22},{"sl":117,"q":"Which of the following are the advantages of using Modelling and Simulation?","opts":["Easy to understand.","Easy to test.","Easy to upgrade.","All of the above."],"ans":3,"ans_text":"All of the above.","chapter":22},{"sl":118,"q":"Which one of the following is not an application area of Modelling and Simulation?","opts":["Military applications","Designing semiconductors","Telecommunications","Food industry"],"ans":3,"ans_text":"Food industry","chapter":22},{"sl":119,"q":"Which of the following is the first step for developing the Simulation Model?","opts":["Design the problem","Identify the problem.","Collect and start processing the system data","Develop the model using Network diagram."],"ans":1,"ans_text":"Identify the problem.","chapter":22},{"sl":120,"q":"Simulation is the process of using a model to study the performance of a system.","opts":["Agreeable","Not agreeable","Partly agreeable","Cannot comment"],"ans":0,"ans_text":"Agreeable","chapter":22},{"sl":121,"q":"Disadvantage of using Modelling and Simulation lies in the statement –","opts":["Simulation requires manpower and it is a time consuming process.","Simulation results are difficult to translate and only experts can understand it.","Simulation is an expensive process.","All of the above."],"ans":3,"ans_text":"All of the above.","chapter":22},{"sl":122,"q":"Monte Carlo Simulation gets its name from which of the following?","opts":["Data collection.","Model formulation","Random number assignment","Analysis"],"ans":2,"ans_text":"Random number assignment","chapter":22},{"sl":123,"q":"Select the valid reasons for using Simulation.","opts":["Relationship between the variables is non- linear.","Optimized solutions are obtained.","Conduct experiment without disrupting the real system.","Both (a) and (c)"],"ans":3,"ans_text":"Both (a) and (c)","chapter":22},{"sl":124,"q":"The drive up window of a fast food centre was being studied using simulation for a variety of operating characteristics. As part of the study data was collected on Customer Arrivals as given in the following table. Using expected value calculations determine the expected time between customer arrivals.Inter arrival time (Minutes) 0.5 1.0 2.0 3.0 4.0 5.0 6.0 Probability 0.10 0.25 0.20 0.30 0.05 0.05 0.05","opts":["2.35 minutes","2.00 minutes","2.70 minutes","1.65 minutes"],"ans":0,"ans_text":"2.35 minutes","chapter":22},{"sl":125,"q":"Critical Activities have:","opts":["Maximum float","Minimum float","Zero float","Negative float"],"ans":2,"ans_text":"Zero float","chapter":23},{"sl":126,"q":"In PERT Chart, the Activity time distribution is -","opts":["Normal","Binomial","Poisson","Beta"],"ans":3,"ans_text":"Beta","chapter":23},{"sl":127,"q":"A PERT Network has nine activities on its Critical Path. The Standard Deviation of each activity on the Critical Path is 3. The S. D of the Critical Path is –","opts":["3","9","81","27"],"ans":1,"ans_text":"9","chapter":23},{"sl":128,"q":"For an activity the pessimistic, most likely and optimistic times are respectively 10, 6 and 2 days. The expected duration of the activity is –","opts":["6 days","3 days","2 days","9 days"],"ans":0,"ans_text":"6 days","chapter":23},{"sl":129,"q":"The time by which the activity completion time can be delayed without affecting the start of the succeeding activities is known as –","opts":["Total float","Free float","Independent float","Head slack"],"ans":1,"ans_text":"Free float","chapter":23},{"sl":130,"q":"Which of the following statement is not true?","opts":["PERT is deterministic in nature.","CPM is probabilistic in nature.","PERT Network can not be crashed.","All of the above."],"ans":3,"ans_text":"All of the above.","chapter":23},{"sl":131,"q":"Following data refers to a project Network. What will be the Critical Path? Activity 1 – 2, 2 – 3 ,3 – 4, 1 – 4, 2 – 5, 3 – 5, 4 – 5 Duration 2 Days, 1 Day, 3 Days, 3 Days, 3 Days, 2 Days, 4 Days","opts":["1 – 2 – 3 - 5","1 – 2 – 3 – 4 – 5","1 – 4 – 5","1 – 4 – 3 – 5"],"ans":1,"ans_text":"1 – 2 – 3 – 4 – 5","chapter":23},{"sl":132,"q":"The amount of time by which an activity can be delayed without affecting the project completion is called –","opts":["Free float","Total float","Interfering float","None of the above"],"ans":1,"ans_text":"Total float","chapter":23},{"sl":133,"q":"Optimistic time and pessimistic time of an activity are respectively 4 days and 16 days. Variance of the duration of the activity will be –","opts":["4 days","2 days","3 days","None of the above"],"ans":0,"ans_text":"4 days","chapter":23},{"sl":134,"q":"In a project planning Free float can affect which of the following?","opts":["Succeeding activity","Only that activity","Preceding activity","All of the above"],"ans":2,"ans_text":"Preceding activity","chapter":23},{"sl":135,"q":"Solution of problems of Crashing has to be started by applying the technique on –","opts":["Any activity of the Network.","Non critical activities","Critical activities.","None of the above."],"ans":2,"ans_text":"Critical activities.","chapter":23},{"sl":136,"q":"A PERT activity has an optimistic time of 3 days, pessimistic time of 15 days and an expected time of 7 days. What is the most likely time of the activity?","opts":["10 days","6 days","5 days","None of the above"],"ans":1,"ans_text":"6 days","chapter":23},{"sl":137,"q":"The reduction in project time normally results in –","opts":["Decrease in Direct Cost and increase in Indirect Cost","Increase in Direct Cost and decrease in Indirect Cost","Increase in both Direct and Indirect Costs.","Decrease in both Direct and Indirect Costs."],"ans":1,"ans_text":"Increase in Direct Cost and decrease in Indirect Cost","chapter":23},{"sl":138,"q":"The Normal duration and Normal cost of an activity are 10 days and Rs. 350 respectively. The cost slope is Rs. 75 per day. If the Crash duration is 8 days then what is the Crash cost of the activity?","opts":["Rs. 400/-","Rs. 500/-","Rs. 600/-","Rs. 650/-"],"ans":1,"ans_text":"Rs. 500/-","chapter":23},{"sl":139,"q":"Which of the following is incorrect?","opts":["PERT is suitable for projects having probabilistic time estimates.","CPM is suitable for projects having deterministic activities.","Both PERT and CPM are event oriented.","PERT is event oriented while CPM is activity oriented."],"ans":2,"ans_text":"Both PERT and CPM are event oriented.","chapter":23},{"sl":140,"q":"The activity that must be completed prior to the start of an activity is called –","opts":["Dummy activity","Successor activity","Concurrent activity","Predecessor activity"],"ans":3,"ans_text":"Predecessor activity","chapter":23},{"sl":141,"q":"The slack times of Tail and Head events of Activity P are 10 days and 4 days respectively. If the Free float of the Activity P is 12 days then the Total float would be –","opts":["8 days","16 days","22 days","none of the above"],"ans":1,"ans_text":"16 days","chapter":23},{"sl":142,"q":"Which of the following represents reduction in project duration?","opts":["Crashing","Negative slack","Variance","All of the above"],"ans":0,"ans_text":"Crashing","chapter":23},{"sl":143,"q":"Critical Path Method is good for –","opts":["Small projects only","Large projects only","Both small and large projects equally","Neither small nor large projects"],"ans":1,"ans_text":"Large projects only","chapter":23},{"sl":144,"q":"The optimum duration is the –","opts":["Summation of normal durations of each activity of the project.","Summation of normal durations of activities in the Critical Path.","One which gives the minimum Total Cost for the completion of the project.","Summation of crash durations of activities in the Critical Path."],"ans":2,"ans_text":"One which gives the minimum Total Cost for the completion of the project.","chapter":23},{"sl":145,"q":"Which of the following is not a notable challenge while scheduling a project?","opts":["Deadlines exist","Independent activities","Too many workers may be required","Costly delay"],"ans":1,"ans_text":"Independent activities","chapter":23},{"sl":146,"q":"A critical path is –","opts":["The shortest path","The longest path","The path that begins from the start node and ends at the last node.","All of the above."],"ans":1,"ans_text":"The longest path","chapter":23},{"sl":147,"q":"Activities A, D and F merges at the event 6. If the earliest finish times of A, D and F are respectively 13, 17 and 8 then the earliest time of Event 6 is –","opts":["8","13","17","Cannot be determined from the given information."],"ans":2,"ans_text":"17","chapter":23},{"sl":148,"q":"A Learning Curve describes:","opts":["The increase in number of units produced per unit time as the total number of units produced increases","The rate at which an organisation acquires new information.","The amount of production time per unit as the total number of units produced increases.","The increase in production time as the total number of units produced increases."],"ans":2,"ans_text":"The amount of production time per unit as the total number of units produced increases.","chapter":24},{"sl":149,"q":"Limitations of the Learning Curve approach include –","opts":["Learning Curves must be redeveloped whenever the product or the production process is modified.","Learning Curves are applicable when considering a highly automated process.","Learning Curves are only valid when considering simple production process.","Learning Curves are only valid when the total number of units produced is relatively small."],"ans":1,"ans_text":"Learning Curves are applicable when considering a highly automated process.","chapter":24},{"sl":150,"q":"Which of the following statements about Learning Curve is incorrect?","opts":["A change in the process disrupts the Learning Curve.","The rate of learning varies depending on the quality of management.","The Learning Curve can be disrupted by the change in personnel.","Learning Curves show that the time saved in completing each subsequent unit increases."],"ans":3,"ans_text":"Learning Curves show that the time saved in completing each subsequent unit increases.","chapter":24},{"sl":151,"q":"Which of the following is not an application of Learning Curve?","opts":["Learning Curves allow a manager to predict the time required for new employee orientation on company policies and procedures.","Learning Curves permit a manager to prepare a work schedule.","Learning Curves allow a manager to forecast the labour requirements while preparing a departmental employee budget.","Learning Curves can be employed in supply chain negotiations."],"ans":3,"ans_text":"Learning Curves can be employed in supply chain negotiations.","chapter":24},{"sl":152,"q":"Bimal and Kamal are the two industrial workers engaged in doing a similar job. They have different learning rates of 80% and 90% respectively. Times taken to complete their first jobs are respectively 12 and 8 hours. If both continue with the same learning rate then after how many units Bimal will be faster than Kamal?","opts":["5th unit","7th unit","11th unit","19th unit"],"ans":2,"ans_text":"11th unit","chapter":24},{"sl":153,"q":"How long will it take to produce the fifth unit with 85% learning rate, if the third unit took 13 hours?","opts":["10.3 hours","10.0 hours","11.4 hours","11.5 hours"],"ans":3,"ans_text":"11.5 hours","chapter":24},{"sl":154,"q":"When 24 hours is required to produce a condenser of a particular type then the time required to produce the 16th unit with 85% Learning Curve is –","opts":["Between 9 and 10 hours","Between 12 and 14 hours","Between 15 and 17 hours","Between 18 and 20 hours"],"ans":1,"ans_text":"Between 12 and 14 hours","chapter":24},{"sl":155,"q":"A diesel engine manufacturing company has an order of 4 large engines. A crew of 16 members took 4000 hours to assemble the first engine. If 80% Learning Curve is used then what will be the labour cost of the fourth engine, assuming average labour rate to be Rs. 180 per hour?","opts":["Between Rs. 4 to 4.5 Lakhs","Between Rs. 3.5 to 4 Lakhs","Between Rs. 3 to 3.5 Lakhs","Between Rs. 4.5 to 5 Lakhs"],"ans":3,"ans_text":"Between Rs. 4.5 to 5 Lakhs","chapter":24},{"sl":156,"q":"Optimization is the method of finding:","opts":["The maximum point","The minimum point","The critical point","All of the above"],"ans":3,"ans_text":"All of the above","chapter":25},{"sl":157,"q":"Choose the correct answer:","opts":["Optimization problems should have only one objective function","Constraint functions are compulsory for any optimization problem.","Objective function must be a continuous function","None of the above"],"ans":0,"ans_text":"Optimization problems should have only one objective function","chapter":25},{"sl":158,"q":"The process of finding relative maximum or minimum of a function is known as:","opts":["Optimization","Maximization","Minimization","Any of these"],"ans":0,"ans_text":"Optimization","chapter":25},{"sl":159,"q":"For a Cost Function TC = 3 𝑄 2+ 7Q + 12, MC is –","opts":["6Q","6Q + 7","3Q + 12","None of the above"],"ans":1,"ans_text":"6Q + 7","chapter":25},{"sl":160,"q":"MR is:","opts":["First order derivative of TC","Second order derivative of TR","First order derivative of TR","Second order derivative of TC"],"ans":2,"ans_text":"First order derivative of TR","chapter":25},{"sl":161,"q":"In the expression D = AC – B2 used for describing the sufficient conditions for unconstrained optimization involving two variables (x and t), the meaning of A and C are –","opts":["2nd order partial derivative of the objective function (f) with respect to x and y respectively.","2nd order partial derivative of ∂f/∂x with respect to y","Both (a) and (b)","none of the above"],"ans":0,"ans_text":"2nd order partial derivative of the objective function (f) with respect to x and y respectively.","chapter":25},{"sl":162,"q":"A price discriminating Monopolist Firm operates in –","opts":["Such a Market where it is the sole supplier.","More than one Market","Markets where it sells same product but in different prices.","All of the above."],"ans":3,"ans_text":"All of the above.","chapter":25},{"sl":163,"q":"For a dual plant Monopolist Firm with respective production costs C1 & C2 in the two plants, the necessary condition of equilibrium is:","opts":["MC1= MC2 ≠ MR","MC = MR","MC1= MC2= MR","MC1= MR1 & MC2= MR2"],"ans":2,"ans_text":"MC1= MC2= MR","chapter":25},{"sl":164,"q":"In Exponential Smoothing Method which one of the following is true?","opts":["0 ≤ α ≤ 1 and high value of α is used for stable demand.","0 ≤ α ≤ 1 and high value of α is used for unstable demand.","α ≥ 1 and high value of α is used for stable demand.","α ≤ 0 and high value of α is used for unstable demand."],"ans":1,"ans_text":"0 ≤ α ≤ 1 and high value of α is used for unstable demand.","chapter":26},{"sl":165,"q":"Which of the following is not a Casual Forecasting Method?","opts":["Trend adjusted Exponential Smoothing","Econometric models","Linear Regression","Multiple Regression"],"ans":0,"ans_text":"Trend adjusted Exponential Smoothing","chapter":26},{"sl":166,"q":"In a Time Series forecasting model, the demands for five time periods are 10, 13, 15, 18 and 22. A linear regression fit resulted in the equation y = 6.9 + 2.9t, where y is the forecast for the period t. The sum of the absolute deviations for the five data with respect to their corresponding forecasts (taking t = 1 for the first one) is;","opts":["2.3","0.2","1","2.2"],"ans":3,"ans_text":"2.2","chapter":26},{"sl":167,"q":"Which of the following is not a forecasting technique?","opts":["Trend line estimate","Delphi Method","Hungarian Method","Judgemental technique"],"ans":2,"ans_text":"Hungarian Method","chapter":26},{"sl":168,"q":"In Simple Exponential Smoothing forecast, to give higher weightage to recent demand information, the smoothing constant must be close to –","opts":["-1","0","0.5","1"],"ans":0,"ans_text":"1","chapter":26},{"sl":169,"q":"A linear Trend equation has the form –","opts":["F = a - bt","F = a + bt","F = 2a – bt","F = 2a + bt"],"ans":0,"ans_text":"F = a + bt","chapter":26},{"sl":170,"q":"The actual demand for a period is 100 units. But forecast demand was 90 units. The forecast error is –","opts":["– 10","10","₹ 5","None of the above"],"ans":0,"ans_text":"10","chapter":26},{"sl":171,"q":"If the estimate of the Trend Component is 158.2, the estimate of Seasonal Component is 94%, the estimate of the Cyclical Component is 105% and the estimate of the Irregular Component is 98%, then the multiplicative model will produce a forecast of –","opts":["1.53","1.53%","153.02","15,30,20,532"],"ans":2,"ans_text":"153.02","chapter":26},{"sl":172,"q":"Which of the following is not true for forecasting?","opts":["Forecasts are rarely perfect.","The underlying casual system will remain same in the future.","Forecast for group of items is accurate than individual item","Short range forecasts are less accurate than long range forecasts"],"ans":3,"ans_text":"Short range forecasts are less accurate than long range forecasts","chapter":26},{"sl":173,"q":"Delphi Method is used for –","opts":["Judgemental forecast","Time Series forecast","Associative model","All of the above"],"ans":0,"ans_text":"Judgemental forecast","chapter":26},{"sl":174,"q":"Tableau is a –","opts":["Business Intelligence Tool","Visualisation Tool","Both (a) and (b)","None of the above"],"ans":2,"ans_text":"Both (a) and (b)","chapter":0},{"sl":175,"q":"Which of the following statement is correct?","opts":["Functioning of ETL Tool is same as that of ELT Tool.","For Data Analytics the purpose of ETL Tool is same as that of ELT Tool.","Both (a) and (b)","None of the above"],"ans":1,"ans_text":"For Data Analytics the purpose of ETL Tool is same as that of ELT Tool.","chapter":0},{"sl":176,"q":"Which of the following statement is incorrect?","opts":["Microsoft Excel is most popular among all the available spreadsheets.","Zoho Analytics is a tool used for Financial Data analysis.","Visualisation Tools are the Reporting Tools.","None of the above."],"ans":3,"ans_text":"None of the above.","chapter":0},{"sl":177,"q":"Prescriptive Analytics is very important because –","opts":["It tells about the action to be taken.","It tells about what is likely to happen","It tells about how something has happened.","It tells about what has happened."],"ans":0,"ans_text":"It tells about the action to be taken.","chapter":0},{"sl":178,"q":"Which of the following has no relation to Business Intelligence?","opts":["A set of business analytics solutions to retrieve, analyse and transform data into useful business sights","Visualisation Tools are primarily BI Tools.","ABS Glue is a tool used for the purpose of Business Intelligence.","Embedded Analytics is an important part of any Business Intelligence tool."],"ans":2,"ans_text":"ABS Glue is a tool used for the purpose of Business Intelligence.","chapter":0},{"sl":179,"q":"Which of the following is related to Financial Data Analytics?","opts":["Value driver analytics","Financial ratio analytics","Predictive sales analysis","All the above"],"ans":3,"ans_text":"All the above","chapter":0},{"sl":180,"q":"Analysis of a dataset has revealed the fact that profit of a business has reduced for the financial year 2021-22. What category of data analytics it comes under?","opts":["Descriptive Analytics","Predictive Analytics","Diagnostic Analytics","Prescriptive Analytics"],"ans":0,"ans_text":"Descriptive Analytics","chapter":0},{"sl":181,"q":"#Script Ends – is related to which type of programming language?","opts":["R Programming","SAS","Python","SPSS"],"ans":2,"ans_text":"Python","chapter":0},{"sl":182,"q":"Which one of the following is a Key feature of SAS language?","opts":["Capability of handling data analysis related to Operations Research and Project Management.","Capability of report formation with perfect graphs.","Capability to interact with multiple host systems","All the above"],"ans":3,"ans_text":"All the above","chapter":0},{"sl":183,"q":"Which one of the following is not a spreadsheet?","opts":["Google Sheets","MS Excel","E-views","Quip"],"ans":2,"ans_text":"E-views","chapter":0},{"sl":184,"q":"ABC Company uses a throughput accounting system. The details of product X per unit are as follows Selling Price - Rs. 40 Material cost- Rs. 12, Conversion Cost -Rs. 18, Time on bottle neck resource - 7 Minutes. The return per hour for product X is:","opts":["Rs. 280","Rs. 180","Rs. 240","Rs. 120"],"ans":2,"ans_text":"₹ 240","chapter":15},{"sl":185,"q":"The break-even point of a manufacturing company is Rs.2,50,000. Fixed cost is Rs.50,000. Variable cost is Rs.14 per unit. The PV ratio will be:","opts":["30%","35%","20%","40%"],"ans":2,"ans_text":"20.00%","chapter":3},{"sl":186,"q":"Which of the following is not a method of transfer pricing?","opts":["Cost plus transfer price","Internal price transfer price","Market-based transfer price","Two part transfer price"],"ans":1,"ans_text":"Internal price transfer price","chapter":8},{"sl":187,"q":"Total fixed overhead variance can be defined as","opts":["Measure of the lack of production volume","Cost Reduction achieved from difference in productions","Amount of the under- applied or over-applied fixed overhead costs","Measure of production inefficiency"],"ans":2,"ans_text":"Amount of the under-applied or over- applied fixed overhead costs","chapter":17},{"sl":188,"q":"A company has the capacity of production of 80000 units and presently it sells 20000 units at Rs. 100 each. The demand is sensitive to selling price and it has been observed that every reduction of Rs. 10 in selling price the demand is doubled. What should be the target cost at full capacity it profit margin on sales is taken at 25%?","opts":["Rs. 48 lakhs","Rs. 58 lakhs","Rs. 42 lakhs","Rs. 52 lakhs"],"ans":0,"ans_text":"Rs.48 lakhs","chapter":3},{"sl":189,"q":"The information relating to the direct material cost of a company is as follows: Standard price per unit Rs. 7.20 Actual quantity purchased in units 1600 Standard quantity allowed for actual production in units 1450 Material price variance on purchase (Favourable) Rs. 480 What is the actual purchase price per unit","opts":["Rs. 7.9","Rs. 6.5","Rs. 7.3","Rs. 6.9"],"ans":3,"ans_text":"Rs.6.9","chapter":17},{"sl":190,"q":"Cost driver means","opts":["production overheads items","Common cost which is shared by cost centres","An activity which generates costs","Transport relating Cost"],"ans":2,"ans_text":"An activity which generates costs","chapter":13},{"sl":191,"q":"The profit volume ratio of DEF Ltd. is 30%, while the margin of safety is 40%. If fixed cost of the company is Rs. 1,80,000, what will be its profit (net)?","opts":["Rs. 90000","Rs. 120000","Rs. 180000","Rs. 100000"],"ans":1,"ans_text":"Rs.120000","chapter":3},{"sl":192,"q":"The following figures are extracted from the books of a company: Budgeted O/H Rs. 10,000 (Fixed Rs. 6,000, Variable Rs. 4,000) Budgeted Hours 2000 Actual O/H Rs. 10,400 (Fixed Rs. 6,100, Variable Rs. 4,300) Actual Hours 2100 Variable O/H cost variance and Fixed O/H cost variance will be:","opts":["100 (A) and 200 (A)","100 (F) and 200 (F)","200 (A) and 100 (F)","100 (A) and 200 (F)"],"ans":3,"ans_text":"100 (A) and 200 (F)","chapter":17},{"sl":193,"q":"Which of the following is not a benefit of Activity Based Costing","opts":["Improvement in decision making","Accurate cost allocation","Prime cost reduction","Better control on activity and costs"],"ans":2,"ans_text":"Prime cost reduction","chapter":13},{"sl":194,"q":"The P/V ratio of a firm is 50% and the margin of safety is 40%. BEP of the firm at a sales volume of Rs. 50,00,000 will be","opts":["₹ 30,00,000","₹ 20,00,000","₹ 25,00,000","₹ 50,00,000"],"ans":0,"ans_text":"Rs.3000000","chapter":3},{"sl":195,"q":"ABC Limited has current PBIT of Rs. 19.20 lakhs on total assets of ₹96 lakhs. The company has decided to increase assets by Rs. 24 lakhs, which is expected to increase the operating profit before depreciation by Rs. 8.40 lakhs. There will be a net increase in depreciation by Rs. 4.80 lakhs. This will result in ROI","opts":["to decrease by 1%","to increase by 1%","to decrease by 2%","to decrease by 1.5%"],"ans":0,"ans_text":"to decrease by 1%","chapter":3},{"sl":196,"q":"ABC Limited is facing downfall in its demand. Marketing team has suggested to reduce the selling price by 10% to compete in the market. Variable cost is 72% of the current selling price. What will be the P/V Ratio after reducing the price by 10%.","opts":["15%","18%","20%","25%"],"ans":2,"ans_text":"20%","chapter":3},{"sl":197,"q":"For a Learning Curve percentage of 72%, the time to be taken to complete the 4th unit of a 12-unit job involved in the assembly line, if the initial unit requires 80 hours, will be","opts":["42.50 hrs","42.47 hrs","41.58 hrs","41.47 hrs"],"ans":3,"ans_text":"41.47 hrs","chapter":24},{"sl":198,"q":"Marketing department of an organisation estimates that 60,000 of new mixers could be sold annually at a price of Rs. 70 each. To design, develop and produce these new mixers an investment of Rs. 40,00,000 would be required. The company desires a 15% return on investment (ROI). Given these data, the target cost to manufacture, sell, distribute and service one mixer will be","opts":["Rs. 60","Rs. 45","Rs. 55","Rs. 25"],"ans":0,"ans_text":"Rs.60","chapter":10},{"sl":199,"q":"When you wait until the manufacture of a product has been completed and then record all of the related issuances of inventory from stock that were required to create the product, it is called","opts":["Forensic Accounting","Tax Accounting","Lean Accounting","Back-flush Accounting"],"ans":3,"ans_text":"Back-flush Accounting","chapter":16},{"sl":200,"q":"XYZ Ltd. Plans to introduce a new product and issuing the target cost approach. Projected sales revenue is Rs. 80,00,000 (Rs. 50 per unit) and target costs are Rs. 56,00,000. What is the desired profit per unit?","opts":["Rs. 14","Rs. 15","Rs. 24","Rs. 22"],"ans":1,"ans_text":"Rs. 15","chapter":10},{"sl":201,"q":"Assignment Problem can obtain a optimal solution only if -","opts":["Each row and column has only one zero element","Each row and column has at least one zero element","Both the diagonals of the matrix have zero element","None of the above"],"ans":3,"ans_text":"None of the above","chapter":20},{"sl":202,"q":"A company uses traditional standard costing system. The inspection and set- up costs are actually Rs. 1,760 against a budget of Rs. 2,000. ABC system is being implemented and accordingly the number of batches is identified as the cost driver for inspection and set up. The budgeted production is 10,000 units in batches of 1,000 units whereas actually 9,000 units were produced in 11 batches. The cost per batch under ABC system will be","opts":["Rs. 160","Rs. 180","Rs. 200","Rs. 120"],"ans":2,"ans_text":"Rs.200","chapter":13},{"sl":203,"q":"A company has the capacity of production of 80,000 units and presently sells 20,000 units at Rs. 100 each. The demand is sensitive to selling price and it has been observed that with every reduction of Rs. 10 in selling price the demand is doubled. What should be the target cost at full capacity if profit margin on sale is taken as 25%?","opts":["Rs. 80","Rs. 60","Rs. 50","Rs. 70"],"ans":1,"ans_text":"Rs.60","chapter":3},{"sl":204,"q":"In Simple Exponential Smoothing forecast to give higher weightage to recent demand information, the smoothing constant must be close to","opts":["1","-1","0","0.5"],"ans":0,"ans_text":"1","chapter":26},{"sl":205,"q":"Children's Park in a city with various signals and crossing is the simulated model of city traffic. This is a type of","opts":["Analogue Simulation","Computer Simulation","Monte Carlo Simulation","Both (A) and (C) of the above"],"ans":0,"ans_text":"Analogue Simulation","chapter":22},{"sl":206,"q":"When Backflush costing is most likely to be used?","opts":["Management desires sequential tracking of costs","The company carries significant amount of inventory","A Just-in-Time inventory philosophy has been adopted","Actual production costs are debited to work-in- progress"],"ans":2,"ans_text":"A Just-in-Time inventory philosophy has been adopted","chapter":16},{"sl":207,"q":"Optimistic and pessimistic time of an activity respectively are 4 days and 16 days. Variance of the duration of the activity will be:","opts":["8 days","4 days","2 days","16 days"],"ans":1,"ans_text":"4 days","chapter":23},{"sl":208,"q":"Preparation and use of standard cost, their comparison with actual costs and the measurement and analysis of variances to originating causes is defined as:","opts":["Standard Costing","Throughput Costing","Marginal Costing","Kaizen Costing"],"ans":0,"ans_text":"Standard Costing","chapter":17},{"sl":209,"q":"A company determines its selling price by marking up variable costs 60%. In addition, the company uses frequent selling price mark down to stimulate sales. If the mark down average 10%, what is the company’s contribution margin ratio?","opts":["30.60%","38.00%","42.40%","None of these"],"ans":0,"ans_text":"30.60%","chapter":3},{"sl":210,"q":"A Ltd. Has earned net profit of Rs. 1 lakh, and its overall P/V ratio and margin of safety are 25% and 50% respectively. Find the total fixed cost of the company?","opts":["Rs. 50000","Rs. 200000","Rs. 100000","Rs. 230000"],"ans":2,"ans_text":"Rs.100000","chapter":3},{"sl":211,"q":"The normal duration and normal cost of an activity of project XYZ are 12 days and Rs. 400 respectively. The cost slope is Rs. 80 per day, if the crash cost of the activity is Rs. 560, what will be the crash duration of the activity?","opts":["6 days","16 days","12 days","10 days"],"ans":3,"ans_text":"10 days","chapter":23},{"sl":212,"q":"XYZ Ltd., a manufacturing company has developed a new product and just completed the manufacture of first 16 units of the product. If the first unit took 6 hours to manufacture and the first 16 units together took 62.9856 hours to produce, the Learning Curve (LC) rate would be","opts":["90%","92%","95%","98%"],"ans":0,"ans_text":"90%","chapter":24},{"sl":213,"q":"If the time taken to produce the first unit of a product is 4000 hrs, what will be the total time taken to produce the 5th to 8th unit of the product, when a 90% learning curve applies?","opts":["10,146 hours","9,265 hours","10,368 hours","11,782 hours"],"ans":2,"ans_text":"10,368 hours","chapter":24},{"sl":214,"q":"A company makes a single product which it sells at Rs. 10 per unit. Fixed costs are Rs. 48,000 per month and the product has a contribution to sales ratio of 40%. In a period when actual sales were Rs. 1,40,000, the company's margin of safety in units was:","opts":["4000","2000","5000","1000"],"ans":1,"ans_text":"2000","chapter":3},{"sl":215,"q":"The following tasks are associated with ABC system: (I). Allocation of costs to products (II). Identification of cost pools (III). Identification of cost drivers (IV). Calculation of pool rates. The proper order of the preceding tasks is:","opts":["III, II, IV, I","I, II, III, IV","III, IV, II, I","IV, III, II, I"],"ans":0,"ans_text":"III, II, IV, I","chapter":13},{"sl":216,"q":"A company has forecast sales and cost of sales for the coming year as Rs. 25 lakhs and Rs. 18 lakhs respectively. The inventory turnover has been taken as 9 times per year. In case the inventory turnover increases to 12 times and the short term interest rate on working capital is taken as 10%, what will be saving in cost?","opts":["Rs. 4000","Rs. 5000","Rs. 10000","Rs. 6000"],"ans":1,"ans_text":"Rs.5000","chapter":9},{"sl":217,"q":"Which of the following would decrease unit contribution margin the most?","opts":["15% increase in variable costs","15% decrease in fixed costs","15% decrease in variable costs","15% decrease in selling price"],"ans":3,"ans_text":"15% decrease in selling price","chapter":3},{"sl":218,"q":"Which of the following is a Forecasting technique","opts":["Control Chart","Gantt Chart","Exponential Smoothing","PERT / CPM"],"ans":2,"ans_text":"Exponential Smoothing","chapter":26},{"sl":219,"q":"A company produces two joint products, P and V. In a year, further processing costs beyond split-off point spent were Rs. 8,000 and Rs. 12,000 for 800 units of P and 400 units of V respectively. P sells at Rs. 25 and V sells at Rs. 50 per unit. A sum of Rs. 9,000 of joint cost were allocated to product P based on the net realization method. What were the total joint cost in the year?","opts":["Rs. 18000","Rs. 12000","Rs. 10000","Rs. 15000"],"ans":3,"ans_text":"Rs.15000","chapter":9},{"sl":220,"q":"Nulook Ltd. Uses a JIT system and back flush accounting. It does not use a raw material stock control account During May, 8000 units were produced and sold. The standard cost per unit is Rs. 100; this includes materials of Rs. 45. During May, Rs. 4,80,000 of conversion costs were incurred. The debit balance on cost of goods sold account for May was","opts":["Rs. 840000","Rs. 780000","Rs. 880000","Rs. 800000"],"ans":0,"ans_text":"Rs.840000","chapter":16},{"sl":221,"q":"A factory of ABC Ltd. has a key resource (bottleneck) of a facility D which is available for 48000 minutes per week. The time taken per unit of product P in facility A is 6 minutes. Last week's actual output was 5000 units of product P and actual factory cost (excluding material cost) was Rs. 1,20,000. What is throughput cost per week?","opts":["Rs. 70000","Rs. 80000","Rs. 850000","Rs. 75000"],"ans":3,"ans_text":"Rs.75000","chapter":4},{"sl":222,"q":"In a PERT network, the optimistic time for a particular activity is 9 weeks and the pessimistic time is 21 weeks. Which one of the following is the best estimate of the standard deviation for the activity?","opts":["2","5","8","11"],"ans":0,"ans_text":"2","chapter":23},{"sl":223,"q":"What is the opportunity cost of making a component part in a factory given no alternative use of the capacity?","opts":["The total variable cost of the component","The variable manufacturing cost of the component","The total manufacturing cost of the component","Zero"],"ans":3,"ans_text":"Zero","chapter":9},{"sl":224,"q":"The particular task performance in CPM is known as","opts":["Event","Activity","Dummy","Contract"],"ans":1,"ans_text":"Activity","chapter":23},{"sl":225,"q":"In calculating the life cycle costs of a product, which of the following items would be included? A. Planning and concept design costs B. Preliminary and detailed design costs C. Testing costs D. Production costs E. Distribution costs","opts":["D and E","B, D and E","D","All of the above"],"ans":3,"ans_text":"All of the above","chapter":11},{"sl":226,"q":"The expected time for an activity of Project B is 10 days. If the optimistic and pessimistic times are 8 days and 12 days respectively, the most likely time estimate will be:","opts":["3 days","4 days","6 days","10 days"],"ans":3,"ans_text":"10 days","chapter":23},{"sl":227,"q":"XYZ Ltd., developing a new product, makes a model for testing and goes for regular production. From past experience of similar models, it is known that a 90% learning curve applies. If the time taken to make the model is 300 hours, what will be the total time taken to produce 3rd to 4th unit of the product?","opts":["432 hours","470 hours","522 hours","390 hours"],"ans":0,"ans_text":"432 hours","chapter":11},{"sl":228,"q":"Activity in a Network diagram is shown by","opts":["Cone","Curve","Square","Arrow"],"ans":3,"ans_text":"Arrow","chapter":23},{"sl":229,"q":"Which of the following quality costs is incurred when inferior products are delivered to customers?","opts":["External Failure Costs","Appraisal Costs","Internal Failure Costs","Prevention Costs"],"ans":0,"ans_text":"External Failure Costs","chapter":1},{"sl":230,"q":"During which phase of the Product Life Cycle, sales rise at an increasing rate?","opts":["Growth","Introduction","Decline","Maturity"],"ans":0,"ans_text":"Growth","chapter":11},{"sl":231,"q":"A company has 2000 units of an obsolete item which are carried in inventory at the original purchase price of Rs. 30,000. If these items are reworked for Rs. 10,000, they can be sold for Rs. 18,000. Alternatively, they can be sold as scrap for Rs. 3,000 in the market. In a decision model used to analyze the reworking proposal, the opportunity cost should be taken as:","opts":["Rs. 3000","Rs. 30000","Rs. 2000","Rs. 4000"],"ans":0,"ans_text":"Rs.3000","chapter":9},{"sl":232,"q":"When fewer than m+n-1 shipment exist in a feasible solution","opts":["a dummy source must be created","the problem is capacitated.","an occupied cell must be created artificially.","the problem is unbalanced."],"ans":2,"ans_text":"an occupied cell must be created artificially.","chapter":19},{"sl":233,"q":"When allocation service department cost to production departments, the method that does not consider different cost behavior patterns is the","opts":["Step method","Step method","Single rate-method","Step method"],"ans":2,"ans_text":"Single rate-method","chapter":0},{"sl":234,"q":"Which one of the following is not a support activity of value chain?","opts":["Human Resource Management","Service","Technological Development","Infrastructure"],"ans":1,"ans_text":"Service","chapter":0},{"sl":235,"q":"In a factory where standard costing system is followed the production department consumed 1100 kgs of a material @ Rs. 8 per kg for product X resulting in material price variance of Rs. 2200(Fav) and material usage variance of Rs. 1000(Adv).What is the standard material cost of actual production of product X?","opts":["Rs. 20000","Rs. 15000","Rs. 12000","Rs. 10000"],"ans":3,"ans_text":"Rs.10000","chapter":17},{"sl":236,"q":"Which of the following is a recognised method of arriving at the selling price for the products of a business? (A) Life cycle pricing (B) Price skimming (C) Penetration pricing (D) Target costing","opts":["(A) and (B) only","(A), (B) and (C) only","(B) and (C) only","(A), (B), (C) and (D)"],"ans":1,"ans_text":"(A), (B) and (C) only","chapter":10},{"sl":237,"q":"Warranty period return of finished goods sold falls under the following quality cost:","opts":["Prevention","Appraisal","Internal failure","External failure"],"ans":2,"ans_text":"Internal failure","chapter":1},{"sl":238,"q":"P operates an activity based costing (ABC) system to attribute its overhead costs to cost objects. In its budget for the year ending 31August 2017, the company expected to place a total of 2,895 purchase orders at a total cost of Rs. 1,10,010. This activity and its related costs were budgeted to occur at a constant rate throughout the budget year, which is divided into 13 four- week periods. During the four-week period ended 30 June 2016, a total of 210 purchase orders were placed at a cost of Rs. 7,650. The over-recovery of these costs for the four-week period was:","opts":["Rs. 430","Rs. 330","Rs. 380","₹ 390"],"ans":1,"ans_text":"Rs.330","chapter":13},{"sl":239,"q":"Which one of the following is not true for a Red ocean strategy and why?","opts":["Make the value cost trade-off","Beat the competition","Break the value cost trade-off","Exploit existing demand"],"ans":2,"ans_text":"Break the value cost trade-off","chapter":0},{"sl":240,"q":"Mohan Ltd., has developed a new product just complete the manufacture of first four units of the product. The fist unit took 2 hours to manufacture and the first four units together took 5.12 hours to produce. The Learning Curve rate is","opts":["83.50%","75.50%","80.00%","None of (A), (B) or (C)"],"ans":2,"ans_text":"80.00%","chapter":24},{"sl":241,"q":"A company has a capacity to make 4,00,000 units of a product. It has noted from market conditions that at a price of Rs. 50 per unit, it can sell 1,00,000 units but the demand would double for each Rs. 5 fall in the selling price. A minimum margin of 25% is required. The target cost for the company should be:","opts":["₹ 30","₹ 25","₹ 40","₹ 10"],"ans":0,"ans_text":"Rs.30","chapter":3},{"sl":242,"q":"Maximising player in a Payoff Matrix always uses","opts":["First strategy","Second strategy","Both Strategies","None of the above"],"ans":1,"ans_text":"Second strategy","chapter":21},{"sl":243,"q":"SINT Ltd. determine its selling price by marking up the variable cost 50%. In addition, the company uses frequent selling price mark down to stimulate sales. If the mark down average is 20%, what is the company's contribution margin Ratio?","opts":["19.50%","18.50%","16.67%","20.00%"],"ans":2,"ans_text":"16.67%","chapter":3},{"sl":244,"q":"Subham Ltd., has the capacity of production of 80,000 units and presently sells 20,000 units at ₹100 each. The demand is sensitive to selling price and it has been observed that with every reduction of ₹10 in selling price, the demand is doubled. What should be the target cost at full capacity if profit margin on sale is taken as 25%?","opts":["₹ 55.00","₹ 68.00","₹ 65.50","₹ 60.00"],"ans":3,"ans_text":"Rs.60","chapter":3},{"sl":245,"q":"A Company requires ₹85,00,000 in sales to meet its target net profit. Its contribution margin is 30% and the fixed costs are Rs.15,00,000. What is the target net profit?","opts":["Rs.050000","Rs.1020000","Rs.1050000","Rs.980000"],"ans":2,"ans_text":"Rs.1050000","chapter":3},{"sl":246,"q":"Depreciation of product testing equipment is","opts":["Appraisal Cost","Internal Failure Cost","Not a Quality Cost","Irrelevant, but Quality Cost"],"ans":0,"ans_text":"Appraisal Cost","chapter":1},{"sl":247,"q":"The P/V ratio of a company dealing in Mechanical equipment is 50% and the margin of safety is 20%. BEP of the firm at a sales volume of Rs.50,00,000 will be","opts":["Rs.4000000","Rs.2500000","Rs.3000000","Rs.3500000"],"ans":0,"ans_text":"Rs.4000000","chapter":3},{"sl":248,"q":"ABC Ltd., a manufacturing company has a break-even point when sales are Rs.12,00,000 and fixed costs at that level of sales are Rs. 4,80,000. If the margin of safety (MOS) and sales of the company are 40% and 5,00,000 units respectively, what will be the sale price per unit?","opts":["Rs.3","Rs.4","Rs.5","Rs.6"],"ans":1,"ans_text":"Rs.4","chapter":3},{"sl":249,"q":"Random numbers are used","opts":["To give random outcomes","To describe the uncertainty of the input values","To change the problem solution","To assign values to the parameters"],"ans":1,"ans_text":"To describe the uncertainty of the input values","chapter":22},{"sl":250,"q":"In a factory where standard costing system is followed, the production department consumed 1100 kgs of a material @ Rs.8 per kg for product X resulting in material price variance of Rs.2200 (Fav) and material usage variance of Rs.1000 (Adv). What is the standard material cost of actual production of product X?","opts":["10,500","12,000","9,000","10,000"],"ans":3,"ans_text":"10,000","chapter":17},{"sl":251,"q":"When Minimax and Maximin criteria matches then","opts":["Saddle point exists","Mixed strategy exists","A unfair game exists","A fair game exists"],"ans":0,"ans_text":"Saddle point exists","chapter":21},{"sl":252,"q":"A Firm is said to achieve Condition of equilibrium when","opts":["Its loss is minimized","Its objective is optimized","Its profit is maximized","All of the above"],"ans":3,"ans_text":"All of the above","chapter":21},{"sl":253,"q":"An operation has a 90% learning curve and the first unit produced took 28 minutes. The labour cost is Rs.20 per hour. How much should the second unit cost?","opts":["Rs.7.3","Rs.7.6","Rs.7.7","Rs.8.2"],"ans":1,"ans_text":"Rs.7.6","chapter":24},{"sl":254,"q":"The constraints in a linear programming Model are -","opts":["Included in the Objective function","Costs","Scarce Resources","Dependent Variables"],"ans":2,"ans_text":"Scarce Resources","chapter":18},{"sl":255,"q":"If project A has a net present value (NPV) of Rs.30,00,000 and project B has an NPV of Rs.50,00,000, what is the opportunity cost if project B is selected?","opts":["Rs.5000000","Rs.2000000","Rs.8000000","Rs.3000000"],"ans":3,"ans_text":"Rs.3000000","chapter":9},{"sl":256,"q":"To obtain the break-even point in rupee sales value, total fixed costs are divided by","opts":["Contribution Margin Per Unit","Variable Cost Per Unit","Profit/Volume Ratio","Fixed Cost Per Unit"],"ans":2,"ans_text":"Profit/Volume Ratio","chapter":3},{"sl":257,"q":"Which of the following Quality Cost is incurred in the process of uncovering defects?","opts":["Prevention Costs","Prevention Costs","Appraisal Costs","Prevention Costs"],"ans":2,"ans_text":"Appraisal Costs","chapter":1},{"sl":258,"q":"A company that is a price-taker would most likely use which of the following methods?","opts":["Cost plus pricing, contribution approach","Target costing","Cost plus pricing, absorption approach","Cost plus pricing, absorption approach"],"ans":1,"ans_text":"Target costing","chapter":10},{"sl":259,"q":"The Break Even Sales of GXT Ltd., a manufacturing company, is Rs.3,75,000, while its fixed cost is Rs.1,12,500. If the Margin of Safety is 40%, what will be its Profit?","opts":["Rs.80000","Rs.70000","Rs.75000","Insufficient information"],"ans":2,"ans_text":"Rs.75000","chapter":3},{"sl":260,"q":"The product of XYZ company is sold at a fixed price of Rs.1,500 per unit. As per company’s estimate, 500 units of the product is expected to be sold in the coming year. If the value of investments of the company is Rs.15 lakh and it has a target ROI of 15%, the target cost would be:","opts":["Rs.930","Rs.1050","Rs.1000","Rs.920"],"ans":1,"ans_text":"Rs.1050","chapter":10},{"sl":261,"q":"A PERT network has only two activities on its critical Path. The Standard Deviation of these activities are 6 and 8 respectively. What is the Standard Deviation of the Project completion time?","opts":["7","5","10","3"],"ans":2,"ans_text":"Rs.10","chapter":23},{"sl":262,"q":"A 100% Learning Curve implies that","opts":["No learning has been achieved","Organisational learning has taken place","The Learning Curve can be applied universally across an industry","Direct labour time is reduced 100% for each doubling of production"],"ans":0,"ans_text":"No learning has been achieved","chapter":24},{"sl":263,"q":"Analysis of a dataset has revealed the fact that profit of a business has reduced for the financial year 2024-25. What category of data analytics it comes under?","opts":["Descriptive Analytics","Predictive Analytics","Diagnostic Analytics","Prescriptive Analytics"],"ans":0,"ans_text":"Descriptive Analytics","chapter":0},{"sl":264,"q":"Learning Curve is also known as","opts":["Growth curve","Production curve","Experience curve","Exponential curve"],"ans":2,"ans_text":"Experience curve","chapter":24},{"sl":265,"q":"PQR Ltd., a manufacturer of components for XYZ, has a capacity to produce 4 Lakh units. The market demand is sensitive to the sale price and the company could sell 1 Lakh units at a price of Rs.5,000 each. The demand thereafter would double for each 500 per unit fall in the selling price. If the company expects a minimum margin of 25%, what would be the Target Cost per unit for the company to sell at full capacity utilization?","opts":["Rs.3000","Rs.4000","Rs.5000","Rs.4500"],"ans":0,"ans_text":"Rs.3000","chapter":3},{"sl":266,"q":"In cost-plus pricing, the markup consists of","opts":["total cost and desired ROI.","selling and administrative costs.","desired ROI","manufacturing costs"],"ans":2,"ans_text":"desired ROI","chapter":10},{"sl":267,"q":"Which of the following is/are not the features of Jedox tool?","opts":["Deployable in the cloud as well as on premise server or Hybrid.","BI and Analytics platform.","Allows users to easily create and share powerful reports within minutes.","(B) and (C) only"],"ans":3,"ans_text":"(B) and (C) only","chapter":0},{"sl":268,"q":"A particular job MB requires 800 kgs. of a material. 500 kgs. of the particular material is currently in stock. The original price of the material was Rs.300 but current resale value of the same has been determined as Rs.200. The current replacement price of the material is Re. 0.80 per kg., what will be the relevant cost of material for job MB?","opts":["Rs.440","Rs.320","Rs.400","Rs.380"],"ans":0,"ans_text":"Rs.440","chapter":9},{"sl":269,"q":"What is the name given to a budget that has been prepared by re-evaluating activities and comparing the incremental costs of those activities with their incremental benefits?","opts":["Rolling budget","Zero based budget","Incremental budget","Flexible budget"],"ans":1,"ans_text":"Zero based budget","chapter":1},{"sl":270,"q":"1200 units of microchips are required to be sold to earn a profit of Rs.1,06,000 in a monopoly market. The fixed cost for the period is Rs.74,000. The contribution in the monopoly market is as high as 3/4th of its variable cost. Determine the target selling price per unit.","opts":["Rs.310","Rs.280","Rs.350","Rs.380"],"ans":2,"ans_text":"Rs.350","chapter":3},{"sl":271,"q":"A company produces a product which is sold at a price of Rs.80. Its Variable cost is Rs.32. The company’s Fixed cost is Rs.11,52,000 p.a. The company operates at a margin of safety of 40%. The total sales of the company is:","opts":["40,000 units","30,000 units","10,000 units","20,000 units"],"ans":0,"ans_text":"40,000 units","chapter":3},{"sl":272,"q":"In the context of Critical Path Analysis, the portion of the float of an activity which cannot be consumed without affecting adversely the float of the subsequent activities is called","opts":["Free float","Interfering float","Total float","Independent float"],"ans":1,"ans_text":"Interfering float","chapter":23},{"sl":273,"q":"In CPA (Critical Path Analysis) which of the following is not a correct step in sequence?","opts":["Understanding the logic of the system under consideration","Providing estimates for activity duration","Implementing and controlling the net work","Constructing the net work"],"ans":2,"ans_text":"Implementing and controlling the net work","chapter":23},{"sl":274,"q":"By making and selling 9,000 units of a product, a company makes a profit of Rs.10,000, whereas in the case of 7,000 units, it would lose Rs.10,000 instead. The number of units to break-even is","opts":["7,500 units","8,200 units","7,750 units","8,000 units"],"ans":3,"ans_text":"8,000 units","chapter":3},{"sl":275,"q":"A learning curve is a function","opts":["that increases at a greater rate as workers become more familiar with their tasks","A learning curve is a function","that measures the decline in labor-hours per unit due to workers becoming better at a job","that is linear"],"ans":2,"ans_text":"that measures the decline in labor-hours per unit due to workers becoming better at a job","chapter":24},{"sl":276,"q":"The break-even point of a manufacturing company is Rs.1,60,000. Fixed cost is Rs.48,000. Variable cost is Rs.₹ 12 per unit. The PV ratio will be","opts":["20%","30%","40%","35%"],"ans":1,"ans_text":"30%","chapter":3},{"sl":277,"q":"A factory has a key resource (bottleneck) of Facility A which is available for 31,300 minutes per week. The time taken by per unit of Product X and Y in Facility A are 5 minutes and 10 minutes respectively. Last week’s actual output was 4750 units of product X and 650 units of Product Y. Actual factory cost was Rs.78,250. The throughput cost for the week would be:","opts":["Rs.78200","Rs.79375","Rs.73745","Rs.75625"],"ans":3,"ans_text":"Rs.75625","chapter":4},{"sl":278,"q":"S Ltd. manufactures a product whose time for the first unit is 1000 hours. It experience a learning curve of 80%, What will be the total time taken in hours for unit 5 to 8?","opts":["1536 hours","4096 hours","2000 hours","3200 hours"],"ans":0,"ans_text":"1536 hours","chapter":24},{"sl":279,"q":"M/s Zimbra Limited sold 55,000 units of its product at Rs. 80 per unit. P/V Ratio is 20%. If total Fixed Cost is Rs. 6,40,000, the Margin of Safety (Units) is","opts":["15,000 Units","25,000 Units","20,000 Units","22,000 Units"],"ans":0,"ans_text":"15,000 Units","chapter":3},{"sl":280,"q":"Which one of the following is true for Blue Ocean Strategy?","opts":["Exploit existing demand","Beat the competition","Make the competition irrelevant","Make the value-cost trade off"],"ans":2,"ans_text":"Make the competition irrelevant","chapter":1},{"sl":281,"q":"The important step(s) required for simulation approach in solving a problem is/are","opts":["Test and validate the Model","Design the experiment","Conduct the experiment","All of the above"],"ans":3,"ans_text":"All of the above","chapter":22},{"sl":282,"q":"The expected time for an activity of Project LM is 20 days. If the most likely and pessimistic time are 19 days and 28 days, what will be the variance of the activity?","opts":["4","1.5","2.6","3.8"],"ans":0,"ans_text":"4","chapter":23},{"sl":283,"q":"Down time due to defect in quality is an example of","opts":["Prevention cost","Internal failure cost","Appraisal cost","External failure cost"],"ans":1,"ans_text":"Internal failure cost","chapter":1},{"sl":284,"q":"In decision-making under risk, the expected monetary value (EMV) of an alternative is calculated by:","opts":["Multiplying each possible payoff by its probability and adding the products","Adding all possible payoffs and dividing by the number of outcomes","Selecting the highest possible payoff only","Selecting the lowest possible payoff only"],"ans":0,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":285,"q":"A project can generate ₹1,00,000 with probability 0.6 and ₹40,000 with probability 0.4. What is its expected monetary value?","opts":["₹60,000","₹76,000","₹84,000","₹1,40,000"],"ans":1,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":286,"q":"If an alternative has outcomes of ₹80,000 and ₹20,000 with probabilities 0.3 and 0.7 respectively, its EMV is:","opts":["₹38,000","₹44,000","₹50,000","₹62,000"],"ans":1,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":287,"q":"A decision tree is primarily used to:","opts":["Represent sequential decisions and uncertain events graphically","Calculate only fixed costs","Prepare a balance sheet","Determine depreciation by straight-line method"],"ans":0,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":288,"q":"In a decision tree, a square node normally represents:","opts":["A chance event","A decision point","The final payoff","A probability"],"ans":1,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":289,"q":"In a decision tree, a circle node normally represents:","opts":["A decision point","A chance event","A fixed cost","A constraint"],"ans":1,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":290,"q":"The probabilities assigned to all mutually exclusive outcomes of a chance event should normally sum to:","opts":["0","0.5","1","1000"],"ans":2,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":291,"q":"A decision-maker who chooses the alternative with the highest EMV is applying:","opts":["Expected value criterion","Maximin criterion","Minimax regret criterion","Equal likelihood criterion"],"ans":0,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":292,"q":"If an outcome of ₹50,000 has probability 0.2, its probability-weighted contribution to EMV is:","opts":["₹5,000","₹10,000","₹20,000","₹25,000"],"ans":1,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":293,"q":"A company is choosing between two projects. Project A has EMV ₹3,00,000 and Project B has EMV ₹2,40,000. Ignoring other considerations, the EMV criterion selects:","opts":["Project A","Project B","Both equally","Neither"],"ans":0,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":294,"q":"Expected opportunity loss (EOL) is calculated by:","opts":["Probability-weighting the opportunity losses for each state and summing them","Adding all revenues without probabilities","Subtracting fixed cost from sales","Dividing total profit by units"],"ans":0,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":295,"q":"The Expected Value of Perfect Information (EVPI) represents the maximum amount a decision-maker should be willing to pay for:","opts":["Perfect information about future states of nature","A higher selling price","Additional fixed assets","A lower tax rate"],"ans":0,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":296,"q":"If the expected value with perfect information is ₹5,00,000 and the best EMV without perfect information is ₹4,20,000, EVPI is:","opts":["₹40,000","₹80,000","₹1,20,000","₹9,20,000"],"ans":1,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":297,"q":"When probabilities of states of nature are known or can be estimated, the decision situation is generally described as decision-making under:","opts":["Certainty","Risk","Ignorance only","Perfect competition"],"ans":1,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":298,"q":"A state of nature is best described as:","opts":["A condition outside the decision-maker's control that affects the outcome","A decision made by management","A fixed accounting standard","A production constraint only"],"ans":0,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":299,"q":"A company estimates probabilities of high, medium and low demand as 0.2, 0.5 and 0.3. The probabilities are:","opts":["Invalid because they are not equal","Valid because they sum to 1","Invalid because there are three states","Valid only if demand is certain"],"ans":1,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":300,"q":"If all possible states of nature have equal probabilities, the decision criterion is commonly called:","opts":["Expected value criterion","Laplace or equal-likelihood criterion","Maximax criterion","Minimax regret criterion"],"ans":1,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":301,"q":"Under the maximax criterion, a decision-maker selects the alternative with:","opts":["The highest of the best possible payoffs","The lowest of the worst possible payoffs","The lowest expected loss","The smallest probability"],"ans":0,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":302,"q":"Under the maximin criterion, a decision-maker selects the alternative with:","opts":["The highest possible payoff","The highest among the minimum payoffs","The lowest EMV","The highest probability"],"ans":1,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"},{"sl":303,"q":"In probability-based decision analysis, sensitivity analysis is useful for examining:","opts":["How the decision changes when key assumptions or probabilities change","Only the arithmetic mean","Only historical cost records","Only depreciation expense"],"ans":0,"chapter":12,"source":"New practice MCQ – Decision Making – Probability"}];
+
+const SCM_CHAPTER_NAMES = {
+  1:"Cost of Quality",2:"Pareto Analysis",3:"Decision Making – CVP Analysis",
+  4:"Decision Making – Limiting Factor",5:"Decision Making – Make or Buy",
+  6:"Decision Making – Subcontracting",7:"Decision Making – Service Costing",
+  8:"Transfer Pricing",9:"Relevant Costing",10:"Target Costing",
+  11:"Product Life Cycle Costing",12:"Decision Making – Probability",
+  13:"Activity Based Costing",14:"Just-in-Time (JIT)",15:"Throughput Accounting",
+  16:"Back-Flush Accounting",17:"Standard Costing and Variance Analysis",
+  18:"Linear Programming",19:"Transportation",20:"Assignment",21:"Game Theory",
+  22:"Simulation",23:"Project Management",24:"Learning Curve",
+  25:"Business Application of Maxima and Minima",26:"Business Forecasting Models"
+};
+function scmChapterPool(value){
+  if(value==="all") return QUESTIONS.slice();
+  return QUESTIONS.filter(q=>Number(q.chapter)===Number(value));
+}
+
+</script>
+<script>
+(function(){
+  "use strict";
+
+  var LETTERS = ["A","B","C","D"];
+
+  var state = {
+    pool: [],
+    idx: 0,
+    correctCount: 0,
+    score: 0, // in marks
+    answered: false,
+    instant: true,
+    random: true,
+    count: 20,
+    marks: 1,
+    timerOn: false,
+    seconds: 60,
+    timeLeft: 0,
+    timerHandle: null,
+    log: [], // {sl, q, opts, correctIdx, chosenIdx, timedOut}
+    chapter: "all",
+    specialMode: null
+  };
+
+  function safeLoad(key){
+    try { return JSON.parse(localStorage.getItem(key) || "[]"); } catch(e){ return []; }
+  }
+  function safeSave(key, value){
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch(e){}
+  }
+  var wrongIds = new Set(safeLoad("scm16_wrong"));
+  var bookmarkIds = new Set(safeLoad("scm16_bookmarks"));
+
+  function chapterOf(sl){
+    if(sl>=1 && sl<=14) return "strategic";
+    if((sl>=15 && sl<=39) || (sl>=191 && sl<=199) || (sl>=231 && sl<=249) || (sl>=271 && sl<=280)) return "decision";
+    if((sl>=40 && sl<=54) || (sl>=221 && sl<=230)) return "abc";
+    if(sl>=55 && sl<=68) return "standard";
+    if((sl>=69 && sl<=109) || (sl>=200 && sl<=209)) return "lp";
+    if((sl>=110 && sl<=120) || (sl>=250 && sl<=259)) return "game";
+    if((sl>=121 && sl<=130) || (sl>=281 && sl<=283)) return "simulation";
+    if((sl>=131 && sl<=149) || (sl>=210 && sl<=219) || (sl>=260 && sl<=269)) return "network";
+    if(sl>=150 && sl<=159) return "learning";
+    return "analytics";
+  }
+  function chapterQuestions(){
+    return state.chapter === "all" ? QUESTIONS.slice() :
+      QUESTIONS.filter(function(q){ return Number(q.chapter) === Number(state.chapter); });
+  }
+
+  // ---------- helpers ----------
+  function shuffle(arr){
+    var a = arr.slice();
+    for(var i=a.length-1;i>0;i--){
+      var j = Math.floor(Math.random()*(i+1));
+      var t = a[i]; a[i]=a[j]; a[j]=t;
+    }
+    return a;
+  }
+
+  function el(id){ return document.getElementById(id); }
+
+  function showScreen(id){
+    ["setupScreen","quizScreen","resultScreen"].forEach(function(s){
+      el(s).classList.toggle("active", s===id);
+    });
+    el("homeBtn").style.display = (id === "setupScreen") ? "none" : "inline-block";
+  }
+
+  function goHome(){
+    stopTimer();
+    showScreen("setupScreen");
+  }
+
+  // ---------- setup screen wiring ----------
+  var MIN_Q = 5, MAX_Q = QUESTIONS.length;
+  var MIN_MARKS = 1, MAX_MARKS = 10;
+  var MIN_SEC = 10, MAX_SEC = 180;
+
+  function refreshCount(){ el("countDisplay").textContent = state.count; }
+  function refreshMarks(){ el("marksDisplay").textContent = state.marks; }
+  function refreshSeconds(){ el("secDisplay").textContent = state.seconds; }
+
+  el("stepDown").addEventListener("click", function(){
+    state.count = Math.max(MIN_Q, state.count - 5);
+    refreshCount();
+  });
+  el("stepUp").addEventListener("click", function(){
+    state.count = Math.min(MAX_Q, state.count + 5);
+    refreshCount();
+  });
+
+  el("marksDown").addEventListener("click", function(){
+    state.marks = Math.max(MIN_MARKS, state.marks - 1);
+    refreshMarks();
+  });
+  el("marksUp").addEventListener("click", function(){
+    state.marks = Math.min(MAX_MARKS, state.marks + 1);
+    refreshMarks();
+  });
+
+  el("secDown").addEventListener("click", function(){
+    state.seconds = Math.max(MIN_SEC, state.seconds - 10);
+    refreshSeconds();
+  });
+  el("secUp").addEventListener("click", function(){
+    state.seconds = Math.min(MAX_SEC, state.seconds + 10);
+    refreshSeconds();
+  });
+
+  el("randomToggle").addEventListener("change", function(e){
+    state.random = e.target.checked;
+  });
+  el("instantToggle").addEventListener("change", function(e){
+    state.instant = e.target.checked;
+  });
+  el("timerToggle").addEventListener("change", function(e){
+    state.timerOn = e.target.checked;
+    el("timerSecondsRow").style.display = state.timerOn ? "flex" : "none";
+  });
+
+  el("chapterSelect").addEventListener("change", function(e){
+    state.chapter = e.target.value;
+    state.specialMode = null;
+    var n = chapterQuestions().length;
+    el("chapterCount").textContent = n + " questions available";
+    state.count = Math.min(state.count, Math.max(MIN_Q, n));
+    MAX_Q = n;
+    refreshCount();
+  });
+
+  el("wrongBtn").addEventListener("click", function(){ startSpecialRound("wrong"); });
+  el("bookmarkedBtn").addEventListener("click", function(){ startSpecialRound("bookmarked"); });
+  el("retryWrongBtn").addEventListener("click", function(){ startSpecialRound("wrong"); });
+  el("bookmarkBtn").addEventListener("click", toggleBookmark);
+
+  el("startBtn").addEventListener("click", startRound);
+  el("againBtn").addEventListener("click", function(){
+    stopTimer();
+    showScreen("setupScreen");
+  });
+  el("homeBtn").addEventListener("click", goHome);
+  el("homeFromResultBtn").addEventListener("click", goHome);
+  el("quitBtn").addEventListener("click", endRound);
+  el("nextBtn").addEventListener("click", nextQuestion);
+  el("revealBtn").addEventListener("click", function(){
+    if(!state.answered) revealAnswer();
+  });
+  el("toggleReview").addEventListener("click", function(){
+    var list = el("reviewList");
+    var showing = list.classList.toggle("show");
+    el("toggleReview").textContent = showing ? "Hide review" : "Review this round's answers";
+  });
+
+  // ---------- round lifecycle ----------
+  function startRound(pool){ pool = pool || scmChapterPool(document.getElementById("chapterSelect").value);
+    state.specialMode = null;
+    var base = chapterQuestions();
+    var source = state.random ? shuffle(base) : base.slice().sort(function(a,b){return a.sl-b.sl;});
+    state.pool = source.slice(0, Math.min(state.count, source.length));
+    state.idx = 0;
+    state.correctCount = 0;
+    state.score = 0;
+    state.log = [];
+    showScreen("quizScreen");
+    renderQuestion();
+  }
+
+  function startSpecialRound(mode){
+    var ids = mode === "wrong" ? wrongIds : bookmarkIds;
+    var base = QUESTIONS.filter(function(q){
+      return ids.has(q.sl) && (state.chapter === "all" || chapterOf(q.sl) === state.chapter);
+    });
+    if(!base.length){
+      alert(mode === "wrong" ? "No wrong questions saved for this chapter yet." : "No bookmarked questions saved for this chapter yet.");
+      return;
+    }
+    state.specialMode = mode;
+    state.pool = state.random ? shuffle(base) : base.slice().sort(function(a,b){return a.sl-b.sl;});
+    state.idx = 0; state.correctCount = 0; state.score = 0; state.log = [];
+    showScreen("quizScreen");
+    renderQuestion();
+  }
+
+  function toggleBookmark(){
+    var q = state.pool[state.idx];
+    if(bookmarkIds.has(q.sl)) bookmarkIds.delete(q.sl); else bookmarkIds.add(q.sl);
+    safeSave("scm16_bookmarks", Array.from(bookmarkIds));
+    updateBookmarkButton();
+  }
+  function updateBookmarkButton(){
+    var q = state.pool[state.idx];
+    var on = bookmarkIds.has(q.sl);
+    el("bookmarkBtn").textContent = on ? "★ Bookmarked" : "☆ Bookmark question";
+    el("bookmarkBtn").classList.toggle("on", on);
+  }
+
+  function endRound(){
+    stopTimer();
+    finishRound();
+  }
+
+  function finishRound(){
+    stopTimer();
+    var total = state.log.length;
+    var maxMarks = total * state.marks;
+    var wrongCount = 0, skippedCount = 0;
+    state.log.forEach(function(item){
+      if(item.chosenIdx === null){
+        skippedCount++;
+      } else if(item.chosenIdx !== item.correctIdx){
+        wrongCount++;
+      }
+    });
+    el("finalScore").textContent = state.correctCount + " / " + total;
+    var pct = total ? Math.round((state.correctCount/total)*100) : 0;
+    el("finalPct").textContent = pct + "% correct";
+    el("bdCorrect").textContent = state.correctCount;
+    el("bdWrong").textContent = wrongCount;
+    el("bdSkipped").textContent = skippedCount;
+    el("finalMarksLabel").textContent = state.score + " / " + maxMarks;
+    buildReview();
+    el("reviewList").classList.remove("show");
+    el("toggleReview").textContent = "Review this round's answers";
+    showScreen("resultScreen");
+  }
+
+  function buildReview(){
+    var wrap = el("reviewList");
+    wrap.innerHTML = "";
+    state.log.forEach(function(item, i){
+      var div = document.createElement("div");
+      var cls = "review-item " + (item.chosenIdx === null ? "skip" : (item.chosenIdx === item.correctIdx ? "ok" : "no"));
+      div.className = cls;
+      var html = '<p class="rq">' + (i+1) + '. ' + escapeHtml(item.q) + '</p>';
+      html += '<div class="rmeta">';
+      if(item.chosenIdx === null){
+        var why = item.timedOut ? "Time ran out" : "Skipped";
+        html += why + ' &nbsp;\u00b7&nbsp; <span class="correct-line">Correct: ' + LETTERS[item.correctIdx] + '. ' + escapeHtml(item.opts[item.correctIdx]) + '</span>';
+      } else if(item.chosenIdx === item.correctIdx){
+        html += '<span class="correct-line">Correct \u2014 ' + LETTERS[item.correctIdx] + '. ' + escapeHtml(item.opts[item.correctIdx]) + '</span>';
+      } else {
+        html += '<span class="yours">Your answer: ' + LETTERS[item.chosenIdx] + '. ' + escapeHtml(item.opts[item.chosenIdx]) + '</span><br>';
+        html += '<span class="correct-line">Correct: ' + LETTERS[item.correctIdx] + '. ' + escapeHtml(item.opts[item.correctIdx]) + '</span>';
+      }
+      html += '</div>';
+      div.innerHTML = html;
+      wrap.appendChild(div);
+    });
+  }
+
+  function escapeHtml(s){
+    var d = document.createElement("div");
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  // ---------- timer ----------
+  function stopTimer(){
+    if(state.timerHandle){
+      clearInterval(state.timerHandle);
+      state.timerHandle = null;
+    }
+    el("timerTrackWrap").style.display = "none";
+    el("qTimer").textContent = "";
+  }
+
+  function startTimer(){
+    if(!state.timerOn) return;
+    state.timeLeft = state.seconds;
+    el("timerTrackWrap").style.display = "block";
+    updateTimerUI();
+    state.timerHandle = setInterval(function(){
+      state.timeLeft--;
+      updateTimerUI();
+      if(state.timeLeft <= 0){
+        clearInterval(state.timerHandle);
+        state.timerHandle = null;
+        handleTimeout();
+      }
+    }, 1000);
+  }
+
+  function updateTimerUI(){
+    var pct = Math.max(0, (state.timeLeft/state.seconds)*100);
+    var fill = el("timerFill");
+    fill.style.width = pct + "%";
+    var tag = el("qTimer");
+    tag.textContent = state.timeLeft + "s";
+    var urgent = state.timeLeft <= 10;
+    fill.classList.toggle("urgent", urgent);
+    tag.classList.toggle("urgent", urgent);
+  }
+
+  function handleTimeout(){
+    if(state.answered) return;
+    var q = state.pool[state.idx];
+    state.answered = true;
+    wrongIds.add(q.sl);
+    safeSave("scm16_wrong", Array.from(wrongIds));
+    state.log.push({
+      sl: q.sl, q: q.q, opts: q.opts,
+      correctIdx: q.ans, chosenIdx: null, timedOut: true
+    });
+    markOptions(null, q.ans);
+    var fb = el("qFeedback");
+    fb.className = "feedback show miss";
+    fb.textContent = "Time's up \u2014 correct answer: " + LETTERS[q.ans] + ". " + q.opts[q.ans];
+    el("nextBtn").disabled = false;
+    el("revealBtn").style.display = "none";
+  }
+
+  // ---------- question rendering ----------
+  function renderQuestion(){
+    state.answered = false;
+    var q = state.pool[state.idx];
+
+    el("qPosition").textContent = "Question " + (state.idx+1) + " / " + state.pool.length;
+    el("qRunningScore").textContent = "Score " + state.score;
+    el("progressFill").style.width = ((state.idx)/state.pool.length*100) + "%";
+
+    el("qSl").textContent = "SL NO " + q.sl + (state.marks !== 1 ? "  \u00b7  " + state.marks + " marks" : "");
+    el("qText").textContent = q.q;
+
+    var optWrap = el("qOptions");
+    optWrap.innerHTML = "";
+    q.opts.forEach(function(optText, i){
+      var d = document.createElement("div");
+      d.className = "option";
+      d.setAttribute("data-idx", i);
+      d.innerHTML = '<span class="tag">' + LETTERS[i] + '</span><span class="otext">' + escapeHtml(optText) + '</span>';
+      d.addEventListener("click", function(){ selectOption(i); });
+      optWrap.appendChild(d);
+    });
+
+    var fb = el("qFeedback");
+    fb.className = "feedback";
+    fb.textContent = "";
+
+    el("nextBtn").disabled = true;
+    el("nextBtn").textContent = (state.idx === state.pool.length-1) ? "Finish round" : "Next";
+    el("revealBtn").style.display = "inline-block";
+    el("revealBtn").textContent = "Reveal answer without answering";
+
+    stopTimer();
+    startTimer();
+  }
+
+  function selectOption(i){
+    if(state.answered) return;
+    stopTimer();
+    var q = state.pool[state.idx];
+    state.answered = true;
+
+    var correct = (i === q.ans);
+    if(correct){
+      state.correctCount++;
+      state.score += state.marks;
+      wrongIds.delete(q.sl);
+    } else {
+      wrongIds.add(q.sl);
+    }
+    safeSave("scm16_wrong", Array.from(wrongIds));
+
+    state.log.push({
+      sl: q.sl, q: q.q, opts: q.opts,
+      correctIdx: q.ans, chosenIdx: i, timedOut: false
+    });
+
+    markOptions(i, q.ans);
+
+    var fb = el("qFeedback");
+    if(state.instant){
+      fb.classList.add("show");
+      if(correct){
+        fb.className = "feedback show right";
+        fb.textContent = "Correct (+" + state.marks + ") \u2014 " + LETTERS[q.ans] + ". " + q.opts[q.ans];
+      } else {
+        fb.className = "feedback show miss";
+        fb.textContent = "Not quite. Correct answer: " + LETTERS[q.ans] + ". " + q.opts[q.ans];
+      }
+    }
+
+    el("qRunningScore").textContent = "Score " + state.score;
+    el("nextBtn").disabled = false;
+    el("revealBtn").style.display = "none";
+  }
+
+  function revealAnswer(){
+    stopTimer();
+    var q = state.pool[state.idx];
+    state.answered = true;
+    wrongIds.add(q.sl);
+    safeSave("scm16_wrong", Array.from(wrongIds));
+
+    state.log.push({
+      sl: q.sl, q: q.q, opts: q.opts,
+      correctIdx: q.ans, chosenIdx: null, timedOut: false
+    });
+
+    markOptions(null, q.ans);
+
+    var fb = el("qFeedback");
+    fb.className = "feedback show right";
+    fb.textContent = "Answer: " + LETTERS[q.ans] + ". " + q.opts[q.ans];
+
+    el("nextBtn").disabled = false;
+    el("revealBtn").style.display = "none";
+  }
+
+  function markOptions(chosenIdx, correctIdx){
+    var opts = el("qOptions").children;
+    for(var i=0;i<opts.length;i++){
+      var node = opts[i];
+      node.classList.add("disabled");
+      if(i === correctIdx){
+        node.classList.add("correct");
+      }
+      if(chosenIdx !== null && i === chosenIdx && chosenIdx !== correctIdx){
+        node.classList.add("wrong");
+      }
+      if(chosenIdx !== null && i === chosenIdx){
+        node.classList.add("selected");
+      }
+    }
+  }
+
+  function nextQuestion(){
+    if(state.idx < state.pool.length-1){
+      state.idx++;
+      renderQuestion();
+    } else {
+      finishRound();
+    }
+  }
+
+  // init
+  refreshCount();
+  refreshMarks();
+  refreshSeconds();
+})();
+
+
+(function(){
+  const s=document.getElementById("chapterSelect");
+  const c=document.getElementById("chapterCount");
+  if(!s) return;
+
+  const counts={};
+  QUESTIONS.forEach(q=>{
+    const ch=Number(q.chapter);
+    if(ch>=1) counts[ch]=(counts[ch]||0)+1;
+  });
+
+  // Show the question count directly beside every chapter name.
+  Array.from(s.options).forEach(opt=>{
+    const value=opt.value;
+    if(value==="all") {
+      opt.textContent="All Chapters ("+QUESTIONS.length+" Qs)";
+    } else {
+      const n=counts[Number(value)]||0;
+      const base=opt.textContent.replace(/\s*\(\d+ Qs\)$/,'');
+      opt.textContent=base+" ("+n+" Qs)";
+    }
+  });
+
+  function updateChapterCount(){
+    const p=scmChapterPool(s.value);
+    c.textContent=p.length+" questions available"+(s.value==="all"?" in the full bank.":" in this chapter.");
+    const cd=document.getElementById("countDisplay");
+    if(cd && window.state && state.count>p.length && p.length){
+      state.count=p.length; cd.textContent=state.count;
+    }
+  }
+  s.addEventListener("change",updateChapterCount);
+  updateChapterCount();
+})();
+
+</script>
+
+</body>
+</html>
