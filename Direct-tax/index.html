@@ -1,1 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Direct Tax Laws & International Taxation | TaxPath Test Series</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#687386;--line:#e2e7ef;--dark:#172033;--soft:#eef2f7;--good:#1f8a52;--bad:#c7463a;--warn:#b77900}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,Helvetica,sans-serif}
+button,select,input{font:inherit}
+button{cursor:pointer;border:0}
+.app{max-width:1080px;margin:auto;padding:14px}
+.nav{display:flex;gap:8px;margin-bottom:12px;overflow:auto}
+.nav a{white-space:nowrap;text-decoration:none;color:var(--text);background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-weight:700}
+.hero{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:12px}
+.hero h1{margin:0 0 5px;font-size:25px}
+.hero p{margin:0;color:var(--muted)}
+.pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}
+.pill{padding:7px 10px;background:var(--soft);border-radius:999px;font-size:13px}
+.tabs{display:flex;gap:7px;overflow:auto;margin-bottom:12px}
+.tab{background:#fff;border:1px solid var(--line);padding:10px 13px;border-radius:10px;font-weight:800;white-space:nowrap}
+.tab.active{background:var(--dark);color:#fff}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:17px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.stat{background:#f8f9fc;border:1px solid var(--line);border-radius:12px;padding:13px}
+.stat b{display:block;font-size:23px}
+.stat span{font-size:12px;color:var(--muted)}
+.formgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.field label{display:block;font-weight:800;font-size:13px;margin-bottom:6px}
+select,input[type=number]{width:100%;border:1px solid #d6dce6;border-radius:9px;background:#fff;padding:10px}
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.primary{background:var(--dark);color:#fff;border-radius:10px;padding:11px 15px;font-weight:800}
+.secondary{background:var(--soft);color:var(--text);border-radius:10px;padding:10px 13px;font-weight:800}
+.danger{background:#fff0ee;color:#9d2f25;border-radius:10px;padding:10px 13px;font-weight:800}
+.switch{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #edf0f4;padding:11px 0}
+.switch:first-child{border-top:0}
+.switch input{width:20px;height:20px}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.chip{background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800}
+.chapter{border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}
+.chapterTop{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.meter{height:7px;background:#e9edf2;border-radius:20px;overflow:hidden;margin-top:8px}
+.meter span{display:block;height:100%;background:#172033}
+.badge{font-size:11px;padding:5px 8px;border-radius:999px;background:var(--soft)}
+.badge.weak{background:#fff0ee;color:#a33026}
+.badge.strong{background:#eaf7ef;color:#1f7549}
+#test{display:none}
+.sticky{position:sticky;top:8px;z-index:5;background:#fff;border:1px solid var(--line);border-radius:13px;padding:10px;margin-bottom:10px}
+.progress{height:7px;background:#e9edf2;border-radius:20px;overflow:hidden;margin-top:8px}
+.progress span{display:block;height:100%;background:#172033;width:0}
+.questionCard{background:#fff;border:1px solid var(--line);border-radius:17px;padding:19px}
+.meta{font-size:12px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap}
+.qtext{font-size:19px;font-weight:800;line-height:1.5;margin:10px 0 16px}
+.option{display:block;border:1px solid #dfe4ec;border-radius:11px;padding:13px;margin:8px 0;cursor:pointer;line-height:1.45}
+.option:hover{background:#f8f9fb}
+.option.selected{border-color:#687386;background:#f1f3f6}
+.option.correct{border-color:#48a86e;background:#eaf8ef}
+.option.wrong{border-color:#d95d52;background:#fff0ee}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:15px}
+.timer{font-weight:900;margin-left:auto}
+.result{display:none}
+.score{font-size:40px;font-weight:900}
+.review{margin-top:12px}
+.reviewItem{border-bottom:1px solid #edf0f4;padding:10px 0}
+.small{font-size:12px;color:var(--muted)}
+.hidden{display:none!important}
+.history{width:100%;border-collapse:collapse;font-size:13px}
+.history th,.history td{text-align:left;padding:8px;border-bottom:1px solid #edf0f4}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr}.qtext{font-size:17px}.timer{margin-left:0}}
+@media(max-width:430px){.app{padding:9px}.grid{grid-template-columns:1fr 1fr}.hero h1{font-size:21px}}
+</style>
+</head>
+<body>
+<div class="app">
 
+<div class="nav">
+<a href="../index.html">🏠 Home</a>
+<a href="../scm/index.html">📘 SCM</a>
+<a href="../sfm/index.html">📗 SFM</a>
+</div>
+
+<section class="hero">
+<h1>Direct Tax Laws & International Taxation</h1>
+<p>TaxPath CMA Final Test Series · Paper 15 · Complete MCQ Bank</p>
+<div class="pills">
+<span class="pill">173 MCQs</span>
+<span class="pill">Practice Mode</span>
+<span class="pill">Weak Area Tracking</span>
+<span class="pill">Wrong Answer Reattempt</span>
+</div>
+</section>
+
+<div class="tabs">
+<button class="tab active" data-tab="practiceTab">Practice</button>
+<button class="tab" data-tab="dashboardTab">Performance</button>
+<button class="tab" data-tab="wrongTab">Wrong Questions</button>
+<button class="tab" data-tab="bookTab">Bookmarks</button>
+</div>
+
+<section id="practiceTab">
+<div class="card">
+<h3 style="margin-top:0">Start a practice round</h3>
+<div class="formgrid">
+<div class="field">
+<label>Subject</label>
+<select id="subject">
+<option value="all">All Subjects (173)</option>
+<option value="Direct Tax Laws">Direct Tax Laws</option>
+<option value="International Taxation">International Taxation</option>
+</select>
+</div>
+<div class="field">
+<label>Chapter / Topic</label>
+<select id="topic"></select>
+</div>
+<div class="field">
+<label>Number of questions</label>
+<input id="count" type="number" min="1" max="173" value="20">
+<div class="chips">
+<button class="chip" onclick="setCount(10)">10</button>
+<button class="chip" onclick="setCount(20)">20</button>
+<button class="chip" onclick="setCount(50)">50</button>
+<button class="chip" onclick="setCount(100)">100</button>
+<button class="chip" onclick="setCount(173)">All</button>
+</div>
+</div>
+<div class="field">
+<label>Marks per question</label>
+<input id="marks" type="number" min="1" max="5" value="1">
+</div>
+</div>
+
+<div class="switch">
+<span><b>Random questions</b><br><span class="small">Create a different combination each time</span></span>
+<input id="random" type="checkbox" checked>
+</div>
+<div class="switch">
+<span><b>Instant answer</b><br><span class="small">Show the correct answer immediately after selection</span></span>
+<input id="instant" type="checkbox">
+</div>
+<div class="switch">
+<span><b>Question timer</b><br><span class="small">Automatically move on when time expires</span></span>
+<input id="timerOn" type="checkbox">
+</div>
+<div class="switch">
+<span><b>Seconds per question</b></span>
+<input id="seconds" type="number" min="10" max="300" value="60" style="max-width:130px">
+</div>
+
+<div class="row" style="margin-top:12px">
+<button class="primary" onclick="startNewRound()">Start Test</button>
+<button class="secondary" onclick="startWrongRound()">Reattempt Wrong Questions</button>
+<button class="secondary" onclick="startBookmarkedRound()">Practice Bookmarks</button>
+</div>
+</div>
+
+<div class="card">
+<h3 style="margin-top:0">Topic question count</h3>
+<div id="topicCounts"></div>
+<p class="small">Topic labels are generated from the content of the uploaded MCQ Bank because the PDF itself does not provide chapter labels. You can later replace these buckets with your official ICMAI chapter mapping.</p>
+</div>
+</section>
+
+<section id="dashboardTab" class="hidden">
+<div class="grid" id="stats"></div>
+<div class="card">
+<h3 style="margin-top:0">Weak Areas</h3>
+<div id="weakAreas"></div>
+</div>
+<div class="card">
+<h3 style="margin-top:0">Topic Performance</h3>
+<div id="topicPerformance"></div>
+</div>
+<div class="card">
+<h3 style="margin-top:0">Test History</h3>
+<div id="history"></div>
+<div class="row" style="margin-top:12px">
+<button class="secondary" onclick="exportCSV()">Export Performance CSV</button>
+<button class="secondary" onclick="exportJSON()">Export Progress JSON</button>
+<button class="danger" onclick="clearProgress()">Clear All Progress</button>
+</div>
+</div>
+</section>
+
+<section id="wrongTab" class="hidden">
+<div class="card">
+<h3 style="margin-top:0">Wrong Answer Bank</h3>
+<p class="small">Questions remain here until the student answers them correctly in a later attempt.</p>
+<div id="wrongList"></div>
+<br><button class="primary" onclick="startWrongRound()">Reattempt All Wrong</button>
+</div>
+</section>
+
+<section id="bookTab" class="hidden">
+<div class="card">
+<h3 style="margin-top:0">Bookmarked Questions</h3>
+<div id="bookList"></div>
+<br><button class="primary" onclick="startBookmarkedRound()">Practice All Bookmarks</button>
+</div>
+</section>
+
+<section id="test">
+<div class="sticky">
+<div class="row">
+<b id="counter"></b>
+<span id="liveScore">Score: 0</span>
+<span id="liveTimer" class="timer"></span>
+</div>
+<div class="progress"><span id="progressBar"></span></div>
+</div>
+
+<div class="questionCard">
+<div class="meta">
+<span id="qTopic"></span>
+<span id="qSubject"></span>
+<span id="qId"></span>
+</div>
+<div class="qtext" id="qText"></div>
+<div id="options"></div>
+
+<div class="actions">
+<button class="secondary" onclick="toggleBookmark()" id="bookmarkBtn">☆ Bookmark</button>
+<button class="secondary" onclick="revealAnswer()">Reveal Answer</button>
+<button class="secondary" onclick="skipQuestion()">Skip</button>
+<button class="primary" onclick="nextQuestion()" id="nextBtn">Next</button>
+<button class="danger" onclick="finishTest()">Submit Test</button>
+</div>
+</div>
+</section>
+
+<section class="card result" id="result"></section>
+
+</div>
+
+<script>
+const DATA = {"title":"Direct Tax Laws & International Taxation","paper":"Paper 15","total":173,"sourceNote":"Questions and answer key extracted from the uploaded ICMAI MCQ Bank PDF. Topic buckets are app-generated from question content because the PDF does not provide chapter labels.","questions":[{"q":"As per section 115JB, every taxpayer being a company is liable to pay MAT, if the Income tax payable on the total income, computed as per the provisions of the Income-tax Act in respect of any year is less than ____________.","options":["15.50%","18.00%","15.00%","20.00%"],"answer":2,"topic":"MAT / AMT","subject":"Direct Tax Laws","id":1},{"q":"MAT shall not apply to any income accruing or arising to a company from:","options":["Life insurance business","Banking business","Business of transmission of electricity","All of the above"],"answer":0,"topic":"MAT / AMT","subject":"Direct Tax Laws","id":2},{"q":"Book profit for the purposes of section 115JB means net profit as shown in the Statement of the Profit and Loss prepared in accordance with _______of the Companies Act as increased and decreased by certain items prescribed in this regard.","options":["Schedule V","Schedule IV","Schedule III","Schedule II"],"answer":2,"topic":"MAT / AMT","subject":"Direct Tax Laws","id":3},{"q":"Every company to whom the provisions of MAT apply is required to obtain a report from a chartered accountant in Form No. _____ on or before the due date of filing the return of income.","options":["29","29A","29B","29C"],"answer":2,"topic":"MAT / AMT","subject":"Direct Tax Laws","id":4},{"q":"While computing book profit u/s 115JB, one of the following is required to be reduced from the net profit:","options":["Unabsorbed Depreciation as per books of account","Brought forward business loss as per books of account","Brought forward loss or unabsorbed depreciation, whichever is less as per books of account","Income-tax paid or payable if not already debited to the Statement of Profit and Loss"],"answer":2,"topic":"MAT / AMT","subject":"Direct Tax Laws","id":5},{"q":"What is the due date of filling the return of income in case of a company who is required to furnish a report in Form No. 3CEB under section 92E?","options":["September 30 of the assessment year","November 30 of the assessment the year","July 31 of the assessment year","June 30 of relevant assessment the year"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":6},{"q":"One of the following, can be carried forward even return of income is filed after due date:","options":["Unabsorbed Depreciation","Business Loss","Short term capital loss","Long term capital loss"],"answer":0,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":7},{"q":"Return filed under following sections can be revised u/s 139(5):","options":["139(1)","139(4)","139(5)","All of the above"],"answer":3,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":8},{"q":"Assessment under following section is termed as scrutiny assessment","options":["143(3)","144","Both of the above","None of the above"],"answer":0,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":9},{"q":"When an assessee has paid advance tax more than the tax due on the returned income and the return is filed before the ‘due date’ specifi ed in section 139(1), the refund amount is eligible for interest @ —","options":["1% per month","1⁄2% per month","3⁄4% per month","1.50% per month"],"answer":1,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":10},{"q":"Any mistake which is apparent from the record in any order passed by the Assessing Officer can be rectified under section ________.","options":["154","147","143","254"],"answer":0,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":11},{"q":"In case of an application made by the assessee u/s 154, the income- tax authority shall rectify the order/refuse the rectification within __________ from the end of the month in which the application is received by the authority.","options":["4 years","2 years","1 year","6 months"],"answer":3,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":12},{"q":"An appeal to the Commissioner of Income-tax (Appeals) shall be filed in Form No. ________.","options":["35","36","34C","35B"],"answer":0,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":13},{"q":"The Joint Commissioner of Income-tax (Appeals) is the ________ appellate authority","options":["First","Second","Third","Fourth"],"answer":0,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":14},{"q":"Provisions relating to advance ruling are provided in sections _______.","options":["80C to 80U","245A to 245L","237 to 245","245N to 245V"],"answer":3,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":15},{"q":"Assessing Officer or the assessee, as the case may be, on receipt of notice that an appeal against the order of the Commissioner (Appeals) has been filed by the other party, may fi le a memorandum of cross objection with the Tribunal in Form _____ and within _________ days of receipt of notice that appeal has been filed by the other party.","options":["Form 36A; 15 days","Form 36A; 45 days","Form 36A; 30 days","Form 36; 60 days"],"answer":2,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":16},{"q":"Where revision u/s 264 has been initiated by the assessee, the application must be made within __________ from the date on which the order in question was communicated to the assessee or the date on which he otherwise came to know of it, whichever is earlier.","options":["1 year","4 years","2 years","30 days"],"answer":0,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":17},{"q":"Prosecution can be launched and the taxpayer can be punished if he commits wilful failure to produce before the tax authorities the accounts and documents as demanded u/s __________.","options":["154","147","143(1)","142(1)"],"answer":3,"topic":"Penalties & Prosecution","subject":"Direct Tax Laws","id":18},{"q":"If a person fails to comply with the provisions relating to PAN (i.e. obtaining PAN, quoting PAN, etc.), then penalty can be levied under section _______","options":["270A","272","272A","272B"],"answer":3,"topic":"Penalties & Prosecution","subject":"Direct Tax Laws","id":19},{"q":"If during any proceeding, it is found that in the books of account maintained by any person there is a false entry or an omission of any entry which is relevant for computation of total income of such person, to evade tax liability, penalty u/s 271AD or Rs. ____________ is levied","options":["A sum equal to the aggregate amount of such false or omitted entry.","Rs. 5,000 (subject to maximum of Rs. 1,00,000)","2% of the amount of such entry","None of the above"],"answer":0,"topic":"Penalties & Prosecution","subject":"Direct Tax Laws","id":20},{"q":"If the amount of income in respect of which the penalty is imposed or imposable for the relevant year(s) exceeds Rs. _______, then no order reducing or waiving the penalty under section 273A(1) shall be made by the Principal Commissioner or Commissioner, except with the previous approval of the Principal Chief Commissioner or Chief Commissioner or Principal Director General or Director General, as the case may be.","options":["1,00,000","2,00,000","5,00,000","10,00,000"],"answer":2,"topic":"Penalties & Prosecution","subject":"Direct Tax Laws","id":21},{"q":"Principal Commissioner or Commissioner of Income-tax is empowered to grant relief from penalty to taxpayers in genuine cases. Such power is granted under section 273A and section _______.","options":["273B","273AA","273","274"],"answer":1,"topic":"Penalties & Prosecution","subject":"Direct Tax Laws","id":22},{"q":"In case of amalgamation, eligible loss of amalgamating company shall be available to the amalgamated company for:","options":["Remaining tenure","Such loss shall be treated as loss of the previous year in which amalgamation took place","5 years","3 years"],"answer":1,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":23},{"q":"In the year of restructuring, depreciation shall be:","options":["available to the successor company fully","apportioned between successor and predecessor on the basis of number of days","available to the predecessor company fully","None of the above"],"answer":1,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":24},{"q":"Countries that employ explicit policies designed to attract international trade oriented activities by minimization of taxes and reduction or elimination of other restrictions on business operations is described as _______.","options":["Tax Havens","Tax Planning","Tax Evasion","Tax Management"],"answer":0,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":25},{"q":"A is using a motor car for his personal purposes, but charges as business expenditure. This is the case of:","options":["Tax Avoidance","Tax Planning","Tax Evasion","Tax Management"],"answer":2,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":26},{"q":"CBDT stands for:","options":["Central Board of Direct Tax","Central Board of Double Tax","Central Bank of Direct Tax","None of the above"],"answer":0,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":27},{"q":"Sec. 130 deals with:","options":["Faceless jurisdiction of the income-tax authority","Jurisdiction of the income-tax authority","Jurisdiction of the CBDT","None of the above"],"answer":0,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":28},{"q":"As per section 178(3), the ___________ of a company has to intimate the tax authority before he parts with any of the assets of the company or the properties in his hands and has to set aside the amount if any intimated to him by the tax authorities.","options":["Managing Director","Manager","Chartered Accountant","Liquidator"],"answer":3,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":29},{"q":"Equalisation levy shall be payable @ ________","options":["6%","5%","2%","None of the above"],"answer":0,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":30},{"q":"ICDS VIII deals with:","options":["Government Grants","Revenue recognition","Construction Contract","Securities"],"answer":3,"topic":"ICDS","subject":"Direct Tax Laws","id":31},{"q":"ICDS is applicable in case of income under the head:","options":["Profits and gains from Business or Profession","Capital Gains","Income from House Property","All heads of income"],"answer":0,"topic":"ICDS","subject":"Direct Tax Laws","id":32},{"q":"The Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015 extends to:","options":["Whole of India","Whole of India excluding Jammu and Kashmir","Whole of India excluding Jammu and Kashmir and Arunachal Pradesh","None of the above"],"answer":0,"topic":"International Taxation & DTAA","subject":"International Taxation","id":33},{"q":"The rate of tax provided by the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015 is:","options":["30%","60%","50%","None of the above"],"answer":0,"topic":"International Taxation & DTAA","subject":"International Taxation","id":34},{"q":"Which among the following is a progressive tax","options":["Custom duty","GST","sales tax","Income tax"],"answer":3,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":35},{"q":"Which one of the following is not a tax saving investment","options":["Home Loan Principal Repayment","Public Provident fund (PPF)","Life Insurance Premium","Fixed Deposits"],"answer":3,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":36},{"q":"In the Income Tax Act, ___ is a certificate which an employer gives to his employees.It certifies the amount of tax deducted by the employer from the salary of employee","options":["Form 16","Form 12","Form 15","Form 26AS"],"answer":0,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":37},{"q":"What percentage of tax is taxable on Long-Term capital gain arising from transfer of securities ,bonds, units, debenture","options":["12%","10%","20%","5%"],"answer":1,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":38},{"q":"As per sub-section (8A ) of section 139 of the Income tax Act , a person may furnish an updated return of his income for the previous year relevant to such assessment year , with in ___from the end of assessement year","options":["6 Months","12 Months","24 Months","36 Months"],"answer":2,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":39},{"q":"Minimum alternate Tax is","options":["Tax Imposed on companies which pays zero or no tax","Minimum income tax on individual","Tax paid on Luxury goods","Surcharge on High Networth Individual"],"answer":0,"topic":"MAT / AMT","subject":"Direct Tax Laws","id":40},{"q":"Period upto which AMT credit can be carried forward","options":["10 Years","12 Years","15 Years","8 Years"],"answer":2,"topic":"MAT / AMT","subject":"Direct Tax Laws","id":41},{"q":"If the recipient of income doesn’t furnish his PAN to deductor then TDS is to be deducted at which rate?","options":["5%","10%","20%","15%"],"answer":2,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":42},{"q":"What are the conditions to be fulfilled for charging of income under the head capital gains","options":["There must be a capital asset","There must be a transfer of such capital asset","The transfer of such capital asset has been affected during the previous year","All of the above"],"answer":3,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":43},{"q":"The maximum amount of exemption of gift from a non relative is","options":["50000","10000","100000","25000"],"answer":0,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":44},{"q":"The last date of filling of return of income of individual is","options":["31st July of the assessment year","30th September of the assessment year","31st March of the assessment year","31st August of the assessment year"],"answer":0,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":45},{"q":"Return filed after the due date is called","options":["Revised Return","Belated return","Defective return","Verification of Return"],"answer":1,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":46},{"q":"Sole Proprietor is liable to tax at which rate","options":["30%","25%","10%","Slab Rate"],"answer":3,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":47},{"q":"Capital asset excludes all except","options":["Stock-in-trade","Jewellery","Personal effects","Agricultural land in India"],"answer":1,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":48},{"q":"Long-term Capital Loss can only be set off against ____","options":["Long-term capital loss","Short-term capital loss","Long-term capital gain","All of the above"],"answer":2,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":49},{"q":"ICDS IV deals with","options":["Construction Contracts","Valuation of Inventories","Revenue Recognition","Securities"],"answer":2,"topic":"ICDS","subject":"Direct Tax Laws","id":50},{"q":"Under which section interest shall be charged to deferment of advance tax","options":["234A","234B","234C","234D"],"answer":2,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":51},{"q":"For filling return of Income in respect of various entities , the Income-tax Act, 1961 has prescribed -","options":["One due date","Two due dates","Three due dates","Four due dates"],"answer":2,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":52},{"q":"The return of a company has to be verified by","options":["The Managing director or Director","The General manager","The Secretary","The Manager"],"answer":0,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":53},{"q":"The due date of filling of return for a company with a business loss of Rs.130,000 for AY 2024-25 is","options":["31st July , 2024","30th September, 2024","31st October, 2024","31st August, 2024"],"answer":2,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":54},{"q":"Mr.Ram has Received a sum of Rs.51000 on 15.09.2023 from relatives on the occasion of his marriage","options":["Entire Rs. 51,000 is chargeable to tax","Only Rs.1000 is chargeable to tax","Entire Rs.51,000 is exempt from tax","Only 50% i.e Rs.25,500 is chargeable to tax"],"answer":2,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":55},{"q":"The rate of TDS on rental payments of plant , machinery or equipment is -","options":["2%","5%","10%","1%"],"answer":0,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":56},{"q":"Mr.Ram a resident indian, wins ₹10,000 in a lottery . Which of the statement is true ?","options":["Tax is deductible u/s194B @30%","Tax is deductible u/s194B @30.9%","No tax is deductible at source","None of the above"],"answer":2,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":57},{"q":"X Ltd. , a domestic company not opting for the provisions of section 115BAA , has a total income of Rs. 10,01,00,000 for AY 2024-25. The gross receipts of X Ltd.for PY 2021-22 is Rs.260 Crore. The tax liability of X Ltd. For AY 2024-25 is -","options":["Rs.2,68,25,000","Rs. 2,68,50,000","Rs. 2,91,49,120","Rs.3,34,88,000"],"answer":1,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":58},{"q":"Who among the following is not mandated to file the return of income under section 139 for AY 2024-25 ?","options":["XYZ Pvt. Ltd., having incurred a loss of Rs.1,50,000 during the year","Mr. Monohar , aged 66 years, having a total income of Rs.3,50,000 before deduction under section 80C of Rs.1,50,000.","Mr. jay , who travelled to Dubai during the year , spent Rs. 4,50,000on his travel and hotel stay","Ms Sita , a non- resident having assets worth Rs. 2 crores in india and Rs.5 Crores outside india has not earned or received any income in india."],"answer":3,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":59},{"q":"A public charitable trust having it's object medical relief to poor , running a medical shop in which it has commercial receipts which exceeds 20% of total receipts. Wheather such trust can claim application based exemption in relation to receipts of medical shop ?","options":["No, due to provisio of section 2(15) it loses the status of charitable .","Yes, provided such business in incidental to the attainment of the object of the trust.","Yes, provided separate books of account are maintained in respect of such income.","Yes, but subject to (B) and ( C) above"],"answer":3,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":60},{"q":"Sec.91 deals with","options":["Bilateral Relief","Unilateral Relief","Both (a) and (b)","None of the above"],"answer":1,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":61},{"q":"In respect of DTAA, generally , India follows :","options":["UN model","UK Model","OECD Model","US Model"],"answer":0,"topic":"International Taxation & DTAA","subject":"International Taxation","id":62},{"q":"Section __ deals with methods of computation of arm's length price.","options":["94","93","92C","91"],"answer":2,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":63},{"q":"As per section __ when any specified domestic transaction is carried out between associated enterprises, the said transaction should be carried out at arm's length price.","options":["90","91","92","90A"],"answer":2,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":64},{"q":"When an assessee fails to furnish any information relating to a specified domestic transaction , the quantum of penalty as a percentage of value of the transaction would be __","options":["2%","1%","5%","3%"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":65},{"q":"As per sec. 94B, interest expenses claimed by an entity to its associated enterprises shall be restricted to __ of its earnings before interest , taxes, depreciation and amortization (EBITDA) or interest paid or payable to associated enterprise , whichever is less.","options":["30%","25%","20%","50%"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":66},{"q":"Advance Pricing Agreement shall be valid for such period not exceeding __ consecutive previous years as may be specified in the agreement.","options":["5","3","10","2"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":67},{"q":"Arm's length price is to be determined by applying ___","options":["Resale Price Method","Fair Market Value Method","Stamp Duty Value Method","Indexed Cost of Acquisition Method"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":68},{"q":"The provisions of sec.92 will apply only if the aggregate value of specified domestic transactions entered into by the taxpayer during the year exceeds a sum of ₹ ___","options":["100 crore","5 crore","10 crore","20 crore"],"answer":3,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":69},{"q":"Uncontrolled transaction means a transaction between ____ , whether resident or non-resident","options":["enterprises other than associated enterprises","associated enterprises","any enterprises","None of the above"],"answer":0,"topic":"International Taxation & DTAA","subject":"International Taxation","id":70},{"q":"Information and documents required to maintained u/s 92D shall be kept and maintained for a period of ___ from the end of the relevant assessment year .","options":["8 years","5 years","10 years","16 years"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":71},{"q":"If any person fails to keep and maintain any such information and document as required by sec. 92D in respect of an international transaction or specified domestic transaction , the Assessing Officer or Commissioner (Appeals) may direct that such person shall pay , by way of penalty , a sum equal to ___","options":["Rs. 5,00,000","2% of the value of each international transaction or specified domestic transaction entered into by such person","Rs. 1,00,000","1% of the value of each international transaction or specified domestic transaction entered into by such person"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":72},{"q":"General Anti Avoidance Rule (GAAR) is applicable from","options":["01-04-2018","01-04-2017","01-07-2017","01-07-2018"],"answer":0,"topic":"GAAR & Anti-Avoidance","subject":"Direct Tax Laws","id":73},{"q":"GAAR provisions shall not apply to","options":["an arrangement where the tax benefit in the relevant assessment year arising , in aggregate , to all the parties to the arrangement does not exceed a sum of Rs. 3 crore","an arrangement where the tax benefit in the relevant assessment year arising , in aggregate , to all the parties to the arrangement does not exceed a sum of Rs. 5 crore","an arrangement where the tax benefit in the relevant assessment year arising , in aggregate , to all the parties to the arrangement does not exceed a sum of Rs. 1 crore","None of the above"],"answer":0,"topic":"GAAR & Anti-Avoidance","subject":"Direct Tax Laws","id":74},{"q":"Two enterprises shall be deemed to be an associated enterprise when one enterprise directly holds shares carrying :","options":["26% or less of the voting power in the other enterprise","25% of the voting power in the other enterprise","26% or more of the voting power in the other enterprise","None of the above"],"answer":2,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":75},{"q":"Generally, two enterprises shall be deemed to be associated enterprise when one enterprise holds, directly or indirectly 26% or more ____ in the other enterprise","options":["Equity shares","Preference Shares","Compulsorily convertible debentures","Non-convertible debentures"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":76},{"q":"Two enterprises shall be deemed to be associated enterprises if a loan advanced by one enterprise to the other enterprise constitutes –","options":["50% or more of the book value of the total assets of the other enterprise.","Less than 50% of the book value of the total assets of the other enterprise .","More than 51% of the book value of the total assets of the other enterprise.","51% or more of the book value of the total assets of the other enterprise."],"answer":3,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":77},{"q":"Zero India Private Ltd. borrowed Rs 500 crores from an Indian Bank. Y Inc. (USA) guaranteed the borrowings of Indian Company. Select the correct statement:","options":["Both are associated enterprises when the Y Inc. guarantees Rs. 40 crores on behalf of Zero India","Both are associated enterprises when the Y I n c . guarantees Rs. 49 crores on behalf of Zero India","Both are associated enterprises when the Y Inc. guarantees Rs. 50 crores on behalf of Zero India","Both are associated enterprises i r r e s p e c t i v e of amount of guarantee made by Y Inc."],"answer":2,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":78},{"q":"Two enterprises shall be deemed to be associated enterprises when –","options":["50% or less of raw materials and consumables required for the manufacturing of goods by one enterprise, are supplied by the other enterprise.","At least 80% of raw materials and consumables required for the manufacturing of goods by one enterprise, are supplied by the other enterprise.","90% or more of raw materials and consumables required for the manufacturing of goods by one enterprise, are supplied by the other enterprise","None of the above"],"answer":2,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":79},{"q":"Under transfer pricing, International Transaction “Means”","options":["Transactions between two or more Associated Enterprises either or both of whom are non- residents","Transactions between three or more Associated Enterprises who are non-residents","Transactions between two or more Associated Enterprises who are residents","None of the above"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":80},{"q":"The International transaction shall be in nature of :","options":["Purchase, sale or lease of tangible or intangible property","Provision of services or lending or borrowing money; or","Any other transaction having a bearing on the profits, income, losses or assets of the enterprises","All of the above"],"answer":3,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":81},{"q":"Failure to keep and maintain information and documentation as required by Section 92D would attract penalty u/s 271AA for :-","options":["@ 50% of the value of international transaction entered into by a taxpayer","2% of the value of international transaction or specified domestic transaction entered into by a taxpayer for which documents are not kept","@ 2% of the value of all transactions entered into by a taxpayer","None of the above"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":82},{"q":"The aggregate of Specified Domestic transactions entered into by the assessee in the previous year should exceed a sum of _______________ to be considered as specified domestic transaction.","options":["Rs. 1 crore","Rs. 20 crore","Rs. 10 crore","None of the above"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":83},{"q":"The order of the Transfer Pricing Officer determining the arm’s length price of an international transaction or specified domestic transaction is binding on the :-","options":["Assessing Officer","CIT(A)","Both A and B","None of the above"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":84},{"q":"Secondary Adjustment means :-","options":["Any transfer pricing adjustment which is made on the basis of arm’s length price of international transaction","An adjustment in the books of accounts of the assessee and its Associated Enterprise to reflect that the actual allocation of profits are consistent with the transfer price","Any transfer pricing adjustment which is made on the basis of arm’s length price of specified domestic transaction","Both A and C"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":85},{"q":"Secondary Adjustment shall be made when Primary Adjustment to transfer price:-","options":["has been made suo motu by the assessee in his return of income","has been made by the Assessing Officer but it was not accepted by the assessee","has been determined by TPO","None of the above"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":86},{"q":"In case of secondary adjustment, where international transaction is denominated in INR, then the interest income on excess money available with Associated Enterprise shall be computed as per which of the following rate of interest :-","options":["One-year marginal cost of lending fund of SBI as on April 1 of PY + 3.25%","LIBOR as on September 30 of PY + 3%","LIBOR as on September 30 of PY + 3.25 %","None of the above"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":87},{"q":"In case of secondary adjustment, where international transaction is denominated in foreign currency then the interest income on excess money available with Associated Enterprise shall be computed as per rate of interest :-","options":["One-year marginal cost of lending fund of SBI as on April 1 of PY + 3.25%","LIBOR as on September 30 of PY + 3%","LIBOR as on September 30 of PY + 3.25 %","None of the above"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":88},{"q":"The maximum validity period of Advance Pricing Agreement shall be :-","options":["5 consecutive years","4 consecutive years","3 previous years","10 previous years"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":89},{"q":"The CBDT may declare Advance Pricing Agreement to be void ab initio, with the approval of Central Government where : –","options":["There is change in law after signing of Advance Pricing Agreement","Advance Pricing Agreement has been obtained by way of fraud or misrepresentation of facts","There is change in facts after signing of Advance Pricing Agreement","All of the above"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":90},{"q":"The pre-filing consultation :-","options":["Shall not bind the CBDT or the proposed applicant to initiate APA process","Shall be deemed to imply that the person has applied for entering into an APA.","Is optional for person unleading to file an APA","Both A and C"],"answer":3,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":91},{"q":"As per Section 92CD modified return for first of PY in respect of rollback year shall be furnished within ______ months from the end of the month in which Advance Pricing Agreement was entered.","options":["1 month","2 month","3 month","None of the above"],"answer":2,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":92},{"q":"Ram Ltd., Kolkata having international transactions exceeding Rs. 100 crore omitted to furnish report required under section 92E. How much is the penalty leviable for the failure to furnish report under section 92E ?","options":["R s . 1 lakh","Rs.50 lakh","Rs.1 crore","Rs. 2 crore"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":93},{"q":"GAAR stands for -","options":["Government anti- avoidance rules","General anti- avoidance rules","General agreement- avoidance rules","Government anti- agreement rules"],"answer":1,"topic":"GAAR & Anti-Avoidance","subject":"Direct Tax Laws","id":94},{"q":"Tax haven is a place where –","options":["Tax rates are very high","There is no tax on income","Tax rates are very low","There is no tax on income or tax rates are very low"],"answer":3,"topic":"GAAR & Anti-Avoidance","subject":"Direct Tax Laws","id":95},{"q":"In the assessement of Laxmi (P) Ltd. there was increase in income by way of arm's length price adjustment of Rs. 200 lakhs. The assessee decided to pay additional inome-tax instead of making secondary adjustment . What is the tax rate at which the additional income-tax is payable by assessee ?","options":["10.92%","16.692%","20.9664%","23.296%"],"answer":2,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":96},{"q":"Rs. 15,000 arising in country B with which India has DTAA, has been taxed in the hands of Mr. kabir as well as Ms. Yamini. This is an instance of __ and the remedy for the same is through ___.","options":["Economic Double Taxation ,DTAA","Economic Double Taxation ,Mutual Agreement Procedure","Jurisdictional Double Taxation , DTAA","Jurisdictional Double Taxation, Mutual Agreement Procedure"],"answer":1,"topic":"International Taxation & DTAA","subject":"International Taxation","id":97},{"q":"Transfer pricing provision should not be applied in cases where the adoption of the arm’s length price would result in a –","options":["Reducing the tax payable in India","Increasing the tax payable in India","Increasing the expenditure of the Indian company","Both A and C"],"answer":3,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":98},{"q":"A charitable institution, engaged in education of Yoga in India, registered under section 12AB of the Income-tax Act, 1961 for the previous year ended 31 March 2025, received donation of Rs.30,00,000 Out of Which Rs.8,00,000 is Anonymous donations What amount of anonymous donations would be taxable @30% as per Section 115BBC of the Income Tax Act, 1961.","options":["Rs.650000","Rs.800000","Rs.40000","Nil"],"answer":0,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":99},{"q":"A search was conducted in the premises of Harichand Jewellers on 21.01.2025. The following unaccounted items were found during the course of search (i) Cash on hand Rs. 30 lakh; (ii) Promissory notes Rs. 70 lakh; (iii) Land documents Rs. 120 lakh; and (iv) Excess jewellery (stock in trade) Rs. 180 lakh Which of the following could not be seized in a search under section 132?","options":["Land documents","Cash on hand","Jewellery (stock in trade)","Promissory notes"],"answer":2,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":100},{"q":"Nirvi Ltd. has received Rs.99 lakhs (net of TDS) as dividend from a domestic company on 31st Dec 2024. It has distributed Rs.105 Lakhs as dividend to its shareholders on 31st July 2024. What is the amount of deduction available to Nirvi Ltd. in respect of such dividend?","options":["Rs. 99 Lakhs","Rs. 6 Lakhs","Rs. 105 lakhs","Nil"],"answer":2,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":101},{"q":"Mediterranean cargo Inc., a company based in Malaysia operating its ships to and fro Mumbai port, collected freight of Rs.85 lakhs, demurrage of Rs.5 lakhs and handling charges of Rs.2 lakhs in respect of goods shipped at Mumbai port. It incurred expenses of Rs.35 lakhs during the year for operating its fleet. In respect of goods shipped at Dublin, Ireland, it received Rs.50 lakhs in India. Its tax liability (rounded off) for the A.Y.2025-26 is –","options":["₹ 3,12,680","₹ 3,87,660","₹ 3,85,230","₹ 4,52,310"],"answer":1,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":102},{"q":"Royalty of Rs.10 lakhs received by a foreign company from an Indian concern in pursuance of an agreement approved by the Central Government in the previous year 2024-25. How much is the income tax payable on royalty income for AY 2025-26?","options":["Rs.312000","Rs.208000","Rs.104000","Nil"],"answer":2,"topic":"International Taxation & DTAA","subject":"International Taxation","id":103},{"q":"XYZ Ltd. set up a manufacturing unit in Durgapur on 15 July 2024. It invested Rs.30 lakhs in new plant and machinery on 15 July 2024. It invested Rs.50 lakhs in new plant and machinery on 20 Dec 2024, out of which Rs.10 lakhs was second hand assets. What is the amount of depreciation allowed u/s 32 for the AY 2025- 26?","options":["Rs.1750000","Rs.940000","Rs.1825000","Rs.2450000"],"answer":2,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":104},{"q":"Foreign Institutional Investor or a Qualified Foreign Investor made investments in municipal debt securities for which interest of Rs.5,00,000 is payable. TDS to be deducted on such interest payments is","options":["TDS u/s 194LD of Rs.52,000","TDS u/s 194LC of Rs.52,000","TDS u/s 194LD of Rs.26,000","TDS u/s I 94LC of Rs.26,000"],"answer":2,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":105},{"q":"X Ltd. filed its return of income for AY 2025-26 on 30th September, 2025. The return is selected for regular assessment under section 143(3). The time limit for service of notice u/s 143(2) in this case is","options":["30.09.2025","31.12.2025","31.03.2025","30.06.2026"],"answer":3,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":106},{"q":"Rounding off of tax in respect of which interest is to be calculated to nearest multiple of:","options":["Rs.100","Rs.10","Rs.1","Not required"],"answer":0,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":107},{"q":"A computers was purchased for Rs.8 lakhs on 4th October, 2024, it was installed & put to use in office on same date. The depreciation allowable under section 32 for A.Y.2025-26 is respect of the said computers is","options":["Rs.400000","Rs.120000","Rs.160000","None of the above"],"answer":2,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":108},{"q":"Mr. Sumit had bought a laptop for Rs. 50,000 on 01.04.2022 for his personal use. He started using this laptop for his business purposes only since 02.05.2024. On that date, the market value of the laptop was Rs.40,000. What is the amount of depreciation allowable to him under the Income Tax Act, 1961 for the financial year 2024-25 assuming the rate of depreciation to be 40%.","options":["Rs.15000","Rs.20000","Rs.10000","Rs.7200"],"answer":1,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":109},{"q":"Mr. Rahul has income of Rs.52 lakhs under the head “Profits and gains of business or profession”. One of his businesses is eligible for deduction@100% of profits u/s 80-IA for A.Y.2024-25. The profit from such business included in the business income is Rs.35 lakhs. What would be the tax liability (rounded off) of Mr. Rahul for A.Y.2025-26, assuming that he has no other income during the P.Y.2024-25 and exercises the option to shift out of the default tax regime u/s 115BAC","options":["Rs.1100530","Rs.1058960","Rs.1254690","Rs.1150550"],"answer":0,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":110},{"q":"Mr. Smith, a resident individual made an advertisement in a website (owned by a non-resident company) for sale of his house property at Kolkata for which he paid Rs.2,35,000. How much is the amount to be deducted by way of equalisation levy by Mr. Smith?","options":["Rs.6600","Rs.8560","Rs.9380","No equalisation levy needs to be deducted"],"answer":3,"topic":"International Taxation & DTAA","subject":"International Taxation","id":111},{"q":"Equalization levy is applicable if the aggregate amount of consideration for specified transactions exceeds","options":["Rs.1000","Rs.10000","Rs.100000","Not Applicable"],"answer":2,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":112},{"q":"Mohan & Co paid Rs.5 lakhs to Elite Inc. a foreign company not having a PE in India towards online digital advertisement charges. How much is the amount payable by Mohan & Co as equalisation levy for the payment made?","options":["Rs.50000","Rs.30000","Rs.500000","Nil"],"answer":1,"topic":"International Taxation & DTAA","subject":"International Taxation","id":113},{"q":"How much is the minimum tax effect that should be involved to invoke GAAR provisions?","options":["Rs.1 Crores","Rs. 2 Crores","Rs. 3 Crores","minimum tax effect that should be"],"answer":2,"topic":"GAAR & Anti-Avoidance","subject":"Direct Tax Laws","id":114},{"q":"The time limit for passing an order by Transfer pricing officer is within","options":["1 year from the end of financial year of reference made","2 years from the end of financial year of reference made","No time limit","None of the above"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":115},{"q":"Rajiv Industries is engaged in manufacture of leather products. It was set up in backward area and became eligible for subsidy @ 25% for the generator, to be used in guest house, acquired by it for Rs.12 lakhs on 15.12.2024. It received the subsidy in March 2025. The amount of depreciation for the year at the applicable rate would be","options":["Rs.300000","Rs.67500","Rs.150000","Nil"],"answer":1,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":116},{"q":"Subham, engaged in the business of wholesale trade, has a turnover of Rs.80 lakhs for P.Y.2023-24 and Rs.240 lakhs for P.Y.2024-25. In the P.Y.2024-25, he paid salary of Rs.3 lakhs to Mr. Rohit, a resident, without deduction of tax at source and commission of Rs.61 lakhs to Mr. Pramod, a resident, without deduction of tax at source. The disallowance under section 40(a)(ia) while computing business income of A.Y.2025- 26 would be","options":["Rs.6100000","Rs.6400000","Rs.1830000","Rs.1920000"],"answer":2,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":117},{"q":"Which model of DTAA, does Government of India generally follow in its treaty with other countries?","options":["UK Model","UN Model","US Model","OECD Model"],"answer":1,"topic":"International Taxation & DTAA","subject":"International Taxation","id":118},{"q":"Alpha Ltd. has distributed on 30.6.2025, dividend of Rs. 130 lakhs to its shareholders. During the F.Y.2024-25, Alpha Ltd. has received dividend of Rs. 108 lakhs (Net of TDS) from domestic companies and Rs. 30 lakhs (gross) from a foreign company in which it has 5% shareholding. What is the deduction, if any, available to Alpha Ltd. in respect of such dividend?","options":["Rs. 145 lakhs","Rs. 148 lakhs","Rs. 130 lakhs","Rs. 155 lakhs"],"answer":2,"topic":"International Taxation & DTAA","subject":"International Taxation","id":119},{"q":"The relief where there is no Avoidance of Double Taxation Agreement, is","options":["Unilateral relief","Bilateral relief","Specified relief","No relief"],"answer":0,"topic":"International Taxation & DTAA","subject":"International Taxation","id":120},{"q":"For Murli Ltd. there was an outstanding interest payment due to a nationalized bank of Rs.200 lakhs, which was converted into 8% Debentures on 12-03-2025. How much of interest due to the bank would be deemed as paid and allowable under section 43B by issue of 8% debentures?","options":["Rs. 200 Lakhs","Rs. 16 Lakhs","Rs. 100 Lakhs","Nil"],"answer":3,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":121},{"q":"Nirmal Fertilisers P Ltd., is a manufacturer. A factory building has been constructed for Rs.40 lakhs and occupied on 12.02.2025. Additional depreciation allowable for the said factory building is","options":["Rs. 100 Lakhs","Rs. 16 Lakhs","Nil","None of the above"],"answer":2,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":122},{"q":"MLC Ltd. earned Rs. 20 lakhs by way of transfer of carbon credit. The tax liability in respect of carbon credit is ____________","options":["Rs.208000","Rs.416000","Rs.624000","Nil"],"answer":0,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":123},{"q":"Income Tax Appellate Tribunal can rectify its own order if it is","options":["Any mistake","Apparent mistake","None of the above","Any mistake other than apparent mistake"],"answer":1,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":124},{"q":"Mr. Amit, a property dealer, sold a flat in Kolkata, the stamp duty of which is Rs.3 crores for Rs.2.6 crores to his friend Mr. Biswajit, a Photographer. Mr. Amit had purchased the flat one and a half Year back for Rs.2.0 crores and the stamp duty value on that date was also Rs.2.0 crores. What are the tax implications of such sale?","options":["Rs.1 crores would be taxable as short-term capital gains in the hands of Mr. Amit. There would be no tax implication in the hands of Mr. Biswajit","Rs.1 crores would be taxable as business income in the hands of Mr. Amit. There would be no tax implication in the hands of Mr. Biswajit","Rs.1 crores would be taxable as business income in the hands of Mr. Amit and Rs. 40 lakhs would be taxable as income from other sources in the hands of Mr. Biswajit","Rs.1 crores would be taxable as short- term capital gains in the hands of Mr. Amit and Rs.40 lakhs would be taxable as income from other sources in the hands of Mr. Biswajit"],"answer":2,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":125},{"q":"Dividend received by a real estate investment trust (REIT) from special purpose vehicle (SPV) and distributed to its unit holders is –","options":["exempt in the hands of the REIT only if the SPV is a specified domestic company; taxable in the hands of unit holders only if SPV does not exercise option u/s 115BAA","exempt in the hands of both the REIT and the unit holders unconditionally","taxable in the hands of the REIT; exempt unconditionally in the hands of unitholders","exempt in the hands of the REIT; exempt in the hands of unit holders only if SPV does not exercise option u/s 115BAA"],"answer":3,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":126},{"q":"Mr. Surya is aggrieved by an order passed by the Commissioner of Income-tax imposing penalty under section 270A for under- reporting of income. What is the appellate remedy available to him under the Income-tax Act, 1961 and the specified time limit within which he has to file an appeal?","options":["He can file an appeal to Commissioner (Appeals) under section 246A within 60 days from the date on which the order is communicated to him","He can file an appeal to Appellate Tribunal under section 253 within 60 days from the date on which the order is communicated to him.","He can file an appeal to Appellate Tribunal under section 253 within 30 days from the date on which the order is communicated to him","He can file an appeal to Appellate Tribunal under section 253 within 30 days from the date on which the order is communicated to him"],"answer":1,"topic":"Penalties & Prosecution","subject":"Direct Tax Laws","id":127},{"q":"Rs.24,300 arising in country B with which India has DTAA, has been taxed in the hands of Mr. Raj as well as Ms. Susmita. This is an instance of and the remedy for the same is through","options":["Economic Double Taxation, Mutual Agreement Procedure","Jurisdictional Double Taxation, DTAA","Economic Double Taxation, DTAA","Jurisdictional Double Taxation, Mutual Agreement Procedure"],"answer":0,"topic":"International Taxation & DTAA","subject":"International Taxation","id":128},{"q":"Assessment order in response to notice u/s 143(2) shall be completed within a period of","options":["24 months from the end of relevant financial year","12 months from the end of relevant financial year","24 months from the end of relevant assessment year","12 months from the end of relevant assessment year"],"answer":3,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":129},{"q":"Benefit of taxation of presumptive income under the Income tax Act, 1961 would not be available to Vivek, a non-resident, in AY 2025-26, in respect of the related Indian income, if he is engaged in the business of","options":["Plying, hiring or leasing of goods carriages","Operation of ships","Operation of aircraft","Civil construction in connection with a n approved turnkey project"],"answer":3,"topic":"International Taxation & DTAA","subject":"International Taxation","id":130},{"q":"During the course of assessment in the case of A & Co (firm) the Assessing Officer found out one accommodation entry (bogus purchase) for Rs.7 lakh from another firm by name X & Co. Both A & Co and X & Co have admitted fake invoice and accommodation entry. What would be the penal consequence of the transaction? (Ignore HEC)","options":["Penalty on A & Co @ 100% of tax being Rs.2,10,000","Penalty on A & Co @ 100% of tax being Rs.2,10,000","Penalty on A & Co @200% of transaction being Rs.2,10,000 and amount equal to the transaction being Rs.7,00,000","Penalty on A & Co @200% of tax being Rs.4,20,000 plus the amount equal to the transaction being Rs.7,00,000. Also, penalty equal to the amount of transaction on X & Co being Rs.7,00,000"],"answer":3,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":131},{"q":"Income-tax authority having jurisdiction of Raj & Co conducted a survey under section 133A and seized the books of account and other documents on 10.10.2024. What is the maximum time limit that the books of account and other documents can be retained by the Income-tax authority without obtaining permission of higher authorities?","options":["Up to 15 days exclusive of holidays","Up to 30 days exclusive of holidays","Up to the end of the previous year i.e. 31.03.2025","Up to the date of completion of assessment under section 143(3)"],"answer":0,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":132},{"q":"While processing the return of income U/S 143(1), Which of the following cannot be adjusted in computation of total income ?","options":["an incorrect claim apparent from any information in the return","any arithmetical error in the return","addition of income appearing in Form 26AS which has not been included in computing total income in RO","addition of income appearing in Form 26AS which has not been included in computing total income in ROI"],"answer":2,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":133},{"q":"Mr. Kamal, employed as Manager with Tripod Ltd., pays rent of Rs.50,000 per month to his landlord. Which of the following statements is correct?","options":["Mr. Kamal is liable to deduct tax @10% u/s 194-I, since his annual rent exceeds Rs.2,40,000","Mr. Kamal is liable to deduct tax @2% u/s 194-IB on the annual rent in the month of March, since he pays rent of Rs.50,000 per month","Mr. Kamal is not liable to deduct tax at source","Mr. Kamal is liable to deduct tax @2% u/s 194-IB every month, since he pays rent of Rs.50,000 per month"],"answer":2,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":134},{"q":"ABC Co. Ltd., Mumbai, proposes to enter into a transaction for purchase of raw material from USA and sale of finished goods to its group company located in South Africa. It has obtained advance ruling in respect of the transactions but it is aggrieved with the ruling given by Board for Advance Rulings. What is the legal remedy available to ABC Co. Ltd?","options":["File an appeal before Commissioner (Appeals) against the ruling","File an appeal before ITAT against the ruling","File an appeal before High Court against the ruling","File a revision petition under section 264 with Commissioner"],"answer":2,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":135},{"q":"Arya Ltd., has spent a sum of Rs.40 lakhs towards meeting its corporate social responsibility (CSR) under the Companies Act, 2013. The amount of deduction available while computing the business income is ___________.","options":["Rs. 40 Lakhs","Rs. 10 Lakhs","Nil","None of the above"],"answer":2,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":136},{"q":"Which of the following method of computing arm’s length price is not a “Transaction Based Method’?","options":["Comparable Uneontrolled Price Method","Comparable Uneontrolled Price Method","Profit Split Method","Cost Plus Method"],"answer":2,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":137},{"q":"Vikash, a resident sold Virtual Digital Asset (VDA) with the help of a broker through an Exchange. The sale consideration was Rs.7,20,000 (excluding GST / commission). How much is the amount of TDS applicable in respect of sale of VDA?","options":["Rs.72000","Rs.7200","Rs.14400","Nil"],"answer":1,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":138},{"q":"Sahayata Co-operative Society is engaged in manufacturing activity and was set up and registered on 10th April, 2024. Its total income (computed) for the previous year 2024-25 was Rs.22,50,000. How much is the income tax payable by it under section 115BAE of the Act? Note: Consider both surcharge and HEC.","options":["Rs.468000","Rs.386100","Rs.702900","Rs.585000"],"answer":1,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":139},{"q":"Mr. Shivam is a resident individual who owns an apartment in Dubai acquired on 06.07.2024. He had disclosed only 60% of its value in his income-tax returns. The Assessing Officer received this information of partial non-disclosure on 25.03.2025 and issued a notice under section 10 of the Black Money (Undisclosed Foreign Income and Assets) and Imposition of Tax Act, 2015 on 10.04.2025. What would be value of asset liable to tax under the said Act?","options":["Fair Market Valueof the asset as on 06.07.2024","40% of fair market value of the asset as on 06.07.2024","40% of fair market value of the asset as on 01.04.2024","40% of fair market value of the asset as on 01.04.2025"],"answer":3,"topic":"International Taxation & DTAA","subject":"International Taxation","id":140},{"q":"What is Berry Ratio in relation to the computation of the arm’s length price of an international transaction?","options":["EBITDA / Shareholders funds","Gross profit / Operating expenses","Long term debts / Shareholders fund","Net profit / Gross profit"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":141},{"q":"While determining the ALP of the transactions between x Ltd., Hyderabad and its holding company Wax Inc., USA , there was an addition of Rs.300 lakhs to the total income of X Ltd. How much should be paid by way of tax (including surcharge and HEC) by X Ltd. in order to avoid secondary adjustment?","options":["Rs.9360000","Rs.6289920","Rs.5400000","Rs.4680000"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":142},{"q":"Which of the following orders is not appealable before Commissioner (Appeals)?","options":["An order made under section 163 treating the assessee as an agent of a non- resident","An order of penalty under section 271B for failure to get accounts audited","An order made under section 201 deeming a person assessee-in- default for non- deduction of tax at source","An order of assessment passed by the Assessing Officer in pursuance of directions of Dispute Resolution Pane"],"answer":3,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":143},{"q":"Who among the following is not mandated to file the return of income u/s 139 for A.Y. 2025-26?","options":["Mr. Ankit, aged 66 years, having a total income of Rs. 3,50,000 before deduction u/s 80C of ₹ 1,50,000","ABC Pvt. Ltd., having incurred a l o s s of Rs.1,50,000 during the year","Ms Jesica, a non- resident having assets worth Rs.2 crores in India and Rs.5 crores outside India. She has not earned or received any income in India","Mr Ark, who travelled to Auckland during the year, spent Rs.4,50,000 on his travel and hotel stay"],"answer":2,"topic":"Returns & Filing","subject":"Direct Tax Laws","id":144},{"q":"Exemption under section 54 of the Income Tax Act, 1961 is available to","options":["All assessees","individual as well as HUF","individuals only","All assessees other than a company"],"answer":1,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":145},{"q":"During the course of survey in the premises of Adarsh & Co. on 10.01.2025, stocks of goods purchased for Rs.10 lakhs were found to be not recorded in the books of account. The firm has brought forward loss of Rs.5 lakhs and incurred business loss of Rs.2 lakhs for the year ended 31.03.2025 without considering the unaccounted stock. The tax liability of the firm including the said unaccounted purchase would be _______","options":["Rs.780000","Rs.300000","Rs.312000","Nil"],"answer":0,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":146},{"q":"Mr. Avinash has advertised on Instagram to promote his business of coaching. He is required to pay Rs.70,000 in the previous year 2024-25 to Instagram for the advertising services availed. What amount is required to be deducted as equalisation levy?","options":["Rs.4200","Rs.7000","Rs.7280","Nil"],"answer":3,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":147},{"q":"The Assessing Officer imposed penalty of Rs.50 lakhs under section 271AAD on Mr. Rohit. Can he provisionally attach the property of Mr. Rohit to protect the interest of the Revenue","options":["Yes, he can do so in the manner provided in the Second Schedule","Yes, he can do so in the manner provided in the Second Schedule with the prior approval of the prescribed higher authorities","Yes, he can do so with the prior approval of the prescribed higher authorities","No, he cannot do so"],"answer":3,"topic":"Penalties & Prosecution","subject":"Direct Tax Laws","id":148},{"q":"Ravi sold his residential house on 15th May, 2024 for Rs.130 lakhs and earned long-term capital gains of Rs.60 lakhs. He bought a new residential house in March, 2025 for Rs.55 lakhs in order to claim eligible exemption under the Income-tax Act. What would you call this action of Ravi reinvesting the long-term capital gain by way of acquisition of a new residential house?","options":["Tax Avoidance","Tax Evasion","Tax Planning","Tax Management"],"answer":2,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":149},{"q":"Beta Ltd. accepted primary adjustment of Rs.120 lakhs made by the Assessing Officer in respect of goods sold by it to its associated enterprise (AE) in Indonesia. It has an AE in Germany also. As regards repatriation of funds to be made which of the following statements is valid","options":["The AE in the Germany alone can repatriate the funds.","Repatriation can be done by any of the AEs, with the prior approval of the PCIT","Only the AE in Indonesia can repatriate funds","Repatriation can be done by any of the AEs, at the option of the assessee."],"answer":3,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":150},{"q":"Advance Pricing Agreement is entered between the","options":["Unilateral Advance Pricing Agreement","Bilateral Advance Pricing Agreement","Multilateral Advance Pricing Agreement","None of the above"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":151},{"q":"Prakash Industries (P) Ltd. was subjected to a search under section 132 and a sum of Rs.250 lakhs by way of cash was found as undisclosed income. Prakash Industries (P) Ltd. has unabsorbed depreciation of Rs.180 lakhs. How much of the unabsorbed depreciation is eligible for set off against cash found as a result of search, representing undisclosed income?","options":["Nil","Rs. 180 Lakhs","Rs. 70 Lakhs","Rs. 90 Lakhs"],"answer":0,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":152},{"q":"For Bradd Inc. of Spain which of the following would mean that it has a Permanent Establishment (PE) in India?","options":["Use of facilities solely for the purpose of storage or display of goods belonging to the enterprise","Operating a factory in India","Maintenance of goods belonging to the enterprise solely for the purpose of processing by another enterprise.","Maintenance of a fixed place of business solely for the purpose of purchasing goods or merchandise or of collecting information, for the enterprise"],"answer":1,"topic":"International Taxation & DTAA","subject":"International Taxation","id":153},{"q":"PQR Ltd. an Indian company deducted Rs.1,20,000 from various payments as TDS for the first quarter of financial year 2024-25. However, it has failed to file TDS return for the said quarter. How much shall be the amount of fee payable by it for default in furnishing TDS return?","options":["Rs. 100 for every day during which the failure continues subject to a maximum of Rs. 1,20,000","Rs. 100 for every day during which the failure continues subject to a maximum of Rs.1,00,000","Rs. 200 for every day during which the failure continues subject to a maximum of Rs.1,00,000","Rs. 200 for every day during which the failure continues subject to a maximum of Rs.1,20,000"],"answer":3,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":154},{"q":"Avinash (P) Ltd, a resident Indian company, received royalty Rs.8 Lakhs from a resident in India in respect of a patent developed and registered in India. The income-tax payable. on the royalty shall be at (ignore cess and surcharge)","options":["10%","15%","20%","30%"],"answer":0,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":155},{"q":"Mr. Mark (aged 45 year) a Australian Cricket Umpire, has earned income from Cricket tournaments in India for AY 2025-2026. Are TDS provisions applicable while making payment to him and if so, under which section?","options":["No, TDS provision are not applicable","Yes, TDS under section 195","Yes, TDS @ 5.2% as per section 194E","Yes, TDS @ 20.8% as per section 194E"],"answer":1,"topic":"TDS / Equalisation Levy","subject":"Direct Tax Laws","id":156},{"q":"Specified Domestic Transactions are covered under Transfer Pricing Provisions if aggregate value of such transactions exceeds","options":["Rs. 20 Crores","Rs. 2 Crores","Rs. 200 Crores","Nil"],"answer":0,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":157},{"q":"Shivam, a resident individual of age of 38 years, has not furnished his return of income for the A.Y. 2025-26. However, his total income for such year as assessed u/s 144 is Rs.18 lakhs. Is penalty under section 270A attracted and if so, what is the quantum of penalty?","options":["No; penalty under section 270A is not attracted since he has not filed his return of income, hence, this is not a case of underreporting or misreporting of income","Yes; penalty is Rs.1,19,600","Yes; penalty is Rs.2,27,500","Yes; penalty is Rs.1,59,600"],"answer":1,"topic":"Penalties & Prosecution","subject":"Direct Tax Laws","id":158},{"q":"Under which of the following methods, arm's length price shall be the arithmetical mean of all values included in the dataset, irrespective of the number of entries in the dataset. It may be assumed that the variation between the arm's length price computed and the transaction price is 15%.","options":["Resale price method","Profit split method","Resale price method","Resale price method"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":159},{"q":"The total income of Construction (P) Ltd. a trading company, computed as per the normal provisions of Income-tax Act is Rs.8,40,000 for the year ended 31st March, 2025. The annual turnover of Construction (P) Ltd. was always less than Rs.10 crores. Book profit of the company computed as per the provisions of section 115JB is Rs.18,40,000. What would be the final tax liability of the company for the assessment year 2025-26? Note: Ignore surcharge and cess.","options":["Rs.840000","Rs.252000","Rs.1000000","Rs.276000"],"answer":3,"topic":"MAT / AMT","subject":"Direct Tax Laws","id":160},{"q":"Book profit for the purposes of section 115JB means net profit as shown in the Statement of the Profit and Loss prepared in accordance with _______of the Companies Act as increased and decreased by certain items prescribed in this regard.","options":["Schedule II","Schedule III","Schedule IV","Schedule V"],"answer":1,"topic":"MAT / AMT","subject":"Direct Tax Laws","id":161},{"q":"Vijay (P) Ltd. filed its return of income with suo moto adjustment of Rs.300 lakhs in respect of ALP of its transactions with its associated enterprise. Within how many days the amount of secondary adjustment must be repatriated to India in order to avoid interest under section 92CE read with rule 10CB?","options":["Within 90 days from the end of the assessment year","Within 90 days from the ‘due date’ specified in section 139(1)","Within 120 days from the date of filing ITR","Within 30 days from the end of the assessment year"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":162},{"q":"B is a foreign company having permanent establishment in India namely A. C, a non-resident associated enterprise, has invested Rs.900 crores through debt in A. Earnings before interest, taxes, depreciation and amortisation (EBITDA) of A during the financial year was Rs.150 crores. What is the amount of interest allowable in respect of the debt assuming that the debt was invested on the first day of the financial year and the rate of interest is 10% p.a.?","options":["Rs. 27 Crores","Rs. 45 Crores","Rs. 90 Crores","Rs.30 Crores"],"answer":1,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":163},{"q":"Anurag Ltd. Myusuru exported goods to its holding company Brave Ltd., China for crore and it has failed to keep and maintain information and documents in respect of Rs.5 crore. How much is the quantum of penalty leviable for such failure in the hands of Anurag Ltd.?","options":["Rs.2500000","Rs.1500000","Rs.1000000","Rs.150000"],"answer":2,"topic":"Penalties & Prosecution","subject":"Direct Tax Laws","id":164},{"q":"While computing book profit u/s 115JB, which one of the following is required to be reduced from the net profit?","options":["Brought forward business loss as per books of account","Unabsorbed Depreciation as per books of account","Income-tax paid or payable if not already debited to the Statement of Profit and Loss.","Brought forward loss or unabsorbed depreciation, whichever is less as per books of account"],"answer":3,"topic":"MAT / AMT","subject":"Direct Tax Laws","id":165},{"q":"XYZ Ltd. has debited a sum of Rs.800 lakhs towards income-tax in its Statement of Profit and Loss for the year ended 31-3-2025. It includes Rs.40 lakhs towards surcharge and Rs.8 lakhs towards HEC. How much would be the amount of disallowance of income- tax under section 40(a)(ii)?","options":["Rs. 40 Lakhs","Rs. 800 Lakhs","Rs. 48 Lakhs","Rs. 8 Lakhs"],"answer":1,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":166},{"q":"Mr. Arvind, Managing Director of Arvind Construction Private Ltd, holds 70% of its paid up capital of Rs.20 lakhs. The balance as at 31.03.2025 in General Reserve was Rs.7 lakhs. The company on 01.04.2025 gave an interest free loan of Rs.8.50 lakhs to its Supervisor having salary of Rs.15,500 p.m., who in turn on 25.04.2025, advanced the said amount of loan so taken from the company to Mr. Arvind What amount would be treated as deemed dividend u/s 2(22)(e)","options":["Nil","Rs.850000","Rs.700000","Rs.800000"],"answer":2,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":167},{"q":"Which of the following power is not vested with CBDT u/s 119(2) of the Act","options":["Relaxation of time limit for filing income- tax return","Relaxation of provisions relating to deductions under Chapter VI-A","Relaxation of provisions in relation to set-off of losses","All of the above"],"answer":2,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":168},{"q":"Sec. 91 deals with","options":["Unilateral Relief","Bilateral Relief","Both (a) and (b)","None of the above"],"answer":0,"topic":"Other Direct Tax","subject":"Direct Tax Laws","id":169},{"q":"If income is taxed twice in more than one country but in the hands of different tax payers is called","options":["Treaty Double Taxation","Deemed Double Taxation","Juridical Double Taxation","Economic Double Taxation"],"answer":3,"topic":"International Taxation & DTAA","subject":"International Taxation","id":170},{"q":"Which of the following orders is not appealable before Commissioner (Appeals)?","options":["An order of penalty u/s 271B for failure to get accounts audited","An order of penalty u/s 271B for failure to get accounts audited","An order of assessment passed by the Assessing Officer in pursuance of directions of Dispute Resolution Panel","An order made u/s 201 deeming a person to be an assessee-in-default for non-deduction of tax at source"],"answer":2,"topic":"Assessment, Appeals & Administration","subject":"Direct Tax Laws","id":171},{"q":"Range concept principle is applied under Transfer Pricing if there is","options":["One reasonable price","more than one reasonable price but not more than five","More than five reasonable prices","None of the above"],"answer":2,"topic":"Transfer Pricing & APA","subject":"International Taxation","id":172},{"q":"ABC Co. Ltd. received Rs.24 lakh as Government grant in respect of a machinery (capital asset) in the previous year 2023-24. The said grant became refundable in July, 2025. What would be the consequence of such refund of grant as per ICDS?","options":["It is a capital receipt and hence no income tax implication would arise on refund of grant","It would be allowed on the resultant value from assessment year 2025-26 onwards","It is taxable as income of assessment year 2025- 26","It is a loss incidental to business allowable under section 37"],"answer":1,"topic":"Heads of Income & Deductions","subject":"Direct Tax Laws","id":173}]};
+
+const STORE = "taxpath_direct_tax_v3";
+let state = JSON.parse(localStorage.getItem(STORE) || "null") || {
+  attempts:{}, wrong:[], bookmarks:[], history:[]
+};
+
+let round = [];
+let pos = 0;
+let roundScore = 0;
+let marks = 1;
+let answered = false;
+let currentChoice = null;
+let timer = null;
+let secondsLeft = 0;
+let roundResults = [];
+let roundMode = "practice";
+
+const qs = DATA.questions;
+
+function save(){
+  localStorage.setItem(STORE, JSON.stringify(state));
+}
+
+function setCount(n){
+  document.getElementById("count").value = Math.min(n, availableQuestions().length || 1);
+}
+
+function availableQuestions(){
+  const subject = document.getElementById("subject").value;
+  const topic = document.getElementById("topic").value;
+  return qs.filter(q =>
+    (subject==="all" || q.subject===subject) &&
+    (topic==="all" || q.topic===topic)
+  );
+}
+
+function rebuildTopicSelect(){
+  const subject = document.getElementById("subject").value;
+  const sel = document.getElementById("topic");
+  const list = qs.filter(q => subject==="all" || q.subject===subject);
+  const counts = {};
+  list.forEach(q=>counts[q.topic]=(counts[q.topic]||0)+1);
+  const topics = Object.keys(counts).sort();
+  sel.innerHTML = `<option value="all">All Topics (${list.length})</option>` +
+    topics.map(t=>`<option value="${esc(t)}">${esc(t)} (${counts[t]})</option>`).join("");
+  document.getElementById("count").max = Math.max(1,list.length);
+  if(+document.getElementById("count").value > list.length)
+    document.getElementById("count").value = Math.min(20,list.length)||1;
+  renderTopicCounts();
+}
+
+function renderTopicCounts(){
+  const subject = document.getElementById("subject").value;
+  const list = qs.filter(q => subject==="all" || q.subject===subject);
+  const counts = {};
+  list.forEach(q=>counts[q.topic]=(counts[q.topic]||0)+1);
+  document.getElementById("topicCounts").innerHTML = Object.entries(counts).sort()
+    .map(([t,c])=>`<div class="chapter"><div class="chapterTop"><b>${esc(t)}</b><span class="badge">${c} MCQs</span></div></div>`).join("");
+}
+
+function filteredList(){
+  return availableQuestions();
+}
+
+function shuffle(a){
+  return [...a].sort(()=>Math.random()-0.5);
+}
+
+function startNewRound(){
+  let pool = filteredList();
+  if(!pool.length){alert("No questions available for this selection.");return;}
+  let n = Math.max(1,Math.min(+document.getElementById("count").value||20,pool.length));
+  round = document.getElementById("random").checked ? shuffle(pool).slice(0,n) : pool.slice(0,n);
+  roundMode = "practice";
+  beginRound();
+}
+
+function startWrongRound(){
+  const pool = qs.filter(q=>state.wrong.includes(q.id));
+  if(!pool.length){alert("There are no wrong questions saved yet.");return;}
+  let n=Math.min(+document.getElementById("count").value||pool.length,pool.length);
+  round=document.getElementById("random").checked?shuffle(pool).slice(0,n):pool.slice(0,n);
+  roundMode="wrong";
+  beginRound();
+}
+
+function startBookmarkedRound(){
+  const pool=qs.filter(q=>state.bookmarks.includes(q.id));
+  if(!pool.length){alert("There are no bookmarked questions yet.");return;}
+  let n=Math.min(+document.getElementById("count").value||pool.length,pool.length);
+  round=document.getElementById("random").checked?shuffle(pool).slice(0,n):pool.slice(0,n);
+  roundMode="bookmark";
+  beginRound();
+}
+
+function beginRound(){
+  marks=Math.max(1,Math.min(5,+document.getElementById("marks").value||1));
+  pos=0;roundScore=0;roundResults=[];
+  document.getElementById("result").style.display="none";
+  document.getElementById("practiceTab").classList.add("hidden");
+  document.getElementById("dashboardTab").classList.add("hidden");
+  document.getElementById("wrongTab").classList.add("hidden");
+  document.getElementById("bookTab").classList.add("hidden");
+  document.getElementById("test").style.display="block";
+  renderQuestion();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function renderQuestion(){
+  clearInterval(timer);
+  answered=false;currentChoice=null;
+  const q=round[pos];
+
+  document.getElementById("counter").textContent=`Question ${pos+1} / ${round.length}`;
+  document.getElementById("liveScore").textContent=`Score: ${roundScore}`;
+  document.getElementById("progressBar").style.width=((pos/round.length)*100)+"%";
+  document.getElementById("qTopic").textContent=q.topic;
+  document.getElementById("qSubject").textContent=q.subject;
+  document.getElementById("qId").textContent=`Q${q.id}`;
+  document.getElementById("qText").textContent=q.q;
+
+  const ob=document.getElementById("options");
+  ob.innerHTML="";
+  q.options.forEach((o,i)=>{
+    const el=document.createElement("label");
+    el.className="option";
+    el.id=`opt-${i}`;
+    el.innerHTML=`<input type="radio" name="ans" value="${i}"> <b>${String.fromCharCode(65+i)}.</b> ${esc(o)}`;
+    el.onclick=()=>choose(i);
+    ob.appendChild(el);
+  });
+
+  document.getElementById("bookmarkBtn").textContent =
+    state.bookmarks.includes(q.id) ? "★ Bookmarked" : "☆ Bookmark";
+  document.getElementById("nextBtn").textContent =
+    pos===round.length-1 ? "Finish" : "Next";
+
+  if(document.getElementById("timerOn").checked){
+    secondsLeft=+document.getElementById("seconds").value||60;
+    updateTimer();
+    timer=setInterval(()=>{
+      secondsLeft--;
+      updateTimer();
+      if(secondsLeft<=0){
+        clearInterval(timer);
+        if(!answered){
+          recordAnswer(null,false,true);
+          revealAnswer();
+        }
+        setTimeout(nextQuestion,350);
+      }
+    },1000);
+  }else{
+    document.getElementById("liveTimer").textContent="";
+  }
+}
+
+function updateTimer(){
+  document.getElementById("liveTimer").textContent=`⏱ ${secondsLeft}s`;
+}
+
+function choose(i){
+  if(answered)return;
+  currentChoice=i;
+  const q=round[pos];
+  answered=true;
+  const correct=i===q.answer;
+  recordAnswer(i,correct,false);
+
+  document.querySelectorAll(".option").forEach((el,k)=>{
+    el.classList.remove("selected","correct","wrong");
+    el.style.pointerEvents="none";
+    if(k===i)el.classList.add("selected");
+  });
+
+  if(document.getElementById("instant").checked){
+    revealAnswer(i);
+  }
+  document.getElementById("liveScore").textContent=`Score: ${roundScore}`;
+}
+
+function recordAnswer(choice,correct,timeout){
+  const q=round[pos];
+  if(correct)roundScore+=marks;
+
+  const existing=roundResults.find(r=>r.id===q.id);
+  if(!existing){
+    roundResults.push({id:q.id,choice,correct,timeout});
+  }
+
+  if(correct){
+    state.wrong=state.wrong.filter(id=>id!==q.id);
+  }else{
+    if(!state.wrong.includes(q.id))state.wrong.push(q.id);
+  }
+
+  if(!state.attempts[q.id])state.attempts[q.id]={attempted:0,correct:0,wrong:0};
+  state.attempts[q.id].attempted++;
+  if(correct)state.attempts[q.id].correct++;
+  else state.attempts[q.id].wrong++;
+  save();
+}
+
+function revealAnswer(chosen=null){
+  const q=round[pos];
+  document.querySelectorAll(".option").forEach((el,k)=>{
+    el.style.pointerEvents="none";
+    if(k===q.answer)el.classList.add("correct");
+    if(chosen!==null && k===chosen && k!==q.answer)el.classList.add("wrong");
+  });
+}
+
+function skipQuestion(){
+  if(!answered){
+    roundResults.push({id:round[pos].id,choice:null,correct:false,timeout:false});
+  }
+  nextQuestion();
+}
+
+function nextQuestion(){
+  clearInterval(timer);
+  if(pos<round.length-1){
+    pos++;
+    renderQuestion();
+  }else{
+    finishTest();
+  }
+}
+
+function toggleBookmark(){
+  const id=round[pos].id;
+  if(state.bookmarks.includes(id)){
+    state.bookmarks=state.bookmarks.filter(x=>x!==id);
+  }else{
+    state.bookmarks.push(id);
+  }
+  save();
+  document.getElementById("bookmarkBtn").textContent =
+    state.bookmarks.includes(id) ? "★ Bookmarked" : "☆ Bookmark";
+}
+
+function finishTest(){
+  clearInterval(timer);
+  if(!round.length)return;
+
+  const answeredCount=roundResults.length;
+  const correct=roundResults.filter(r=>r.correct).length;
+  const wrong=roundResults.filter(r=>r.choice!==null && !r.correct).length;
+  const skipped=Math.max(0,round.length-answeredCount);
+  const total=round.length*marks;
+  const pct=total?Math.round(roundScore/total*100):0;
+
+  state.history.unshift({
+    date:new Date().toISOString(),
+    mode:roundMode,
+    total:round.length,
+    correct,wrong,skipped,
+    score:roundScore,
+    totalMarks:total,
+    accuracy:pct,
+    topics:[...new Set(round.map(q=>q.topic))]
+  });
+  state.history=state.history.slice(0,50);
+  save();
+
+  document.getElementById("test").style.display="none";
+  const r=document.getElementById("result");
+  r.style.display="block";
+
+  const wrongNow=roundResults.filter(x=>!x.correct && x.choice!==null).map(x=>x.id);
+  let html=`<div class="score">${roundScore} / ${total}</div>
+  <p><b>${pct}%</b> accuracy · ${correct} correct · ${wrong} wrong · ${skipped} skipped</p>
+  <div class="row">
+    <button class="primary" onclick="reattemptIds(${JSON.stringify(wrongNow).replace(/"/g,'&quot;')})">Reattempt Wrong (${wrongNow.length})</button>
+    <button class="secondary" onclick="showTab('dashboardTab')">View Weak Areas</button>
+    <button class="secondary" onclick="showTab('practiceTab')">New Test</button>
+  </div>
+  <div class="review"><h3>Question Review</h3>`;
+
+  round.forEach((q,i)=>{
+    const rr=roundResults.find(x=>x.id===q.id);
+    const status=!rr?"Skipped":rr.correct?"Correct":"Wrong";
+    html+=`<div class="reviewItem"><b>Q${q.id} · ${status}</b><br>${esc(q.q)}<br><span class="small">Correct answer: ${esc(q.options[q.answer])}</span></div>`;
+  });
+  html+=`</div>`;
+  r.innerHTML=html;
+  window.scrollTo({top:0,behavior:"smooth"});
+  renderDashboard();
+}
+
+function reattemptIds(ids){
+  const pool=qs.filter(q=>ids.includes(q.id));
+  if(!pool.length){alert("No wrong questions available.");return;}
+  round=document.getElementById("random").checked?shuffle(pool):pool;
+  roundMode="wrong";
+  beginRound();
+}
+
+function showTab(id){
+  clearInterval(timer);
+  document.getElementById("test").style.display="none";
+  document.getElementById("result").style.display="none";
+  ["practiceTab","dashboardTab","wrongTab","bookTab"].forEach(x=>{
+    document.getElementById(x).classList.toggle("hidden",x!==id);
+  });
+  document.querySelectorAll(".tab").forEach(b=>b.classList.remove("active"));
+  const btn=document.querySelector(`[data-tab="${id}"]`);
+  if(btn)btn.classList.add("active");
+  if(id==="dashboardTab")renderDashboard();
+  if(id==="wrongTab")renderWrong();
+  if(id==="bookTab")renderBooks();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function topicStats(){
+  const out={};
+  qs.forEach(q=>{
+    if(!out[q.topic])out[q.topic]={total:0,attempted:0,correct:0};
+    out[q.topic].total++;
+    const a=state.attempts[q.id];
+    if(a){
+      out[q.topic].attempted+=a.attempted;
+      out[q.topic].correct+=a.correct;
+    }
+  });
+  return out;
+}
+
+function renderDashboard(){
+  const all=Object.values(state.attempts);
+  const attempted=all.reduce((s,a)=>s+a.attempted,0);
+  const correct=all.reduce((s,a)=>s+a.correct,0);
+  const wrong=state.wrong.length;
+  const accuracy=attempted?Math.round(correct/attempted*100):0;
+
+  document.getElementById("stats").innerHTML=`
+    <div class="stat"><b>${attempted}</b><span>Total attempts</span></div>
+    <div class="stat"><b>${correct}</b><span>Correct answers</span></div>
+    <div class="stat"><b>${accuracy}%</b><span>Overall accuracy</span></div>
+    <div class="stat"><b>${wrong}</b><span>Questions to reattempt</span></div>`;
+
+  const ts=topicStats();
+  const weak=Object.entries(ts).filter(([t,x])=>x.attempted>=5 && (x.correct/x.attempted)<0.60)
+    .sort((a,b)=>(a[1].correct/a[1].attempted)-(b[1].correct/b[1].attempted));
+
+  document.getElementById("weakAreas").innerHTML=weak.length
+    ? weak.map(([t,x])=>{
+        const p=Math.round(x.correct/x.attempted*100);
+        return `<div class="chapter"><div class="chapterTop"><b>${esc(t)}</b><span class="badge weak">${p}% · Weak</span></div><div class="small">${x.correct}/${x.attempted} correct</div><div class="meter"><span style="width:${p}%"></span></div><br><button class="secondary" onclick="practiceTopic(${JSON.stringify(t).replace(/"/g,'&quot;')})">Practice Weak Area</button></div>`;
+      }).join("")
+    : `<div class="empty">No weak area yet. A topic needs at least 5 attempts before it is classified.</div>`;
+
+  document.getElementById("topicPerformance").innerHTML=Object.entries(ts).sort().map(([t,x])=>{
+    const p=x.attempted?Math.round(x.correct/x.attempted*100):0;
+    const cls=x.attempted>=5&&p<60?"weak":x.attempted>=5&&p>=80?"strong":"";
+    return `<div class="chapter"><div class="chapterTop"><b>${esc(t)}</b><span class="badge ${cls}">${x.attempted?`${p}%`:"Not attempted"} · ${x.total} MCQs</span></div><div class="small">${x.correct}/${x.attempted} correct from attempted questions</div><div class="meter"><span style="width:${p}%"></span></div></div>`;
+  }).join("");
+
+  document.getElementById("history").innerHTML=state.history.length
+    ? `<table class="history"><tr><th>Date</th><th>Mode</th><th>Questions</th><th>Score</th><th>Accuracy</th></tr>`+
+      state.history.slice(0,15).map(h=>`<tr><td>${new Date(h.date).toLocaleString()}</td><td>${esc(h.mode)}</td><td>${h.total}</td><td>${h.score}/${h.totalMarks}</td><td>${h.accuracy}%</td></tr>`).join("")+
+      `</table>`
+    : `<div class="empty">No tests completed yet.</div>`;
+}
+
+function practiceTopic(t){
+  const pool=qs.filter(q=>q.topic===t);
+  if(!pool.length)return;
+  round=document.getElementById("random").checked?shuffle(pool).slice(0,Math.min(+document.getElementById("count").value||20,pool.length)):pool.slice(0,Math.min(+document.getElementById("count").value||20,pool.length));
+  roundMode="weak-area";
+  beginRound();
+}
+
+function renderWrong(){
+  const pool=qs.filter(q=>state.wrong.includes(q.id));
+  document.getElementById("wrongList").innerHTML=pool.length
+    ? pool.map(q=>`<div class="chapter"><div class="chapterTop"><b>Q${q.id}</b><span class="badge weak">${esc(q.topic)}</span></div><div class="small">${esc(q.q)}</div></div>`).join("")
+    : `<div class="empty">No wrong questions. Good — keep practicing.</div>`;
+}
+
+function renderBooks(){
+  const pool=qs.filter(q=>state.bookmarks.includes(q.id));
+  document.getElementById("bookList").innerHTML=pool.length
+    ? pool.map(q=>`<div class="chapter"><div class="chapterTop"><b>Q${q.id}</b><span class="badge">${esc(q.topic)}</span></div><div class="small">${esc(q.q)}</div></div>`).join("")
+    : `<div class="empty">No bookmarked questions.</div>`;
+}
+
+function exportCSV(){
+  const rows=[["Question ID","Subject","Topic","Attempts","Correct","Wrong","Accuracy"]];
+  qs.forEach(q=>{
+    const a=state.attempts[q.id]||{attempted:0,correct:0,wrong:0};
+    rows.push([q.id,q.subject,q.topic,a.attempted,a.correct,a.wrong,a.attempted?Math.round(a.correct/a.attempted*100):""]);
+  });
+  const csv=rows.map(r=>r.map(x=>`"${String(x).replace(/"/g,'""')}"`).join(",")).join("\\n");
+  download("taxpath-direct-tax-performance.csv",csv,"text/csv");
+}
+
+function exportJSON(){
+  download("taxpath-direct-tax-progress.json",JSON.stringify(state,null,2),"application/json");
+}
+
+function download(name,text,type){
+  const blob=new Blob([text],{type});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);a.download=name;a.click();
+  setTimeout(()=>URL.revokeObjectURL(a.href),500);
+}
+
+function clearProgress(){
+  if(!confirm("Clear all Direct Tax test progress, wrong answers, bookmarks and history?"))return;
+  localStorage.removeItem(STORE);
+  location.reload();
+}
+
+function esc(s){
+  return String(s).replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
+}
+
+document.getElementById("subject").addEventListener("change",rebuildTopicSelect);
+document.getElementById("topic").addEventListener("change",()=>{
+  const n=availableQuestions().length;
+  document.getElementById("count").max=Math.max(1,n);
+  if(+document.getElementById("count").value>n)document.getElementById("count").value=n;
+});
+
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.addEventListener("click",()=>showTab(btn.dataset.tab));
+});
+
+rebuildTopicSelect();
+renderDashboard();
+renderWrong();
+renderBooks();
+</script>
+</body>
+</html>
