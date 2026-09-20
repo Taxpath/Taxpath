@@ -86,17 +86,17 @@ function showError(error) {
   googleLogin.disabled = false;
 }
 
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(showError);
+
 googleLogin.addEventListener("click", async () => {
   googleLogin.disabled = true;
   authMessage.textContent = "Opening Google sign-in...";
   try {
-    await auth.signInWithRedirect(provider);
+    await auth.signInWithPopup(provider);
   } catch (error) {
     showError(error);
   }
 });
-
-auth.getRedirectResult().catch(showError);
 
 auth.onAuthStateChanged((user) => {
   if (!user) {
