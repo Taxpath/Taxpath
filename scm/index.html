@@ -569,8 +569,6 @@
     font:600 0.95rem ui-sans-serif,-apple-system,"Segoe UI",Roboto,sans-serif;
     cursor:pointer;
   }
-  #accessLoginBtn{margin-top:10px;background:transparent!important;color:var(--teal)!important;border:1px solid var(--teal)!important;}
-  #accessStatus{font-size:.82rem;margin-top:12px;color:var(--muted);text-align:center;}
 
 </style>
 </head>
@@ -582,13 +580,9 @@
     <p id="accessDeniedMessage">
       Your account does not have access to CMA Final Group 3.
     </p>
-    <button type="button" id="accessLoginBtn">
-      Sign in with Google
-    </button>
     <button type="button" onclick="window.location.href='../index.html'">
       Back to Home
     </button>
-    <div id="accessStatus"></div>
   </div>
 </div>
 
@@ -1308,8 +1302,6 @@ function scmChapterPool(value){
 
 <script>
 (function(){
-  "use strict";
-
   const firebaseConfig = {
     apiKey: "AIzaSyA7tGvsDYyLSWFPeS6lsxlP8gLOw53Wrk",
     authDomain: "cma-mcq-portal.firebaseapp.com",
@@ -1320,113 +1312,95 @@ function scmChapterPool(value){
     measurementId: "G-H6GDK7Y3RJ"
   };
 
-  const ADMIN_EMAIL = "taxxpath@gmail.com";
+  const ADMIN_EMAIL = "taxxpath@gmail.com".toLowerCase();
   const REQUIRED_ACCESS_FIELD = "accessFinalGroup3";
-  const loginBtn = document.getElementById("accessLoginBtn");
-  const statusEl = document.getElementById("accessStatus");
 
-  function setStatus(msg){ if(statusEl) statusEl.textContent = msg || ""; }
-  function deny(message){
-    const body=document.body;
-    const msg=document.getElementById("accessDeniedMessage");
-    if(msg) msg.textContent=message;
+  const deny = (message) => {
+    const body = document.body;
+    const msg = document.getElementById("accessDeniedMessage");
+    if (msg) msg.textContent = message;
     body.classList.remove("access-pending");
     body.classList.add("access-denied");
-    setStatus("");
-  }
-  function allow(){
-    document.body.classList.remove("access-pending","access-denied");
-    setStatus("");
-  }
-  function todayYMD(){ return new Date().toISOString().slice(0,10); }
-  function isExpired(v){
-    if(!v) return false;
-    if(typeof v === "string") return v.slice(0,10) < todayYMD();
-    if(v && typeof v.toDate === "function") return v.toDate().toISOString().slice(0,10) < todayYMD();
+  };
+
+  const allow = () => {
+    document.body.classList.remove("access-pending", "access-denied");
+  };
+
+  const todayYMD = () => new Date().toISOString().slice(0,10);
+
+  const isExpired = (expiryDate) => {
+    if (!expiryDate) return false;
+
+    // Admin panel normally stores YYYY-MM-DD. This also safely handles
+    // Firestore Timestamp values if the field is changed later.
+    if (typeof expiryDate === "string") {
+      return expiryDate.slice(0,10) < todayYMD();
+    }
+
+    if (expiryDate && typeof expiryDate.toDate === "function") {
+      return expiryDate.toDate() < new Date(new Date().toISOString().slice(0,10));
+    }
+
     return false;
-  }
+  };
 
   try {
-    if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const auth=firebase.auth();
-    const db=firebase.firestore();
-    const provider=new firebase.auth.GoogleAuthProvider();
-    provider.setCustomParameters({prompt:"select_account"});
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
-    // Explicitly keep the same Firebase login across Home -> subject pages.
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function(e){
-      console.warn("Auth persistence warning",e);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    auth.onAuthStateChanged(async function(user){
+      try {
+        if (!user || !user.email) {
+          deny("Please sign in with an approved Google account from the CMA MCQ Portal Home page.");
+          return;
+        }
+
+        const email = user.email.toLowerCase();
+
+        // Admin always has access.
+        if (email === ADMIN_EMAIL) {
+          allow();
+          return;
+        }
+
+        const snap = await db.collection("approvedUsers").doc(email).get();
+
+        if (!snap.exists) {
+          deny("This Gmail account is not approved for CMA Final Group 3.");
+          return;
+        }
+
+        const data = snap.data() || {};
+
+        if (String(data.status || "").toLowerCase() !== "active") {
+          deny("Your portal access is currently inactive. Please contact the administrator.");
+          return;
+        }
+
+        if (isExpired(data.expiryDate)) {
+          deny("Your CMA Final Group 3 access has expired. Please contact the administrator.");
+          return;
+        }
+
+        if (data[REQUIRED_ACCESS_FIELD] !== true) {
+          deny("Your account does not have access to CMA Final Group 3.");
+          return;
+        }
+
+        allow();
+
+      } catch (error) {
+        console.error("Final Group 3 access check failed:", error);
+        deny("Access could not be verified right now. Please return to Home and sign in again.");
+      }
     });
 
-    if(loginBtn){
-      loginBtn.addEventListener("click",function(){
-        loginBtn.disabled=true;
-        setStatus("Opening Google sign-in…");
-        auth.signInWithPopup(provider).then(function(){
-          setStatus("Checking your Final Group 3 access…");
-        }).catch(function(error){
-          console.error("SCM Google sign-in failed",error);
-          loginBtn.disabled=false;
-          setStatus("Google sign-in failed: " + (error.code || error.message || "Unknown error"));
-        });
-      });
-    }
-
-    async function checkUser(user){
-      if(!user || !user.email){
-        deny("Please sign in with your approved Google account.");
-        if(loginBtn) loginBtn.disabled=false;
-        return;
-      }
-
-      const email=user.email.trim().toLowerCase();
-      setStatus("Checking access for " + email + "…");
-
-      if(email===ADMIN_EMAIL){ allow(); return; }
-
-      const snap=await db.collection("approvedUsers").doc(email).get();
-      if(!snap.exists){
-        deny("This Gmail account is not approved in the CMA MCQ Portal.");
-        return;
-      }
-
-      const data=snap.data() || {};
-      if(String(data.status || "").toLowerCase() !== "active"){
-        deny("Your portal access is inactive.");
-        return;
-      }
-      if(isExpired(data.expiryDate)){
-        deny("Your CMA Final Group 3 access has expired.");
-        return;
-      }
-      if(data[REQUIRED_ACCESS_FIELD] !== true){
-        deny("Your account does not have access to CMA Final Group 3. Please enable Final Group 3 in the Admin Panel.");
-        return;
-      }
-      allow();
-    }
-
-    let resolved=false;
-    auth.onAuthStateChanged(function(user){
-      resolved=true;
-      checkUser(user).catch(function(error){
-        console.error("SCM access check failed",error);
-        deny("Access verification failed: " + (error.code || error.message || "Unknown error"));
-      });
-    });
-
-    // Extra fallback for browsers where the persisted auth state is restored slowly.
-    setTimeout(function(){
-      if(!resolved && auth.currentUser){
-        checkUser(auth.currentUser).catch(function(error){
-          console.error("SCM fallback access check failed",error);
-        });
-      }
-    },3000);
-
-  } catch(error){
-    console.error("Firebase initialization failed",error);
-    deny("The Firebase access system could not be loaded. Please refresh the page.");
+  } catch (error) {
+    console.error("Firebase initialization failed:", error);
+    deny("The access system could not be loaded. Please return to Home and try again.");
   }
 })();
 </script>
