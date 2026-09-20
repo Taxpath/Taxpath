@@ -1,9 +1,119 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CMA — MCQ Practice</title><style>:root{--ink:#1c2a2e;--paper:#f6f3ec;--rule:#d8d0bd;--teal:#12484a;--brass:#8a6a1f}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,serif}.wrap{max-width:760px;margin:auto;padding:24px 16px 50px}header{border-bottom:3px double var(--rule);padding-bottom:18px;margin-bottom:24px}h1{margin:0 0 6px;font-size:clamp(1.7rem,5vw,2.5rem)}.sub{color:#6f6a5c}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.card{display:block;text-decoration:none;color:inherit;background:#fffaf0;border:1px solid var(--rule);border-radius:12px;padding:20px}.card b{display:block;font-size:1.1rem;color:var(--teal);margin-bottom:7px}.card span{font-size:.9rem;color:#6f6a5c}.full{grid-column:1/-1;background:#eef7f5}.pdf{margin-top:18px;padding:16px;border:1px dashed var(--brass);border-radius:10px;background:#fffdf8}.pdf a{color:var(--teal);font-weight:bold}@media(max-width:560px){.grid{grid-template-columns:1fr}.full{grid-column:auto}}
-.brand{display:flex;align-items:center;gap:14px}
-.cma-logo{width:62px;height:62px;border:3px solid var(--teal);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--teal);font-family:Arial,sans-serif;font-weight:900;font-size:1.05rem;letter-spacing:-.5px}
-.full-form{font-size:1.05rem;font-weight:700;color:var(--teal);margin:2px 0 5px}
-</style></head><body>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>CMA — MCQ Practice</title>
+  <style>
+    :root {
+      --ink: #1c2a2e;
+      --paper: #f6f3ec;
+      --rule: #d8d0bd;
+      --teal: #12484a;
+      --brass: #8a6a1f;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: Georgia, serif;
+    }
+    .wrap {
+      max-width: 760px;
+      margin: auto;
+      padding: 24px 16px 50px;
+    }
+    header {
+      border-bottom: 3px double var(--rule);
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.7rem, 5vw, 2.5rem);
+    }
+    .sub {
+      color: #6f6a5c;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      background: #fffaf0;
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .card b {
+      display: block;
+      font-size: 1.1rem;
+      color: var(--teal);
+      margin-bottom: 7px;
+    }
+    .card span {
+      font-size: .9rem;
+      color: #6f6a5c;
+    }
+    .full {
+      grid-column: 1/-1;
+      background: #eef7f5;
+    }
+    .pdf {
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px dashed var(--brass);
+      border-radius: 10px;
+      background: #fffdf8;
+    }
+    .pdf a {
+      color: var(--teal);
+      font-weight: bold;
+    }
+    @media(max-width: 560px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .full {
+        grid-column: auto;
+      }
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .cma-logo {
+      width: 62px;
+      height: 62px;
+      border: 3px solid var(--teal);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--teal);
+      font-family: Arial, sans-serif;
+      font-weight: 900;
+      font-size: 1.05rem;
+      letter-spacing: -.5px;
+    }
+    .full-form {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--teal);
+      margin: 2px 0 5px;
+    }
+  </style>
+</head>
+<body>
+
 <div id="authScreen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;background:#f6f3ec;">
   <div style="width:min(420px,100%);background:#fffaf0;border:1px solid #d8d0bd;border-radius:18px;padding:32px 24px;text-align:center;box-shadow:0 10px 35px rgba(0,0,0,.08);">
     <div style="width:68px;height:68px;margin:0 auto 16px;border:3px solid #12484a;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#12484a;font-family:Arial,sans-serif;font-weight:900;font-size:20px;">CMA</div>
@@ -18,28 +128,47 @@
   <span id="userEmail" style="color:#6f6a5c;"></span>
   <button id="logoutBtn" style="margin-left:10px;border:1px solid #d8d0bd;background:#fffaf0;border-radius:8px;padding:6px 10px;cursor:pointer;">Sign out</button>
 </div>
-<div id="pageContent" style="display:none;"><div class="wrap"><header><h1>CMA</h1><div class="sub">MCQ Practice & Full-Fledged Test</div></header><div class="grid"><a class="card" href="scm/index.html"><b>1. Strategic Cost Management</b><span>SCM chapter-wise MCQ practice</span></a><a class="card" href="sfm/index.html"><b>2. Strategic Financial Management</b><span>SFM topic-wise MCQ practice</span></a><a class="card" href="direct-tax/index.html"><b>3. Direct Tax & International Laws</b><span>Direct Tax and International Taxation practice</span></a><a class="card" href="corporate-economic-laws/index.html"><b>4. Corporate & Economic Laws</b><span>Corporate and Economic Laws practice</span></a><a class="card full" href="full-test/index.html"><b>📝 Full-Fledged Test — December 2026</b><span>Combined test area for CMA</span></a></div><div class="pdf"><strong>December 2026 Supplement</strong><br><span>Use the supplement PDF for the December 2026 test workflow and answer sheet.</span><br><br><a href="supplement-dec-2026.pdf" target="_blank">Open Supplement PDF</a></div></div>
-<section style="margin:32px auto;max-width:1100px;padding:0 20px;">
-  <h2 style="margin-bottom:16px;">Coming Soon</h2>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
-    <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
-      <div style="font-size:30px;margin-bottom:10px;">📘</div>
-      <h3 style="margin:0 0 8px;">CMA Foundation</h3>
-      <p style="margin:0;color:#666;">MCQ practice, chapter-wise tests and full-length tests — Coming Soon.</p>
+
+<div id="pageContent" style="display:none;">
+  <div class="wrap">
+    <header>
+      <h1>CMA</h1>
+      <div class="sub">MCQ Practice & Full-Fledged Test</div>
+    </header>
+    <div class="grid">
+      <a class="card" href="scm/index.html"><b>1. Strategic Cost Management</b><span>SCM chapter-wise MCQ practice</span></a>
+      <a class="card" href="sfm/index.html"><b>2. Strategic Financial Management</b><span>SFM topic-wise MCQ practice</span></a>
+      <a class="card" href="direct-tax/index.html"><b>3. Direct Tax & International Laws</b><span>Direct Tax and International Taxation practice</span></a>
+      <a class="card" href="corporate-economic-laws/index.html"><b>4. Corporate & Economic Laws</b><span>Corporate and Economic Laws practice</span></a>
+      <a class="card full" href="full-test/index.html"><b>📝 Full-Fledged Test — December 2026</b><span>Combined test area for CMA</span></a>
     </div>
-    <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
-      <div style="font-size:30px;margin-bottom:10px;">📚</div>
-      <h3 style="margin:0 0 8px;">CMA Intermediate</h3>
-      <p style="margin:0;color:#666;">Subject-wise MCQs, mock tests and practice tools — Coming Soon.</p>
-    </div>
-    <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
-      <div style="font-size:30px;margin-bottom:10px;">🎯</div>
-      <h3 style="margin:0 0 8px;">CMA Final Group 4</h3>
-      <p style="margin:0;color:#666;">MCQ practice, full-fledged tests and study resources — Coming Soon.</p>
+    <div class="pdf">
+      <strong>December 2026 Supplement</strong><br>
+      <span>Use the supplement PDF for the December 2026 test workflow and answer sheet.</span><br><br>
+      <a href="supplement-dec-2026.pdf" target="_blank">Open Supplement PDF</a>
     </div>
   </div>
-</section>
 
+  <section style="margin:32px auto;max-width:1100px;padding:0 20px;">
+    <h2 style="margin-bottom:16px;">Coming Soon</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+      <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
+        <div style="font-size:30px;margin-bottom:10px;">📘</div>
+        <h3 style="margin:0 0 8px;">CMA Foundation</h3>
+        <p style="margin:0;color:#666;">MCQ practice, chapter-wise tests and full-length tests — Coming Soon.</p>
+      </div>
+      <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
+        <div style="font-size:30px;margin-bottom:10px;">📚</div>
+        <h3 style="margin:0 0 8px;">CMA Intermediate</h3>
+        <p style="margin:0;color:#666;">Subject-wise MCQs, mock tests and practice tools — Coming Soon.</p>
+      </div>
+      <div style="padding:22px;border:1px solid #ddd;border-radius:16px;background:#fff;">
+        <div style="font-size:30px;margin-bottom:10px;">🎯</div>
+        <h3 style="margin:0 0 8px;">CMA Final Group 4</h3>
+        <p style="margin:0;color:#666;">MCQ practice, full-fledged tests and study resources — Coming Soon.</p>
+      </div>
+    </div>
+  </section>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
@@ -112,7 +241,8 @@ logoutBtn.addEventListener("click", async () => {
   }
 });
 
-auth.onAuthStateChanged((user) => {
+// Fixed: Added 'async' keyword to the callback function
+auth.onAuthStateChanged(async (user) => {
   if (!user) {
     authScreen.style.display = "flex";
     pageContent.style.display = "none";
