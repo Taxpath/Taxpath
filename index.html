@@ -1,325 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CMA MCQ Portal</title>
 <style>
-  :root {
-    --cream: #faf6ee;
-    --teal: #0d3b3e;
-    --teal-dark: #082627;
-    --gold: #c8a24a;
-    --gold-light: #e4c98a;
-    --text: #22302f;
-    --card-bg: #ffffff;
-    --border: #e4dcc8;
-    --danger: #b3261e;
-    --danger-bg: #fdecea;
-  }
-
-  * { box-sizing: border-box; }
-
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    min-height: 100vh;
-  }
-
-  /* ===================== LOADING ===================== */
-  #loadingScreen {
-    position: fixed;
-    inset: 0;
-    background: var(--teal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    z-index: 999;
-    color: var(--gold-light);
-  }
-  #loadingScreen .spinner {
-    width: 44px;
-    height: 44px;
-    border: 4px solid rgba(255,255,255,0.2);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-    margin-bottom: 16px;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ===================== LOGIN SCREEN ===================== */
-  #authScreen {
-    display: none;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-  }
-  .login-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 40px 32px;
-    max-width: 420px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(13,59,62,0.12);
-  }
-  .login-logo {
-    font-size: 34px;
-    font-weight: 800;
-    color: var(--teal);
-    letter-spacing: 1px;
-  }
-  .login-logo span { color: var(--gold); }
-  .login-title {
-    font-size: 20px;
-    font-weight: 700;
-    margin-top: 10px;
-    color: var(--teal-dark);
-  }
-  .login-sub {
-    font-size: 14px;
-    color: #5b6b69;
-    margin: 10px 0 26px;
-    line-height: 1.5;
-  }
-  #googleLogin {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    padding: 13px 18px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: #fff;
-    color: #22302f;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s ease, box-shadow 0.15s ease;
-  }
-  #googleLogin:hover:not(:disabled) {
-    background: #f5f1e6;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-  }
-  #googleLogin:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  #googleLogin svg { width: 20px; height: 20px; flex-shrink: 0; }
-
-  #authMessage {
-    margin-top: 18px;
-    font-size: 13.5px;
-    line-height: 1.5;
-    min-height: 18px;
-  }
-  #authMessage.error {
-    color: var(--danger);
-    background: var(--danger-bg);
-    border: 1px solid #f3c6c2;
-    padding: 10px 12px;
-    border-radius: 8px;
-  }
-  #authMessage.info {
-    color: var(--teal);
-  }
-
-  /* ===================== APP / HOME PAGE ===================== */
-  #pageContent { display: none; }
-
-  header.topbar {
-    background: var(--teal);
-    color: #fff;
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .brand {
-    font-size: 20px;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-  }
-  .brand span { color: var(--gold); }
-  .user-area {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-size: 13.5px;
-  }
-  #userEmail {
-    background: rgba(255,255,255,0.1);
-    padding: 6px 12px;
-    border-radius: 20px;
-    color: var(--gold-light);
-    word-break: break-all;
-  }
-  #logoutBtn {
-    background: var(--gold);
-    color: var(--teal-dark);
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-weight: 700;
-    font-size: 13.5px;
-    cursor: pointer;
-    transition: opacity 0.15s ease;
-    white-space: nowrap;
-  }
-  #logoutBtn:hover:not(:disabled) { opacity: 0.85; }
-  #logoutBtn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  main {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 30px 20px 60px;
-  }
-
-  .hero {
-    text-align: center;
-    margin-bottom: 34px;
-  }
-  .hero h1 {
-    font-size: 30px;
-    color: var(--teal);
-    margin: 0 0 6px;
-    font-weight: 800;
-  }
-  .hero p {
-    color: #5b6b69;
-    font-size: 15px;
-    margin: 0;
-  }
-
-  h2.section-title {
-    font-size: 18px;
-    color: var(--teal-dark);
-    border-left: 4px solid var(--gold);
-    padding-left: 10px;
-    margin: 34px 0 16px;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 18px;
-  }
-
-  .card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 22px;
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-    box-shadow: 0 2px 8px rgba(13,59,62,0.05);
-  }
-  .card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 22px rgba(13,59,62,0.12);
-  }
-  .card h3 {
-    margin: 0 0 8px;
-    font-size: 16px;
-    color: var(--teal);
-  }
-  .card p {
-    margin: 0;
-    font-size: 13.5px;
-    color: #5b6b69;
-    line-height: 1.45;
-  }
-
-  .card.full-test {
-    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
-    color: #fff;
-    border: none;
-  }
-  .card.full-test h3 { color: var(--gold-light); }
-  .card.full-test p { color: #d9e5e4; }
-
-  .card.supplement {
-    border: 1px dashed var(--gold);
-    background: #fffaf0;
-  }
-  .card.supplement h3 { color: #8a6d1f; }
-
-  .card.coming-soon {
-    opacity: 0.7;
-    cursor: default;
-    pointer-events: none;
-  }
-  .badge {
-    display: inline-block;
-    margin-top: 10px;
-    font-size: 11px;
-    font-weight: 700;
-    color: #fff;
-    background: var(--gold);
-    padding: 3px 10px;
-    border-radius: 12px;
-  }
-
-  footer {
-    text-align: center;
-    padding: 24px;
-    font-size: 12.5px;
-    color: #8a938f;
-  }
+:root{
+  --cream:#faf6ee;--teal:#0d3b3e;--teal-dark:#082627;
+  --gold:#c8a24a;--gold-light:#e4c98a;--text:#22302f;
+  --card-bg:#fff;--border:#e4dcc8;--danger:#b3261e;--danger-bg:#fdecea;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Segoe UI',Roboto,Arial,sans-serif;background:var(--cream);color:var(--text);min-height:100vh}
+#loadingScreen{position:fixed;inset:0;background:var(--teal);display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:999;color:var(--gold-light)}
+#loadingScreen .spinner{width:44px;height:44px;border:4px solid rgba(255,255,255,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .9s linear infinite;margin-bottom:16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+#authScreen{display:none;min-height:100vh;align-items:center;justify-content:center;padding:24px}
+.login-card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:40px 32px;max-width:420px;width:100%;text-align:center;box-shadow:0 10px 30px rgba(13,59,62,.12)}
+.login-logo{font-size:34px;font-weight:800;color:var(--teal);letter-spacing:1px}.login-logo span{color:var(--gold)}
+.login-title{font-size:20px;font-weight:700;margin-top:10px;color:var(--teal-dark)}
+.login-sub{font-size:14px;color:#5b6b69;margin:10px 0 26px;line-height:1.5}
+#googleLogin{display:inline-flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:13px 18px;border-radius:10px;border:1px solid var(--border);background:#fff;color:#22302f;font-size:15px;font-weight:600;cursor:pointer}
+#googleLogin:disabled{opacity:.6;cursor:not-allowed}
+#googleLogin svg{width:20px;height:20px;flex-shrink:0}
+#authMessage{margin-top:18px;font-size:13.5px;line-height:1.5;min-height:18px}
+#authMessage.error{color:var(--danger);background:var(--danger-bg);border:1px solid #f3c6c2;padding:10px 12px;border-radius:8px}
+#pageContent{display:none}
+header.topbar{background:var(--teal);color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.brand{font-size:20px;font-weight:800;letter-spacing:.5px}.brand span{color:var(--gold)}
+.user-area{display:flex;align-items:center;gap:12px;font-size:13.5px}
+#userEmail{background:rgba(255,255,255,.1);padding:6px 12px;border-radius:20px;color:var(--gold-light);word-break:break-all}
+#logoutBtn{background:var(--gold);color:var(--teal-dark);border:0;padding:8px 16px;border-radius:8px;font-weight:700;font-size:13.5px;cursor:pointer}
+main{max-width:1100px;margin:0 auto;padding:30px 20px 60px}
+.hero{text-align:center;margin-bottom:34px}.hero h1{font-size:30px;color:var(--teal);margin:0 0 6px;font-weight:800}.hero p{color:#5b6b69;font-size:15px;margin:0}
+h2.section-title{font-size:18px;color:var(--teal-dark);border-left:4px solid var(--gold);padding-left:10px;margin:34px 0 16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:22px;text-decoration:none;color:inherit;display:block;transition:transform .15s ease,box-shadow .15s ease;box-shadow:0 2px 8px rgba(13,59,62,.05)}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(13,59,62,.12)}
+.card h3{margin:0 0 8px;font-size:16px;color:var(--teal)}.card p{margin:0;font-size:13.5px;color:#5b6b69;line-height:1.45}
+.card.full-test{background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#fff;border:0}
+.card.full-test h3{color:var(--gold-light)}.card.full-test p{color:#d9e5e4}
+.card.supplement{border:1px dashed var(--gold);background:#fffaf0}.card.supplement h3{color:#8a6d1f}
+.badge{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;color:#fff;background:var(--gold);padding:3px 10px;border-radius:12px}
+.access-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:25px}
+.access-title{font-size:15px;font-weight:700;color:var(--teal);margin-bottom:8px}
+.access-tags{display:flex;gap:8px;flex-wrap:wrap}.access-tag{padding:7px 11px;border-radius:20px;background:#e9f2f1;color:var(--teal);font-size:12px;font-weight:700}
+.expiry{margin-top:10px;color:#5b6b69;font-size:13px}
+.locked-note{padding:18px;border:1px dashed var(--gold);border-radius:14px;background:#fffaf0;color:#5b6b69;text-align:center}
+.hidden{display:none!important}
+footer{text-align:center;padding:24px;font-size:12.5px;color:#8a938f}
+@media(max-width:600px){main{padding:25px 14px 45px}.hero h1{font-size:26px}.user-area{width:100%;justify-content:space-between}}
 </style>
 </head>
 <body>
 
-<!-- ===================== LOADING SCREEN ===================== -->
 <div id="loadingScreen">
   <div class="spinner"></div>
-  <div>Checking sign-in status…</div>
+  <div id="loadingText">Checking sign-in status…</div>
 </div>
 
-<!-- ===================== LOGIN SCREEN ===================== -->
 <div id="authScreen">
   <div class="login-card">
     <div class="login-logo">CMA<span>.</span></div>
     <div class="login-title">CMA MCQ Portal</div>
     <p class="login-sub">Sign in with an authorised Google account to continue.</p>
-
     <button id="googleLogin" type="button">
       <svg viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.3 29.4 35 24 35c-6.1 0-11.2-4.1-13-9.6-.4-1.1-.6-2.3-.6-3.4s.2-2.3.6-3.4C12.8 13.1 17.9 9 24 9c3.1 0 5.9 1.1 8.1 3l6-6C34.5 2.5 29.5 0 24 0 14.6 0 6.5 5.4 2.5 13.2l7 5.4C11.4 13.4 17.2 9 24 9c-6.8 0-12.6 4.4-14.5 10.6z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.6 15.1 18.9 12 24 12c3.1 0 5.9 1.1 8.1 3l6-6C34.5 5.5 29.5 3.5 24 3.5c-8 0-14.9 4.5-18.4 11.2z"/><path fill="#4CAF50" d="M24 44c5.3 0 10.2-1.8 14-4.9l-6.5-5.3C29.4 35.6 26.8 36.5 24 36.5c-5.3 0-9.8-3.4-11.5-8.1l-6.6 5.1C9.4 39.5 16.1 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-1.1 3-3.3 5.4-6.2 6.8l6.5 5.3C39.2 37.6 44 31.9 44 24c0-1.2-.1-2.4-.4-3.5z"/></svg>
       <span id="googleLoginLabel">Continue with Google</span>
     </button>
-
     <div id="authMessage"></div>
   </div>
 </div>
 
-<!-- ===================== HOME PAGE ===================== -->
 <div id="pageContent">
-  <header class="topbar">
-    <div class="brand">CMA<span>.</span> MCQ Portal</div>
-    <div class="user-area">
-      <span id="userEmail"></span>
-      <button id="logoutBtn" type="button">Sign out</button>
-    </div>
-  </header>
+<header class="topbar">
+  <div class="brand">CMA<span>.</span> MCQ Portal</div>
+  <div class="user-area">
+    <span id="userEmail"></span>
+    <button id="logoutBtn" type="button">Sign out</button>
+  </div>
+</header>
 
-  <main>
-    <div class="hero">
-      <h1>CMA</h1>
-      <p>MCQ Practice &amp; Full-Fledged Test</p>
-    </div>
+<main>
+  <div class="hero">
+    <h1>CMA</h1>
+    <p>MCQ Practice &amp; Full-Fledged Test</p>
+  </div>
 
-    <h2 class="section-title">Subjects</h2>
+  <div class="access-card">
+    <div class="access-title">Your Access</div>
+    <div id="accessTags" class="access-tags"></div>
+    <div id="expiryText" class="expiry"></div>
+  </div>
+
+  <section id="finalGroup3Content" class="hidden">
+    <h2 class="section-title">CMA Final Group 3 — Subjects</h2>
     <div class="grid">
       <a class="card" href="scm/index.html">
         <h3>Strategic Cost Management</h3>
@@ -343,283 +118,234 @@
     <div class="grid">
       <a class="card full-test" href="full-test/index.html">
         <h3>📝 Full-Fledged Test — December 2026</h3>
-        <p>Combined test area for CMA</p>
+        <p>Combined test area for CMA Final Group 3</p>
       </a>
       <a class="card supplement" href="supplement-dec-2026.pdf" target="_blank" rel="noopener noreferrer">
         <h3>December 2026 Supplement</h3>
         <p>Use the supplement PDF for the December 2026 test workflow and answer sheet.</p>
       </a>
     </div>
+  </section>
 
-    <h2 class="section-title">Coming Soon</h2>
-    <div class="grid">
-      <div class="card coming-soon">
-        <h3>CMA Foundation</h3>
-        <p>MCQ practice, chapter-wise tests and full-length tests.</p>
-        <span class="badge">Coming Soon</span>
-      </div>
-      <div class="card coming-soon">
-        <h3>CMA Intermediate</h3>
-        <p>Subject-wise MCQs, mock tests and practice tools.</p>
-        <span class="badge">Coming Soon</span>
-      </div>
-      <div class="card coming-soon">
-        <h3>CMA Final Group 4</h3>
-        <p>MCQ practice, full-fledged tests and study resources.</p>
-        <span class="badge">Coming Soon</span>
-      </div>
+  <section id="noContentMessage" class="hidden">
+    <h2 class="section-title">Available Content</h2>
+    <div class="locked-note">
+      Your access has been activated successfully. Content for this examination/group will appear here when published.
     </div>
-  </main>
+  </section>
+</main>
 
-  <footer>&copy; 2026 CMA MCQ Portal</footer>
+<footer>&copy; 2026 CMA MCQ Portal</footer>
 </div>
 
-<!-- ===================== FIREBASE SDK (compat) ===================== -->
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 
 <script>
-(function () {
-  "use strict";
+(function(){
+"use strict";
 
-  // ===================== FIREBASE CONFIG =====================
-  const firebaseConfig = {
-    apiKey: "AIzaSyA7tGvsDYyYLSWFPeS6lsxlP8gLOw53Wrk",
-    authDomain: "cma-mcq-portal.firebaseapp.com",
-    projectId: "cma-mcq-portal",
-    storageBucket: "cma-mcq-portal.firebasestorage.app",
-    messagingSenderId: "734935438365",
-    appId: "1:734935438365:web:40ea0a7677ef572234a2f4",
-    measurementId: "G-H6GDK7Y3RJ"
-  };
+const firebaseConfig={
+ apiKey:"AIzaSyA7tGvsDYyYLSWFPeS6lsxlP8gLOw53Wrk",
+ authDomain:"cma-mcq-portal.firebaseapp.com",
+ projectId:"cma-mcq-portal",
+ storageBucket:"cma-mcq-portal.firebasestorage.app",
+ messagingSenderId:"734935438365",
+ appId:"1:734935438365:web:40ea0a7677ef572234a2f4",
+ measurementId:"G-H6GDK7Y3RJ"
+};
 
-  // Prevent duplicate initialization
-  if (!firebase.apps || !firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
-  const auth = firebase.auth();
+if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
-  // ===================== FIRESTORE ACCESS CONTROL =====================
-  // Access is controlled from Firestore collection: approvedUsers
-  // Document ID = the user's Google email in lowercase.
-  const db = firebase.firestore();
-  const ADMIN_EMAIL = "taxxpath@gmail.com";
+const auth=firebase.auth();
+const db=firebase.firestore();
+const ADMIN_EMAIL="taxxpath@gmail.com";
 
-  function normalizedEmail(email) {
-    return (email || "").trim().toLowerCase();
-  }
+const loadingScreen=document.getElementById("loadingScreen");
+const loadingText=document.getElementById("loadingText");
+const authScreen=document.getElementById("authScreen");
+const pageContent=document.getElementById("pageContent");
+const googleLogin=document.getElementById("googleLogin");
+const googleLoginLabel=document.getElementById("googleLoginLabel");
+const authMessage=document.getElementById("authMessage");
+const userEmail=document.getElementById("userEmail");
+const logoutBtn=document.getElementById("logoutBtn");
+const accessTags=document.getElementById("accessTags");
+const expiryText=document.getElementById("expiryText");
+const finalGroup3Content=document.getElementById("finalGroup3Content");
+const noContentMessage=document.getElementById("noContentMessage");
 
-  async function checkFirestoreApproval(user) {
-    const email = normalizedEmail(user && user.email);
-    if (!email) return { approved: false, reason: "No Google email was returned." };
+function emailNorm(e){return(e||"").trim().toLowerCase();}
 
-    // Admin account is always allowed.
-    if (email === ADMIN_EMAIL) {
-      return { approved: true, role: "admin" };
-    }
+function showLoading(text){
+ loadingScreen.style.display="flex";
+ authScreen.style.display="none";
+ pageContent.style.display="none";
+ loadingText.textContent=text||"Checking sign-in status…";
+}
+function showLogin(){
+ loadingScreen.style.display="none";
+ authScreen.style.display="flex";
+ pageContent.style.display="none";
+}
+function showHome(){
+ loadingScreen.style.display="none";
+ authScreen.style.display="none";
+ pageContent.style.display="block";
+}
 
-    try {
-      const doc = await db.collection("approvedUsers").doc(email).get();
-      if (!doc.exists) {
-        return { approved: false, reason: "Your Google account has not been approved yet." };
-      }
+function setMessage(text,type){
+ authMessage.textContent=text||"";
+ authMessage.className=type||"";
+}
 
-      const data = doc.data() || {};
-      const status = String(data.status || "active").toLowerCase();
-      if (status !== "active") {
-        return { approved: false, reason: "Your account is currently inactive." };
-      }
+function friendlyError(error){
+ const code=error&&error.code?error.code:"";
+ const map={
+  "auth/popup-closed-by-user":"Google sign-in was cancelled.",
+  "auth/popup-blocked":"Google sign-in was blocked. Please allow pop-ups and try again.",
+  "auth/network-request-failed":"Network error. Please check your internet connection.",
+  "auth/operation-not-allowed":"Google sign-in is not enabled.",
+  "auth/unauthorized-domain":"This website domain is not authorised in Firebase Authentication."
+ };
+ return map[code]||"Sign-in failed. Please try again. ("+(code||"unknown error")+")";
+}
 
-      return { approved: true, role: data.role || "student" };
-    } catch (error) {
-      console.error("Firestore approval check failed:", error);
-      return {
-        approved: false,
-        reason: "Unable to verify access right now. Please check your internet connection and try again.",
-        firestoreError: true
-      };
-    }
-  }
+function dateExpired(date){
+ if(!date)return false;
+ return date < new Date().toISOString().slice(0,10);
+}
 
-  // ===================== DOM ELEMENTS =====================
-  const loadingScreen = document.getElementById("loadingScreen");
-  const authScreen = document.getElementById("authScreen");
-  const pageContent = document.getElementById("pageContent");
-  const googleLoginBtn = document.getElementById("googleLogin");
-  const googleLoginLabel = document.getElementById("googleLoginLabel");
-  const authMessage = document.getElementById("authMessage");
-  const userEmailEl = document.getElementById("userEmail");
-  const logoutBtn = document.getElementById("logoutBtn");
+function applyAccess(data,isAdmin){
+ const access={
+  foundation:!!data.accessFoundation,
+  interGroup1:!!data.accessInterGroup1,
+  interGroup2:!!data.accessInterGroup2,
+  finalGroup3:!!data.accessFinalGroup3,
+  finalGroup4:!!data.accessFinalGroup4
+ };
 
-  // ===================== UI STATE HELPERS =====================
-  function showLoading() {
-    loadingScreen.style.display = "flex";
-    authScreen.style.display = "none";
-    pageContent.style.display = "none";
-  }
+ const names=[];
+ if(isAdmin||access.foundation)names.push("CMA Foundation");
+ if(isAdmin||access.interGroup1)names.push("CMA Intermediate Group 1");
+ if(isAdmin||access.interGroup2)names.push("CMA Intermediate Group 2");
+ if(isAdmin||access.finalGroup3)names.push("CMA Final Group 3");
+ if(isAdmin||access.finalGroup4)names.push("CMA Final Group 4");
 
-  function showLoginScreen() {
-    loadingScreen.style.display = "none";
-    authScreen.style.display = "flex";
-    pageContent.style.display = "none";
-    userEmailEl.textContent = "";
-  }
+ accessTags.innerHTML=names.map(n=>"<span class='access-tag'>"+n+"</span>").join("");
 
-  function showHomePage(email) {
-    loadingScreen.style.display = "none";
-    authScreen.style.display = "none";
-    pageContent.style.display = "block";
-    userEmailEl.textContent = email;
-  }
+ if(data.expiryDate && !isAdmin){
+   expiryText.textContent="Access expires on: "+data.expiryDate;
+ }else if(isAdmin){
+   expiryText.textContent="Administrator access: all examination groups";
+ }else{
+   expiryText.textContent="No expiry date set";
+ }
 
-  function setAuthMessage(text, type) {
-    authMessage.textContent = text || "";
-    authMessage.className = type ? type : "";
-  }
+ // At present the repository has Final Group 3 content published.
+ // Other groups remain hidden until their pages/content are published.
+ finalGroup3Content.classList.toggle("hidden",!isAdmin&&!access.finalGroup3);
+ noContentMessage.classList.toggle("hidden",isAdmin||access.finalGroup3);
 
-  function setLoginButtonState(disabled, label) {
-    googleLoginBtn.disabled = disabled;
-    googleLoginLabel.textContent = label || "Continue with Google";
-  }
+ if(isAdmin){
+   finalGroup3Content.classList.remove("hidden");
+   noContentMessage.classList.add("hidden");
+ }
+}
 
-  // ===================== ERROR MESSAGE MAPPING =====================
-  function friendlyAuthError(error) {
-    const code = error && error.code ? error.code : "";
-    switch (code) {
-      case "auth/popup-closed-by-user":
-        return "Google sign-in was cancelled.";
-      case "auth/popup-blocked":
-        return "Google sign-in was blocked by the browser. Please allow pop-ups and try again.";
-      case "auth/cancelled-popup-request":
-        return "Google sign-in was cancelled.";
-      case "auth/network-request-failed":
-        return "Network error. Please check your internet connection and try again.";
-      case "auth/operation-not-allowed":
-        return "Google sign-in is not enabled for this project. Please contact the administrator.";
-      case "auth/unauthorized-domain":
-        return "This website domain is not authorized in Firebase Authentication.";
-      case "auth/account-exists-with-different-credential":
-        return "An account already exists with a different sign-in method for this email.";
-      default:
-        return "Sign-in failed. Please try again. (" + (code || "unknown error") + ")";
-    }
-  }
+async function verifyAccess(user){
+ const email=emailNorm(user.email);
+ if(!email)return{approved:false,reason:"No Google email was returned."};
 
-  // ===================== GOOGLE PROVIDER =====================
-  const provider = new firebase.auth.GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
+ if(email===ADMIN_EMAIL){
+   return{approved:true,admin:true,data:{role:"admin"}};
+ }
 
-  // ===================== AUTH PERSISTENCE =====================
-  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(function (error) {
-    // Non-fatal: persistence failing should not block sign-in flow.
-    console.error("Failed to set auth persistence:", error);
-  });
+ const ref=await db.collection("approvedUsers").doc(email).get();
+ if(!ref.exists)return{approved:false,reason:"Your Google account has not been approved yet."};
 
-  // ===================== SIGN-IN HANDLER =====================
-  let signInInProgress = false;
+ const data=ref.data()||{};
+ if(String(data.status||"active").toLowerCase()!=="active"){
+   return{approved:false,reason:"Your account is currently inactive."};
+ }
 
-  googleLoginBtn.addEventListener("click", function () {
-    if (signInInProgress) return;
-    signInInProgress = true;
+ if(data.expiryDate && dateExpired(data.expiryDate)){
+   return{approved:false,reason:"Your portal access has expired. Please contact the administrator."};
+ }
 
-    setAuthMessage("", "");
-    setLoginButtonState(true, "Signing in…");
+ const hasAccess=[
+  data.accessFoundation,data.accessInterGroup1,data.accessInterGroup2,
+  data.accessFinalGroup3,data.accessFinalGroup4
+ ].some(Boolean);
 
-    auth.signInWithPopup(provider)
-      .then(function (result) {
-        // onAuthStateChanged will take care of the rest.
-        // Nothing else needed here; keep button disabled until state resolves.
-      })
-      .catch(function (error) {
-        console.error("Sign-in error:", error);
-        setAuthMessage(friendlyAuthError(error), "error");
-        setLoginButtonState(false, "Continue with Google");
-        signInInProgress = false;
-      });
-  });
+ if(!hasAccess){
+   return{approved:false,reason:"No examination/group access has been assigned to your account."};
+ }
 
-  // ===================== SIGN-OUT HANDLER =====================
-  let signOutInProgress = false;
+ return{approved:true,admin:false,data:data};
+}
 
-  logoutBtn.addEventListener("click", function () {
-    if (signOutInProgress) return;
-    signOutInProgress = true;
+const provider=new firebase.auth.GoogleAuthProvider();
+provider.setCustomParameters({prompt:"select_account"});
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(console.error);
 
-    logoutBtn.disabled = true;
-    logoutBtn.textContent = "Signing out...";
+googleLogin.addEventListener("click",function(){
+ googleLogin.disabled=true;
+ googleLoginLabel.textContent="Signing in…";
+ setMessage("");
+ auth.signInWithPopup(provider).catch(function(error){
+   console.error(error);
+   setMessage(friendlyError(error),"error");
+   googleLogin.disabled=false;
+   googleLoginLabel.textContent="Continue with Google";
+ });
+});
 
-    auth.signOut()
-      .then(function () {
-        // onAuthStateChanged will move UI back to the login screen.
-      })
-      .catch(function (error) {
-        console.error("Sign-out error:", error);
-        // Even on error, reset button so user is not stuck.
-        logoutBtn.disabled = false;
-        logoutBtn.textContent = "Sign out";
-        signOutInProgress = false;
-        setAuthMessage("Sign-out failed. Please try again.", "error");
-      });
-  });
+logoutBtn.addEventListener("click",function(){
+ logoutBtn.disabled=true;
+ logoutBtn.textContent="Signing out…";
+ auth.signOut().finally(function(){
+   logoutBtn.disabled=false;
+   logoutBtn.textContent="Sign out";
+ });
+});
 
-  // ===================== MAIN AUTH STATE SOURCE OF TRUTH =====================
-  let authStateResolvedOnce = false;
+auth.onAuthStateChanged(async function(user){
+ googleLogin.disabled=false;
+ googleLoginLabel.textContent="Continue with Google";
 
-  auth.onAuthStateChanged(function (user) {
-    signInInProgress = false;
+ if(!user){
+   showLogin();
+   return;
+ }
 
-    if (!authStateResolvedOnce) {
-      authStateResolvedOnce = true;
-    }
+ showLoading("Checking your examination access…");
 
-    if (!user) {
-      // STATE A: not authenticated
-      signOutInProgress = false;
-      logoutBtn.disabled = false;
-      logoutBtn.textContent = "Sign out";
-      setLoginButtonState(false, "Continue with Google");
-      showLoginScreen();
-      return;
-    }
+ try{
+   const result=await verifyAccess(user);
 
-    const email = user.email || "";
+   if(!result.approved){
+     await auth.signOut();
+     setMessage(result.reason,"error");
+     showLogin();
+     return;
+   }
 
-    // STATE B: authenticated -> verify approval in Firestore
-    showLoading();
-    checkFirestoreApproval(user).then(function (result) {
-      if (result.approved) {
-        setAuthMessage("", "");
-        setLoginButtonState(false, "Continue with Google");
-        showHomePage(email);
-        return;
-      }
+   userEmail.textContent=user.email||"";
+   applyAccess(result.data||{},!!result.admin);
+   setMessage("");
+   showHome();
+ }catch(error){
+   console.error("Access verification failed:",error);
+   await auth.signOut();
+   setMessage("Unable to verify access right now. Please try again.","error");
+   showLogin();
+ }
+});
 
-      // Not approved (or Firestore could not be checked): sign out and show the reason.
-      auth.signOut().finally(function () {
-        setLoginButtonState(false, "Continue with Google");
-        setAuthMessage(result.reason || ("Access denied for " + email + "."), "error");
-        showLoginScreen();
-      });
-    }).catch(function (error) {
-      console.error("Approval verification error:", error);
-      auth.signOut().finally(function () {
-        setLoginButtonState(false, "Continue with Google");
-        setAuthMessage("Unable to verify access. Please try again.", "error");
-        showLoginScreen();
-      });
-    });
-  }, function (error) {
-    console.error("onAuthStateChanged error:", error);
-    setLoginButtonState(false, "Continue with Google");
-    setAuthMessage("Unable to check sign-in status. Please refresh and try again.", "error");
-    showLoginScreen();
-  });
-
-  // Show a loading state until Firebase resolves the initial auth state.
-  showLoading();
+showLoading();
 })();
 </script>
-
 </body>
 </html>
