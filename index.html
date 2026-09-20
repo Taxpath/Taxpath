@@ -54,12 +54,12 @@ const firebaseConfig = {
   measurementId: "G-H6GDK7Y3RJ"
 };
 
+
 const ALLOWED_EMAILS = [
-  "taxxpath@gmail.com"
-  "rohit.fcg123@gmail.com"
+  "taxxpath@gmail.com",
+  "rohit.fcg123@gmail.com",
   "pritimishra62291@gmail.com"
 ];
-
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
@@ -79,12 +79,18 @@ function isAllowed(email) {
 }
 
 googleLogin.addEventListener("click", async () => {
+  if (googleLogin.disabled) return;
+  googleLogin.disabled = true;
   authMessage.textContent = "Opening Google sign-in...";
   try {
     await auth.signInWithPopup(provider);
   } catch (error) {
-    console.error(error);
-    authMessage.textContent = error.message || "Google sign-in failed.";
+    console.error("Google sign-in error:", error);
+    authMessage.textContent = error.code
+      ? error.code + ": " + (error.message || "Google sign-in failed.")
+      : (error.message || "Google sign-in failed.");
+  } finally {
+    googleLogin.disabled = false;
   }
 });
 
