@@ -377,6 +377,7 @@
 <!-- ===================== FIREBASE SDK (compat) ===================== -->
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
 
 <script>
 (function () {
@@ -399,17 +400,46 @@
   }
   const auth = firebase.auth();
 
-  // ===================== AUTHORIZED USERS =====================
-  const AUTHORIZED_EMAILS = [
-    "taxxpath@gmail.com",
-    "rohit.fcg123@gmail.com",
-    "pritimishra62291@gmail.com"
-  ];
+  // ===================== FIRESTORE ACCESS CONTROL =====================
+  // Access is controlled from Firestore collection: approvedUsers
+  // Document ID = the user's Google email in lowercase.
+  const db = firebase.firestore();
+  const ADMIN_EMAIL = "taxxpath@gmail.com";
 
-  function isAuthorized(email) {
-    if (!email) return false;
-    const clean = email.trim().toLowerCase();
-    return AUTHORIZED_EMAILS.some((e) => e.trim().toLowerCase() === clean);
+  function normalizedEmail(email) {
+    return (email || "").trim().toLowerCase();
+  }
+
+  async function checkFirestoreApproval(user) {
+    const email = normalizedEmail(user && user.email);
+    if (!email) return { approved: false, reason: "No Google email was returned." };
+
+    // Admin account is always allowed.
+    if (email === ADMIN_EMAIL) {
+      return { approved: true, role: "admin" };
+    }
+
+    try {
+      const doc = await db.collection("approvedUsers").doc(email).get();
+      if (!doc.exists) {
+        return { approved: false, reason: "Your Google account has not been approved yet." };
+      }
+
+      const data = doc.data() || {};
+      const status = String(data.status || "active").toLowerCase();
+      if (status !== "active") {
+        return { approved: false, reason: "Your account is currently inactive." };
+      }
+
+      return { approved: true, role: data.role || "student" };
+    } catch (error) {
+      console.error("Firestore approval check failed:", error);
+      return {
+        approved: false,
+        reason: "Unable to verify access right now. Please check your internet connection and try again.",
+        firestoreError: true
+      };
+    }
   }
 
   // ===================== DOM ELEMENTS =====================
@@ -555,20 +585,30 @@
 
     const email = user.email || "";
 
-    if (isAuthorized(email)) {
-      // STATE B: authenticated AND authorized
-      setAuthMessage("", "");
-      setLoginButtonState(false, "Continue with Google");
-      showHomePage(email);
-    } else {
-      // Authenticated but NOT authorized -> sign out immediately
-      showLoading();
+    // STATE B: authenticated -> verify approval in Firestore
+    showLoading();
+    checkFirestoreApproval(user).then(function (result) {
+      if (result.approved) {
+        setAuthMessage("", "");
+        setLoginButtonState(false, "Continue with Google");
+        showHomePage(email);
+        return;
+      }
+
+      // Not approved (or Firestore could not be checked): sign out and show the reason.
       auth.signOut().finally(function () {
         setLoginButtonState(false, "Continue with Google");
-        setAuthMessage("Access denied for " + email + ".", "error");
+        setAuthMessage(result.reason || ("Access denied for " + email + "."), "error");
         showLoginScreen();
       });
-    }
+    }).catch(function (error) {
+      console.error("Approval verification error:", error);
+      auth.signOut().finally(function () {
+        setLoginButtonState(false, "Continue with Google");
+        setAuthMessage("Unable to verify access. Please try again.", "error");
+        showLoginScreen();
+      });
+    });
   }, function (error) {
     console.error("onAuthStateChanged error:", error);
     setLoginButtonState(false, "Continue with Google");
