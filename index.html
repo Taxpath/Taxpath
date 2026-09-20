@@ -133,6 +133,30 @@ async function trackUserLogin(user){
  }
 }
 
+
+async function recordLoginEvent(user){
+  if(!user || !user.uid) return;
+
+  const sessionKey="cma_login_event_recorded_"+user.uid;
+  if(sessionStorage.getItem(sessionKey)==="1") return;
+
+  try{
+    await db.collection("loginEvents").add({
+      uid:user.uid,
+      email:emailNorm(user.email),
+      displayName:user.displayName||"",
+      provider:user.providerData&&user.providerData[0]
+        ? user.providerData[0].providerId
+        : "google.com",
+      loginAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    sessionStorage.setItem(sessionKey,"1");
+  }catch(error){
+    console.error("Login history write failed:",error);
+  }
+}
+
 async function trackUserActivity(){
  const user=auth.currentUser;
  if(!user||!user.uid)return;
