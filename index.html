@@ -98,6 +98,77 @@ const finalGroup3Content=document.getElementById("finalGroup3Content");
 const noContentMessage=document.getElementById("noContentMessage");
 
 function emailNorm(e){return(e||"").trim().toLowerCase();}
+let activityTimer=null;
+let currentTrackedUser=null;
+
+async function trackUserLogin(user){
+ if(!user||!user.uid)return;
+ const ref=db.collection("portalUsers").doc(user.uid);
+ const sessionKey="cma_login_recorded_"+user.uid;
+ const alreadyRecorded=sessionStorage.getItem(sessionKey)==="1";
+
+ const payload={
+  uid:user.uid,
+  email:emailNorm(user.email),
+  displayName:user.displayName||"",
+  photoURL:user.photoURL||"",
+  provider:user.providerData&&user.providerData[0]?user.providerData[0].providerId:"google.com",
+  lastActive:firebase.firestore.FieldValue.serverTimestamp(),
+  lastSeenPage:location.pathname||"/",
+  updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+ };
+
+ if(!alreadyRecorded){
+  payload.lastLogin=firebase.firestore.FieldValue.serverTimestamp();
+  payload.loginCount=firebase.firestore.FieldValue.increment(1);
+  sessionStorage.setItem(sessionKey,"1");
+ }
+
+ try{
+  const existing=await ref.get();
+  if(!existing.exists)payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();
+  await ref.set(payload,{merge:true});
+ }catch(error){
+  console.error("User tracking write failed:",error);
+ }
+}
+
+async function trackUserActivity(){
+ const user=auth.currentUser;
+ if(!user||!user.uid)return;
+ try{
+  await db.collection("portalUsers").doc(user.uid).set({
+   uid:user.uid,
+   email:emailNorm(user.email),
+   lastActive:firebase.firestore.FieldValue.serverTimestamp(),
+   lastSeenPage:location.pathname||"/",
+   updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  },{merge:true});
+ }catch(error){
+  console.error("Activity tracking failed:",error);
+ }
+}
+
+function handleVisibilityActivity(){
+ if(document.visibilityState==="visible"&&auth.currentUser)trackUserActivity();
+}
+
+function startActivityTracking(user){
+ currentTrackedUser=user;
+ if(activityTimer)clearInterval(activityTimer);
+ trackUserActivity();
+ activityTimer=setInterval(function(){
+  if(auth.currentUser&&auth.currentUser.uid===user.uid)trackUserActivity();
+ },5*60*1000);
+ document.addEventListener("visibilitychange",handleVisibilityActivity);
+}
+
+function stopActivityTracking(){
+ if(activityTimer){clearInterval(activityTimer);activityTimer=null;}
+ document.removeEventListener("visibilitychange",handleVisibilityActivity);
+ currentTrackedUser=null;
+}
+
 
 function showLoading(text){
  loadingScreen.style.display="flex";
@@ -221,6 +292,9 @@ googleLogin.addEventListener("click",function(){
 logoutBtn.addEventListener("click",function(){
  logoutBtn.disabled=true;
  logoutBtn.textContent="Signing out…";
+ const uid=auth.currentUser&&auth.currentUser.uid;
+ stopActivityTracking();
+ if(uid)sessionStorage.removeItem("cma_login_recorded_"+uid);
  auth.signOut().finally(function(){
    logoutBtn.disabled=false;
    logoutBtn.textContent="Sign out";
@@ -232,6 +306,7 @@ auth.onAuthStateChanged(async function(user){
  googleLoginLabel.textContent="Continue with Google";
 
  if(!user){
+   stopActivityTracking();
    showLogin();
    return;
  }
@@ -250,10 +325,16 @@ auth.onAuthStateChanged(async function(user){
 
    userEmail.textContent=user.email||"";
    applyAccess(result.data||{},!!result.admin);
+
+   // Tracking: record this login and begin low-frequency activity tracking.
+   await trackUserLogin(user);
+   startActivityTracking(user);
+
    setMessage("");
    showHome();
  }catch(error){
    console.error("Access verification failed:",error);
+   stopActivityTracking();
    await auth.signOut();
    setMessage("Unable to verify access right now. Please try again.","error");
    showLogin();
