@@ -34,6 +34,12 @@ th{background:#f7f3e9;color:var(--teal-dark)}
 .active{color:#177245;font-weight:800}.offline{color:#777}
 .empty{text-align:center;padding:25px;color:#777}
 .small{font-size:12px;color:#687572}
+
+.link-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:0 0 22px}
+.link-stat{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px}
+.link-stat b{display:block;font-size:28px;color:var(--teal)}
+.link-stat span{font-size:13px;color:#687572}
+
 </style>
 </head>
 <body>
@@ -59,6 +65,22 @@ th{background:#f7f3e9;color:var(--teal-dark)}
     <div class="stat"><b id="todayLogins">0</b><span>Logins today</span></div>
     <div class="stat"><b id="totalLogins">0</b><span>Login records loaded</span></div>
   </div>
+
+
+  <section class="panel">
+    <h2>📊 Link / Portal Analytics</h2>
+    <div class="toolbar">
+      <span class="small">Counts visits to the existing TaxPath URL. No redirect or new QR is used.</span>
+      <button class="refresh" id="refreshAnalyticsBtn">Refresh Analytics</button>
+    </div>
+    <div class="link-stats" style="padding:0 18px 18px">
+      <div class="link-stat"><b id="totalLinkClicks">0</b><span>Total Link Clicks / Visits</span></div>
+      <div class="link-stat"><b id="uniqueVisitors">0</b><span>Unique Visitors</span></div>
+      <div class="link-stat"><b id="todayClicks">0</b><span>Today's Clicks</span></div>
+      <div class="link-stat"><b id="weekClicks">0</b><span>This Week's Clicks</span></div>
+      <div class="link-stat"><b id="lastClick">—</b><span>Last Click</span></div>
+    </div>
+  </section>
 
   <section class="panel">
     <h2>Active / Registered Users</h2>
@@ -134,6 +156,32 @@ function active(ts){
 }
 function showMsg(t){msg.textContent=t||"";}
 
+
+async function loadAnalytics(){
+  const snap=await db.collection("portalVisits").orderBy("visitAt","desc").limit(5000).get();
+  const visits=snap.docs.map(d=>d.data());
+  const now=new Date();
+  const startToday=new Date(now); startToday.setHours(0,0,0,0);
+  const startWeek=new Date(startToday); startWeek.setDate(startWeek.getDate()-6);
+
+  const toDate=v=>{
+    if(!v)return null;
+    const d=v.toDate?v.toDate():new Date(v);
+    return isNaN(d)?null:d;
+  };
+
+  const today=visits.filter(v=>{const d=toDate(v.visitAt);return d&&d>=startToday;}).length;
+  const week=visits.filter(v=>{const d=toDate(v.visitAt);return d&&d>=startWeek;}).length;
+  const unique=new Set(visits.map(v=>v.visitorId).filter(Boolean)).size;
+  const last=visits.length?toDate(visits[0].visitAt):null;
+
+  document.getElementById("totalLinkClicks").textContent=visits.length+(snap.size===5000?"+":"");
+  document.getElementById("uniqueVisitors").textContent=unique+(snap.size===5000?"+":"");
+  document.getElementById("todayClicks").textContent=today;
+  document.getElementById("weekClicks").textContent=week;
+  document.getElementById("lastClick").textContent=last?last.toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"short"}):"—";
+}
+
 async function loadData(){
   const [uSnap,lSnap]=await Promise.all([
     db.collection("portalUsers").get(),
@@ -201,6 +249,7 @@ loginBtn.onclick=async()=>{
 };
 logoutBtn.onclick=()=>auth.signOut();
 document.getElementById("refreshBtn").onclick=()=>loadData();
+document.getElementById("refreshAnalyticsBtn").onclick=()=>loadAnalytics();
 document.getElementById("userSearch").oninput=renderUsers;
 document.getElementById("loginSearch").oninput=renderLogins;
 
@@ -224,6 +273,7 @@ auth.onAuthStateChanged(async user=>{
   adminEmail.textContent=user.email;
   try{
     await loadData();
+    await loadAnalytics();
   }catch(e){
     console.error(e);
     alert("Could not load login data. Check Firestore Rules for loginEvents and portalUsers.");
