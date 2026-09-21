@@ -81,7 +81,6 @@ if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 
 const auth=firebase.auth();
 const db=firebase.firestore();
-recordPortalVisit();
 const ADMIN_EMAIL="taxxpath@gmail.com";
 
 const loadingScreen=document.getElementById("loadingScreen");
@@ -102,26 +101,25 @@ function emailNorm(e){return(e||"").trim().toLowerCase();}
 let activityTimer=null;
 let currentTrackedUser=null;
 
-
 async function recordPortalVisit(){
-  try{
-    const key="taxpath_visitor_id";
-    let visitorId=localStorage.getItem(key);
-    if(!visitorId){
-      visitorId=(crypto&&crypto.randomUUID)?crypto.randomUUID():
-        ("v_"+Date.now()+"_"+Math.random().toString(36).slice(2));
-      localStorage.setItem(key,visitorId);
-    }
-    await db.collection("portalVisits").add({
-      visitorId:visitorId,
-      visitAt:firebase.firestore.FieldValue.serverTimestamp(),
-      path:location.pathname||"/",
-      referrer:document.referrer||"",
-      userAgent:navigator.userAgent||""
-    });
-  }catch(error){
-    console.error("Portal visit tracking failed:",error);
+ try{
+  const key="taxpath_visitor_id";
+  let visitorId=localStorage.getItem(key);
+  if(!visitorId){
+   visitorId=(crypto&&crypto.randomUUID)?crypto.randomUUID():
+    ("v_"+Date.now()+"_"+Math.random().toString(36).slice(2));
+   localStorage.setItem(key,visitorId);
   }
+  await db.collection("portalVisits").add({
+   visitorId:visitorId,
+   visitAt:firebase.firestore.FieldValue.serverTimestamp(),
+   path:location.pathname||"/",
+   referrer:document.referrer||"",
+   userAgent:navigator.userAgent||""
+  });
+ }catch(error){
+  console.error("Portal visit tracking failed:",error);
+ }
 }
 
 async function trackUserLogin(user){
@@ -296,6 +294,27 @@ async function verifyAccess(user){
    return{approved:true,admin:true,data:{role:"admin"}};
  }
 
+ // Global Student Portal Access
+ const globalRef=await db.doc("settings/globalAccess").get();
+ const globalOpen=globalRef.exists && globalRef.data().studentAccessOpen===true;
+
+ if(globalOpen){
+   return{
+     approved:true,
+     admin:false,
+     globalOpen:true,
+     data:{
+       role:"student",
+       accessFoundation:true,
+       accessInterGroup1:true,
+       accessInterGroup2:true,
+       accessFinalGroup3:true,
+       accessFinalGroup4:true,
+       expiryDate:null
+     }
+   };
+ }
+
  const ref=await db.collection("approvedUsers").doc(email).get();
  if(!ref.exists)return{approved:false,reason:"Your Google account has not been approved yet."};
 
@@ -371,7 +390,7 @@ auth.onAuthStateChanged(async function(user){
    }
 
    userEmail.textContent=user.email||"";
-   applyAccess(result.data||{},!!result.admin);
+   applyAccess(Object.assign({},result.data||{},{globalOpen:!!result.globalOpen}),!!result.admin);
 
    // Tracking: record this login and begin low-frequency activity tracking.
    await trackUserLogin(user);
