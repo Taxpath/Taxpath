@@ -34,6 +34,12 @@ th{background:#f7f3e9;color:var(--teal-dark)}
 .active{color:#177245;font-weight:800}.offline{color:#777}
 .empty{text-align:center;padding:25px;color:#777}
 .small{font-size:12px;color:#687572}
+.export{color:#fff!important}
+.export.csv{background:#3f7d57}
+.export.excel{background:#1f6f43}
+.export.pdf{background:#a33a32}
+.export:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:700px){.export{flex:1;min-width:105px}}
 
 .link-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin:0 0 22px}
 .link-stat{background:#fff;border:1px solid var(--border);border-radius:14px;padding:18px}
@@ -87,6 +93,9 @@ th{background:#f7f3e9;color:var(--teal-dark)}
     <div class="toolbar">
       <input id="userSearch" placeholder="Search name or email">
       <button class="refresh" id="refreshBtn">Refresh</button>
+      <button class="export csv" id="exportUsersCsvBtn">⬇ CSV</button>
+      <button class="export excel" id="exportUsersExcelBtn">📊 Excel</button>
+      <button class="export pdf" id="exportUsersPdfBtn">📄 PDF</button>
     </div>
     <div class="table-wrap">
       <table>
@@ -113,6 +122,9 @@ th{background:#f7f3e9;color:var(--teal-dark)}
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 <script>
 (function(){
 "use strict";
@@ -236,6 +248,116 @@ function esc(v){
   return String(v).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));
 }
 
+
+function currentUserRows(){
+  const q=norm(document.getElementById("userSearch").value);
+  return users.filter(x=>!q||norm(x.email).includes(q)||norm(x.displayName).includes(q));
+}
+
+function exportFileDate(){
+  const d=new Date();
+  const y=d.getFullYear();
+  const m=String(d.getMonth()+1).padStart(2,"0");
+  const day=String(d.getDate()).padStart(2,"0");
+  return y+"-"+m+"-"+day;
+}
+
+function exportRows(){
+  return currentUserRows().map(x=>[
+    x.displayName||"",
+    x.email||"",
+    fmt(x.lastLogin),
+    fmt(x.lastActive),
+    x.loginCount||0,
+    active(x.lastActive)?"Active":"Offline"
+  ]);
+}
+
+function exportUsersCsv(){
+  const rows=[
+    ["Name","Email","Last Login","Last Active","Login Count","Status"],
+    ...exportRows()
+  ];
+  const csv=rows.map(row=>row.map(v=>{
+    const s=String(v??"");
+    return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;
+  }).join(",")).join("\r\n");
+  const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="CMA_User_Activity_"+exportFileDate()+".csv";
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+}
+
+function exportUsersExcel(){
+  if(typeof XLSX==="undefined"){alert("Excel export library could not be loaded. Check your internet connection.");return;}
+  const rows=[
+    ["Name","Email","Last Login","Last Active","Login Count","Status"],
+    ...exportRows()
+  ];
+  const ws=XLSX.utils.aoa_to_sheet(rows);
+  ws["!cols"]=[
+    {wch:28},{wch:36},{wch:24},{wch:24},{wch:14},{wch:14}
+  ];
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,"User Activity");
+
+  const summary=[
+    ["CMA MCQ Portal — User Activity Report"],
+    ["Report Date",new Date().toLocaleString("en-IN")],
+    ["Users in Export",currentUserRows().length],
+    ["Active Users",currentUserRows().filter(x=>active(x.lastActive)).length],
+    ["Total Login Count",currentUserRows().reduce((s,x)=>s+Number(x.loginCount||0),0)]
+  ];
+  const sw=XLSX.utils.aoa_to_sheet(summary);
+  sw["!cols"]=[{wch:24},{wch:32}];
+  XLSX.utils.book_append_sheet(wb,sw,"Summary");
+
+  XLSX.writeFile(wb,"CMA_User_Activity_"+exportFileDate()+".xlsx");
+}
+
+function exportUsersPdf(){
+  if(!window.jspdf||!window.jspdf.jsPDF){alert("PDF export library could not be loaded. Check your internet connection.");return;}
+  const rows=currentUserRows();
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF({orientation:"landscape",unit:"mm",format:"a4"});
+  const reportDate=new Date().toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"short"});
+  const activeCount=rows.filter(x=>active(x.lastActive)).length;
+  const sessionCount=rows.reduce((s,x)=>s+Number(x.loginCount||0),0);
+
+  doc.setFontSize(17);
+  doc.text("CMA MCQ Portal — User Activity Report",14,15);
+  doc.setFontSize(9);
+  doc.text("Generated: "+reportDate,14,21);
+  doc.text("Users: "+rows.length+"   Active: "+activeCount+"   Offline: "+(rows.length-activeCount)+"   Total Login Count: "+sessionCount,14,27);
+
+  doc.autoTable({
+    startY:32,
+    head:[["Name","Email","Last Login","Last Active","Logins","Status"]],
+    body:rows.map(x=>[
+      x.displayName||"—",
+      x.email||"—",
+      fmt(x.lastLogin),
+      fmt(x.lastActive),
+      String(x.loginCount||0),
+      active(x.lastActive)?"Active":"Offline"
+    ]),
+    styles:{fontSize:8,cellPadding:2.5},
+    headStyles:{fillColor:[31,41,55],textColor:255},
+    alternateRowStyles:{fillColor:[247,247,247]},
+    margin:{left:10,right:10}
+  });
+
+  const pages=doc.internal.getNumberOfPages();
+  for(let p=1;p<=pages;p++){
+    doc.setPage(p);
+    doc.setFontSize(8);
+    doc.text("Page "+p+" of "+pages,doc.internal.pageSize.getWidth()-30,doc.internal.pageSize.getHeight()-7);
+  }
+  doc.save("CMA_User_Activity_"+exportFileDate()+".pdf");
+}
+
 loginBtn.onclick=async()=>{
   loginBtn.disabled=true;
   showMsg("Signing in…");
@@ -249,6 +371,9 @@ loginBtn.onclick=async()=>{
 };
 logoutBtn.onclick=()=>auth.signOut();
 document.getElementById("refreshBtn").onclick=()=>loadData();
+document.getElementById("exportUsersCsvBtn").onclick=exportUsersCsv;
+document.getElementById("exportUsersExcelBtn").onclick=exportUsersExcel;
+document.getElementById("exportUsersPdfBtn").onclick=exportUsersPdf;
 document.getElementById("refreshAnalyticsBtn").onclick=()=>loadAnalytics();
 document.getElementById("userSearch").oninput=renderUsers;
 document.getElementById("loginSearch").oninput=renderLogins;
