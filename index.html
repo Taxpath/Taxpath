@@ -392,8 +392,10 @@ auth.onAuthStateChanged(async function(user){
    userEmail.textContent=user.email||"";
    applyAccess(Object.assign({},result.data||{},{globalOpen:!!result.globalOpen}),!!result.admin);
 
-   // Tracking: record this login and begin low-frequency activity tracking.
-   await trackUserLogin(user);
+   // Tracking is non-blocking: a tracking failure must never prevent portal access.
+   trackUserLogin(user).catch(function(error){
+     console.error("Non-blocking user tracking error:",error);
+   });
    startActivityTracking(user);
 
    setMessage("");
