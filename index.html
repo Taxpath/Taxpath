@@ -44,10 +44,33 @@ h2.section-title{font-size:18px;color:var(--teal-dark);border-left:4px solid var
 .hidden{display:none!important}
 footer.contact-footer{text-align:center;padding:34px 20px 20px;margin-top:30px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:#fff;border-radius:18px 18px 0 0}.contact-footer h3{margin:0 0 8px;font-size:21px;color:var(--gold-light)}.contact-footer p{margin:0 auto 18px;max-width:620px;color:#d9e5e4;font-size:13.5px;line-height:1.6}.contact-details{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:20px}.contact-details a{display:inline-flex;align-items:center;gap:7px;text-decoration:none;padding:10px 16px;border-radius:9px;font-weight:700;font-size:13px}.contact-email{background:#fff;color:var(--teal-dark)}.contact-whatsapp{background:#c8a24a;color:var(--teal-dark)}.contact-details a:hover{transform:translateY(-2px)}.contact-divider{height:1px;background:rgba(255,255,255,.18);max-width:800px;margin:0 auto 16px}.contact-footer .copyright{font-size:12px;color:#b9c8c6}@media(max-width:600px){footer.contact-footer{padding:28px 14px 18px}.contact-details{flex-direction:column;align-items:center}.contact-details a{width:100%;max-width:300px;justify-content:center}}
 @media(max-width:600px){main{padding:25px 14px 45px}.hero h1{font-size:26px}.user-area{width:100%;justify-content:space-between}}
-</style></head><body>
+.quick-contact-card{margin:0 0 26px;padding:16px 18px;background:#fff;border:1px solid var(--border);border-left:4px solid var(--gold);border-radius:14px;display:flex;align-items:center;justify-content:space-between;gap:18px;box-shadow:0 2px 8px rgba(13,59,62,.05)}
+.quick-contact-title{font-size:15px;font-weight:800;color:var(--teal)}
+.quick-contact-sub{margin-top:4px;font-size:12.5px;color:#5b6b69;line-height:1.45}
+.quick-contact-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.quick-contact-actions a{display:inline-block;text-decoration:none;padding:8px 11px;border-radius:8px;background:#e9f2f1;color:var(--teal);font-size:12px;font-weight:700}
+.quick-contact-actions a:hover{transform:translateY(-1px)}
+.quick-contact-actions .feedback-link{background:var(--gold);color:var(--teal-dark)}
+.feedback-section{margin-top:36px;padding:24px 20px;background:#fff;border:1px solid var(--border);border-radius:16px;text-align:center;scroll-margin-top:20px}
+.feedback-section h3{margin:0 0 8px;color:var(--teal);font-size:20px}
+.feedback-section p{margin:0 auto 16px;max-width:700px;color:#5b6b69;font-size:13.5px;line-height:1.6}
+.feedback-contact{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.feedback-contact a{display:inline-block;text-decoration:none;padding:9px 14px;border-radius:9px;font-size:12.5px;font-weight:700;background:var(--teal);color:#fff}
+.feedback-contact a:hover{transform:translateY(-1px)}
+@media(max-width:600px){.quick-contact-card{flex-direction:column;align-items:flex-start}.quick-contact-actions{justify-content:flex-start}.quick-contact-actions a{font-size:11.5px}}</style></head><body>
 <div id="loadingScreen"><div class="spinner"></div><div id="loadingText">Checking sign-in status…</div></div>
 <div id="authScreen"><div class="login-card"><div class="login-logo">CMA<span>.</span></div><div class="login-title">CMA MCQ Portal</div><p class="login-sub">Sign in with an authorised Google account to continue.</p><button id="googleLogin" type="button"><span id="googleLoginLabel">Continue with Google</span></button><div id="authMessage"></div></div></div>
-<div id="pageContent"><header class="topbar"><div class="brand">CMA<span>.</span> MCQ Portal</div><div class="user-area"><span id="userEmail"></span><button id="logoutBtn" type="button">Sign out</button></div></header><main><div class="hero"><h1>CMA</h1><p>MCQ Practice &amp; Full-Fledged Test</p></div><div class="access-card"><div class="access-title">Your Access</div><div id="accessTags" class="access-tags"></div><div id="expiryText" class="expiry"></div></div>
+<div id="pageContent"><header class="topbar"><div class="brand">CMA<span>.</span> MCQ Portal</div><div class="user-area"><span id="userEmail"></span><button id="logoutBtn" type="button">Sign out</button></div></header><main><div class="hero"><h1>CMA</h1><p>MCQ Practice &amp; Full-Fledged Test</p></div><div class="quick-contact-card">
+  <div>
+    <div class="quick-contact-title">Need Help or Want to Share Feedback?</div>
+    <div class="quick-contact-sub">Your feedback is very important to us. Have a problem, suggestion, or found an error?</div>
+  </div>
+  <div class="quick-contact-actions">
+    <a href="mailto:taxxpath@gmail.com?subject=CMA%20MCQ%20Portal%20Support">📧 Email</a>
+    <a href="https://wa.me/917003872845" target="_blank" rel="noopener">💬 WhatsApp</a>
+    <a href="#feedbackSection" class="feedback-link">📝 Share Your Feedback</a>
+  </div>
+</div><div class="access-card"><div class="access-title">Your Access</div><div id="accessTags" class="access-tags"></div><div id="expiryText" class="expiry"></div></div>
 <section id="foundationContent" class="hidden"><h2 class="section-title">CMA Foundation — Subjects</h2><div class="grid"><a class="card" href="foundation/law-business-communication/index.html"><h3>Fundamentals of Law and Business Communication</h3><p>Subject MCQ practice</p></a><a class="card" href="foundation/financial-cost-accounting/index.html"><h3>Fundamentals of Financial and Cost Accounting</h3><p>Subject MCQ practice</p></a><a class="card" href="foundation/business-mathematics-statistics/index.html"><h3>Fundamentals of Business Mathematics and Statistics</h3><p>Subject MCQ practice</p></a><a class="card" href="foundation/business-economics-management/index.html"><h3>Fundamentals of Business Economics and Management</h3><p>Subject MCQ practice</p></a></div><h2 class="section-title">Full-Fledged Test</h2><div class="grid"><a class="card full-test" href="foundation/full-test/index.html"><h3>📝 Full-Fledged Test — CMA Foundation</h3><p>Combined test area</p></a></div></section>
 <!--CMA INTER GROUP 1 SUBJECT DETAILS-->
   
@@ -63,7 +86,20 @@ footer.contact-footer{text-align:center;padding:34px 20px 20px;margin-top:30px;b
 
   <!-- FINAL GROUP 4 SUBJECT DETAILS-->
   
-  <section id="finalGroup4Content" class="hidden"><h2 class="section-title">CMA Final Group 4 — Subjects</h2><div class="grid"><a class="card" href="final-group-4/cost-and-audit/index.html"><h3>Cost and Management Audit</h3><p>Subject MCQ practice</p></a><a class="card" href="final-group-4/cfr/index.html"><h3>Corporate Financial Reporting</h3><p>Subject MCQ practice</p></a><a class="card" href="final-group-4/indirect-tax-and-laws/index.html"><h3>Indirect Tax Law and Practice</h3><p>Subject MCQ practice</p></a><a class="card" href="final-group-4/spmbv/index.html"><h3>20A — Strategic Performance and Business Valuation</h3><p>Subject MCQ practice</p></a><a class="card" href="final-group-4/risk-management-bank-insurance/index.html"><h3>20B — Risk Management in Banking and Insurance</h3><p>Subject MCQ practice</p></a><a class="card" href="final-group-4/entr-and-startup/index.html"><h3>20C — Entrepreneurship and Startup</h3><p>Subject MCQ practice</p></a></div><h2 class="section-title">Full-Fledged Test</h2><div class="grid"><a class="card full-test" href="final-group-4/full-test/index.html"><h3>📝 Full-Fledged Test — CMA Final Group 4</h3><p>Combined test area</p></a></div></section><section id="noContentMessage" class="hidden"><h2 class="section-title">Available Content</h2><div class="locked-note">Your access has been activated successfully. Content for this examination/group will appear here when published.</div></section></main><footer class="contact-footer"><h3>Need Help? We're Here for You 👋</h3><p>Facing any issue with the CMA MCQ Portal, finding an error, or have any suggestion? Feel free to contact us. We'll be happy to help.</p><div class="contact-details"><a class="contact-email" href="mailto:taxxpath@gmail.com?subject=CMA%20MCQ%20Portal%20Support">📧 Email: taxxpath@gmail.com</a><a class="contact-whatsapp" href="https://wa.me/917003872845" target="_blank" rel="noopener">💬 WhatsApp: 70038 72845</a></div><div class="contact-divider"></div><div class="copyright">&copy; 2026 CMA MCQ Portal — All Rights Reserved.</div></footer></div><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script><script>
+  <section id="finalGroup4Content" class="hidden"><h2 class="section-title">CMA Final Group 4 — Subjects</h2><div class="grid"><a class="card" href="final-group-4/cost-and-audit/index.html"><h3>Cost and Management Audit</h3><p>Subject MCQ practice</p></a><a class="card" href="final-group-4/cfr/index.html"><h3>Corporate Financial Reporting</h3><p>Subject MCQ practice</p></a><a class="card" href="final-group-4/indirect-tax-and-laws/index.html"><h3>Indirect Tax Law and Practice</h3><p>Subject MCQ practice</p></a><a class="card" href="final-group-4/spmbv/index.html"><h3>20A — Strategic Performance and Business Valuation</h3><p>Subject MCQ practice</p></a><a class="card" href="final-group-4/risk-management-bank-insurance/index.html"><h3>20B — Risk Management in Banking and Insurance</h3><p>Subject MCQ practice</p></a><a class="card" href="final-group-4/entr-and-startup/index.html"><h3>20C — Entrepreneurship and Startup</h3><p>Subject MCQ practice</p></a></div><h2 class="section-title">Full-Fledged Test</h2><div class="grid"><a class="card full-test" href="final-group-4/full-test/index.html"><h3>📝 Full-Fledged Test — CMA Final Group 4</h3><p>Combined test area</p></a></div></section><section id="noContentMessage" class="hidden"><h2 class="section-title">Available Content</h2><div class="locked-note">Your access has been activated successfully. Content for this examination/group will appear here when published.</div></section></main><section id="feedbackSection" class="feedback-section">
+  <h3>💬 Your Feedback Is Very Important to Us</h3>
+  <p>
+    CMA MCQ Portal is currently in its initial stage, so your genuine feedback can make a real difference.
+    If you face a problem, find an error, or have a suggestion, please share it with us.
+    <strong>We will take your feedback seriously and do our best to help resolve genuine issues.</strong>
+    Your feedback helps us make the portal better, simpler, and more useful for students.
+  </p>
+  <div class="feedback-contact">
+    <a href="mailto:taxxpath@gmail.com?subject=CMA%20MCQ%20Portal%20Feedback">📧 Send Feedback</a>
+    <a href="https://wa.me/917003872845" target="_blank" rel="noopener">💬 WhatsApp Us</a>
+  </div>
+</section>
+<footer>&copy; 2026 CMA MCQ Portal</footer></div><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script><script>
 (function(){
 "use strict";
 
