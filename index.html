@@ -128,6 +128,22 @@ async function trackUserLogin(user){
   const existing=await ref.get();
   if(!existing.exists)payload.createdAt=firebase.firestore.FieldValue.serverTimestamp();
   await ref.set(payload,{merge:true});
+
+  const loginRef=db.collection("loginActivity").doc(emailNorm(user.email));
+  const loginSnap=await loginRef.get();
+  const loginData={
+    email:emailNorm(user.email),
+    uid:user.uid,
+    lastLoginAt:firebase.firestore.FieldValue.serverTimestamp(),
+    updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  };
+  if(!loginSnap.exists){
+    loginData.firstLoginAt=firebase.firestore.FieldValue.serverTimestamp();
+    loginData.loginCount=1;
+  }else if(!alreadyRecorded){
+    loginData.loginCount=firebase.firestore.FieldValue.increment(1);
+  }
+  await loginRef.set(loginData,{merge:true});
  }catch(error){
   console.error("User tracking write failed:",error);
  }
@@ -273,6 +289,14 @@ async function verifyAccess(user){
    return{approved:true,admin:true,data:{role:"admin"}};
  }
 
+ const globalRef=await db.doc("settings/globalAccess").get();
+ const globalOpen=globalRef.exists && globalRef.data().studentAccessOpen===true;
+ if(globalOpen){
+   return{approved:true,admin:false,globalOpen:true,data:{
+     role:"student",accessFoundation:true,accessInterGroup1:true,accessInterGroup2:true,
+     accessFinalGroup3:true,accessFinalGroup4:true,expiryDate:null
+   }};
+ }
  const ref=await db.collection("approvedUsers").doc(email).get();
  if(!ref.exists)return{approved:false,reason:"Your Google account has not been approved yet."};
 
@@ -348,7 +372,7 @@ auth.onAuthStateChanged(async function(user){
    }
 
    userEmail.textContent=user.email||"";
-   applyAccess(result.data||{},!!result.admin);
+   applyAccess(Object.assign({},result.data||{},{globalOpen:!!result.globalOpen}),!!result.admin);
 
    // Tracking: record this login and begin low-frequency activity tracking.
    await trackUserLogin(user);
