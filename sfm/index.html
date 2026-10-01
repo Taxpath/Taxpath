@@ -516,7 +516,7 @@
   .bookmark-btn{margin-left:auto;border:0;background:transparent;color:var(--brass-deep);font-size:1.2rem;cursor:pointer}
   @media(max-width:480px){.dashboard-grid{grid-template-columns:1fr}.stat-grid{grid-template-columns:1fr 1fr}}
 </style>
-</head>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script></head>
 <body>
 <div class="wrap">
 
@@ -716,7 +716,7 @@ const QUESTIONS = [{"sl": 1, "q": "Relevant cost analysis or relevant costing is
     };
     el('topicInfo').textContent=QUESTIONS.length+' questions available in the full bank.';
   }
-  function startRound(pool){pool=pool||getPool(state.topic);if(!pool.length){alert('No questions available for this selection.');return}state.count=Math.min(state.count,pool.length);state.pool=(state.random?shuffle(pool):pool.slice()).slice(0,state.count);state.idx=0;state.correctCount=0;state.score=0;state.log=[];showScreen('quizScreen');renderQuestion()}
+  function startRound(pool){window.CMAAnalytics.start({mode:"practice"});pool=pool||getPool(state.topic);if(!pool.length){alert('No questions available for this selection.');return}state.count=Math.min(state.count,pool.length);state.pool=(state.random?shuffle(pool):pool.slice()).slice(0,state.count);state.idx=0;state.correctCount=0;state.score=0;state.log=[];showScreen('quizScreen');renderQuestion()}
   function renderQuestion(){stopTimer();state.answered=false;var q=state.pool[state.idx];var qb=el('qBookmark');if(qb){var bd=data(),bs=bd.bookmarks||[];qb.textContent=bs.indexOf(q.sl)>=0?'🔖 Bookmarked':'🔖 Bookmark question';}el('qPosition').textContent='Question '+(state.idx+1)+' / '+state.pool.length;el('qRunningScore').textContent='Score '+state.score;el('progressFill').style.width=(state.idx/state.pool.length*100)+'%';el('qSl').textContent=topicOf(q)+' · SL NO '+q.sl;el('qText').textContent=q.q;var ow=el('qOptions');ow.innerHTML='';q.opts.forEach(function(t,i){var d=document.createElement('div');d.className='option';d.innerHTML='<span class="tag">'+LETTERS[i]+'</span><span class="otext">'+esc(t)+'</span>';d.onclick=function(){selectOption(i)};ow.appendChild(d)});el('qFeedback').className='feedback';el('nextBtn').disabled=true;el('nextBtn').textContent=state.idx===state.pool.length-1?'Finish test':'Next';el('revealBtn').style.display='inline-block';if(state.timerOn)startTimer()}
   function startTimer(){state.timeLeft=state.seconds;el('timerTrackWrap').style.display='block';timerUI();state.timerHandle=setInterval(function(){state.timeLeft--;timerUI();if(state.timeLeft<=0){clearInterval(state.timerHandle);state.timerHandle=null;timeout()}},1000)}
   function timerUI(){var p=Math.max(0,state.timeLeft/state.seconds*100);el('timerFill').style.width=p+'%';el('qTimer').textContent=state.timeLeft+'s';var u=state.timeLeft<=10;el('timerFill').classList.toggle('urgent',u);el('qTimer').classList.toggle('urgent',u)}
@@ -726,7 +726,20 @@ const QUESTIONS = [{"sl": 1, "q": "Relevant cost analysis or relevant costing is
   function timeout(){if(state.answered)return;var q=state.pool[state.idx];state.answered=true;record(q,null,true);mark(null,q.ans);el('qFeedback').className='feedback show miss';el('qFeedback').textContent="Time's up · Correct: "+LETTERS[q.ans]+'. '+q.opts[q.ans];el('nextBtn').disabled=false;el('revealBtn').style.display='none';updateHistory()}
   function reveal(){if(state.answered)return;stopTimer();var q=state.pool[state.idx];state.answered=true;record(q,null,false);mark(null,q.ans);el('qFeedback').className='feedback show right';el('qFeedback').textContent='Answer: '+LETTERS[q.ans]+'. '+q.opts[q.ans];el('nextBtn').disabled=false;el('revealBtn').style.display='none'}
   function next(){if(state.idx<state.pool.length-1){state.idx++;renderQuestion()}else finish()}
-  function finish(){stopTimer();var d=data(),attempts=(d.attempts||0)+1,correct=(d.correct||0)+state.correctCount,answered=(d.answered||0)+state.log.filter(x=>x.chosenIdx!==null).length,wrong=(d.wrong||0)+state.log.filter(x=>x.chosenIdx!==null&&x.chosenIdx!==x.correctIdx).length;d.attempts=attempts;d.correct=correct;d.answered=answered;d.wrong=wrong;d.last={score:state.score,total:state.pool.length,topic:state.topic,date:new Date().toLocaleString()};localStorage.setItem('cma_sfm_progress',JSON.stringify(d));el('finalScore').textContent=state.correctCount+' / '+state.pool.length;el('finalPct').textContent=(state.pool.length?Math.round(state.correctCount/state.pool.length*100):0)+'% correct';el('bdCorrect').textContent=state.correctCount;el('bdWrong').textContent=state.log.filter(x=>x.chosenIdx!==null&&x.chosenIdx!==x.correctIdx).length;el('bdSkipped').textContent=state.log.filter(x=>x.chosenIdx===null).length;el('finalMarksLabel').textContent=state.score+' / '+(state.pool.length*state.marks);buildReview();el('reviewList').classList.remove('show');showScreen('resultScreen')}
+  function finish(){stopTimer();var d=data(),attempts=(d.attempts||0)+1,correct=(d.correct||0)+state.correctCount,answered=(d.answered||0)+state.log.filter(x=>x.chosenIdx!==null).length,wrong=(d.wrong||0)+state.log.filter(x=>x.chosenIdx!==null&&x.chosenIdx!==x.correctIdx).length;d.attempts=attempts;d.correct=correct;d.answered=answered;d.wrong=wrong;d.last={score:state.score,total:state.pool.length,topic:state.topic,date:new Date().toLocaleString()};window.CMAAnalytics.record({
+  subject:"Strategic Financial Management",mode:"practice",questionCount:state.pool.length,
+  marksPerQuestion:state.marks,maxMarks:state.pool.length*state.marks,
+  correct:state.correctCount,
+  wrong:state.log.filter(function(x){return x.chosenIdx!==null&&x.chosenIdx!==x.correctIdx}).length,
+  skipped:state.log.filter(function(x){return x.chosenIdx===null}).length,
+  score:state.score,percentage:state.pool.length?Math.round(state.correctCount/state.pool.length*100):0,
+  questions:state.log.map(function(x){
+    return {id:x.sl,q:x.q,choice:x.chosenIdx,selectedAnswer:x.chosenIdx===null?"":x.opts[x.chosenIdx],
+      correctIndex:x.correctIdx,correctAnswer:x.opts[x.correctIdx],correct:x.chosenIdx===x.correctIdx,
+      skipped:x.chosenIdx===null,topic:topicOf({sl:x.sl})};
+  })
+});
+localStorage.setItem('cma_sfm_progress',JSON.stringify(d));el('finalScore').textContent=state.correctCount+' / '+state.pool.length;el('finalPct').textContent=(state.pool.length?Math.round(state.correctCount/state.pool.length*100):0)+'% correct';el('bdCorrect').textContent=state.correctCount;el('bdWrong').textContent=state.log.filter(x=>x.chosenIdx!==null&&x.chosenIdx!==x.correctIdx).length;el('bdSkipped').textContent=state.log.filter(x=>x.chosenIdx===null).length;el('finalMarksLabel').textContent=state.score+' / '+(state.pool.length*state.marks);buildReview();el('reviewList').classList.remove('show');showScreen('resultScreen')}
   function buildReview(){var w=el('reviewList');w.innerHTML='';state.log.forEach(function(x,i){var d=document.createElement('div');d.className='review-item '+(x.chosenIdx===null?'skip':x.chosenIdx===x.correctIdx?'ok':'no');d.innerHTML='<p class="rq">'+(i+1)+'. '+esc(x.q)+'</p><div class="rmeta">'+(x.chosenIdx===null?'Skipped':'Your answer: '+LETTERS[x.chosenIdx]+' · ')+(x.chosenIdx!==x.correctIdx?'<span class="correct-line">Correct: '+LETTERS[x.correctIdx]+'. '+esc(x.opts[x.correctIdx])+'</span>':'<span class="correct-line">Correct</span>')+'</div>';w.appendChild(d)})}
   function updateHistory(){var d=data();d.history=d.history||[];state.log.slice(-1).forEach(function(x){d.history.push(x)});d.history=d.history.slice(-500);localStorage.setItem('cma_sfm_progress',JSON.stringify(d))}
   function performance(){var d=data(),a=d.answered||0,c=d.correct||0,w=d.wrong||0;el('statsPanel').style.display='block';el('statsPanel').innerHTML='<h2>Your Performance</h2><div class="stat-grid"><div class="stat"><b>'+ (d.attempts||0) +'</b><span>Tests</span></div><div class="stat"><b>'+a+'</b><span>Answered</span></div><div class="stat"><b>'+ (a?Math.round(c/a*100):0)+'%</b><span>Accuracy</span></div><div class="stat"><b>'+c+'</b><span>Correct</span></div><div class="stat"><b>'+w+'</b><span>Wrong</span></div><div class="stat"><b>'+((d.bookmarks||[]).length)+'</b><span>Bookmarks</span></div></div>'}
@@ -738,5 +751,5 @@ const QUESTIONS = [{"sl": 1, "q": "Relevant cost analysis or relevant costing is
   wire();
 })();
 </script>
-</body>
+<script src="../tracking.js"></script></body>
 </html>
