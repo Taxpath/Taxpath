@@ -49,7 +49,7 @@ select{border:1px solid var(--rule);background:var(--paper);padding:8px;border-r
 .lock{background:#fff8e8;border:1px dashed var(--brass);padding:14px;border-radius:4px;color:#684f1a}
 @media(max-width:560px){.statgrid{grid-template-columns:1fr}.qtext{font-size:1.02rem}}
 </style>
-</head>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script></head>
 <body>
 <div class="wrap">
   <header class="masthead">
@@ -125,7 +125,7 @@ const wrong=new Set(load("cma_wrong_"+SUBJECT,[]));
 function show(id){["setup","quiz","result"].forEach(x=>$(x).classList.remove("active"));$(id).classList.add("active")}
 function fmt(sec){sec=Math.max(0,sec);return String(Math.floor(sec/60)).padStart(2,"0")+":"+String(sec%60).padStart(2,"0")}
 
-function startQuiz(){
+function startQuiz(){window.CMAAnalytics.start({mode:"practice"});
   clearInterval(state.handle);
   const count=Number($("count").value);
   let pool=state.random?shuffle(QUESTIONS):QUESTIONS.slice();
@@ -195,6 +195,16 @@ function finishQuiz(timeout){
     if(state.selected[q.id]!==undefined){answered++;if(state.selected[q.id]===q.ans)score++;}
     if(state.selected[q.id]!==undefined && state.selected[q.id]!==q.ans)wrong.add(q.id);
   });
+  window.CMAAnalytics.record({
+    mode:"practice",questionCount:state.pool.length,marksPerQuestion:1,maxMarks:state.pool.length,
+    correct:score,wrong:state.pool.length-answered-(score),skipped:state.pool.length-answered,
+    score:score,percentage:answered?Math.round(score/answered*100):0,
+    questions:state.pool.map(function(q){
+      var ci=state.selected[q.id]===undefined?null:state.selected[q.id];
+      return {id:q.id,q:q.q,choice:ci,selectedAnswer:ci===null?"":q.options[ci],correctIndex:q.ans,
+        correctAnswer:q.options[q.ans],correct:ci!==null&&ci===q.ans,skipped:ci===null,topic:q.topic||""};
+    })
+  });
   save("cma_wrong_"+SUBJECT,[...wrong]);
   state.score=score;
   $("score").textContent=score+" / "+state.pool.length;
@@ -227,5 +237,5 @@ window.addEventListener("beforeunload",()=>clearInterval(state.handle));
 setup();
 
 </script>
-</body>
+<script src="../../tracking.js"></script></body>
 </html>
