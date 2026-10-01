@@ -19,7 +19,7 @@ select,.field{width:100%;padding:12px;border:1px solid var(--rule);border-radius
 .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.qno{font-size:.78rem;color:var(--gold);font-weight:800}.bookmark{border:1px solid var(--rule);background:transparent;border-radius:9px;padding:8px 10px;color:var(--teal);font-weight:750}.bookmark.on{border-color:var(--gold);color:var(--gold)}.qtext{font-size:1.12rem;line-height:1.55;font-weight:650;margin:0 0 16px}.options{display:flex;flex-direction:column;gap:10px}.option{display:flex;gap:11px;align-items:flex-start;width:100%;text-align:left;padding:14px;border:1px solid var(--rule);border-radius:12px;background:var(--paper2);color:var(--ink)}.option .tag{flex:0 0 auto;width:28px;height:28px;border-radius:50%;border:1px solid var(--muted);display:grid;place-items:center;font-weight:800;font-size:.78rem}.option.selected{border-color:var(--teal);background:#e0eceb}.option.correct{border-color:var(--good);background:var(--goodbg)}.option.wrong{border-color:var(--bad);background:var(--badbg)}.option.disabled{cursor:default}.feedback{display:none;margin:12px 0;padding:12px;border-radius:10px;font-weight:750}.feedback.show{display:block}.feedback.right{background:var(--goodbg);color:var(--good)}.feedback.miss{background:var(--badbg);color:var(--bad)}.nav{display:grid;grid-template-columns:1fr 1.2fr 1fr;gap:8px;margin-top:13px}.nav button{padding:12px;border-radius:10px}.reveal{width:100%;margin-top:9px;padding:10px;border:0;background:transparent;text-decoration:underline;color:var(--muted)}
 .results{text-align:center;padding-top:26px}.score{font-size:3.3rem;font-weight:850;color:var(--teal2)}.pct{font-size:1.05rem;color:var(--gold);font-weight:800}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0}.stat{padding:12px 5px;border:1px solid var(--rule);background:var(--paper2);border-radius:10px}.stat b{font-size:1.3rem;display:block}.stat span{font-size:.68rem;color:var(--muted);font-weight:800;text-transform:uppercase}.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}.actions button{padding:12px;border-radius:10px}.review{margin-top:18px;text-align:left}.review-item{padding:13px;border:1px solid var(--rule);border-radius:11px;background:var(--paper2);margin:9px 0}.review-item.ok{border-left:4px solid var(--good)}.review-item.no{border-left:4px solid var(--bad)}.review-q{font-weight:750;line-height:1.45}.review-meta{font-size:.8rem;line-height:1.5;margin-top:8px}.good{color:var(--good)}.bad{color:var(--bad)}.empty{padding:14px;color:var(--muted);background:var(--paper2);border:1px dashed var(--rule);border-radius:10px}
 @media(max-width:520px){.hero h1{font-size:1.42rem}.stats{grid-template-columns:repeat(2,1fr)}.nav{grid-template-columns:1fr 1.3fr 1fr}.qtext{font-size:1.02rem}}
-</style></head><body>
+</style><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script></head><body>
 
 <div class="app">
 <header class="top"><div class="topline"><div><div class="brand">CMA Intermediate Group 2</div><div class="mini">MCQ Practice System</div></div><button class="home" id="homeBtn">⌂ Home</button></div></header>
@@ -62,7 +62,7 @@ function setupEvents(){
  $('toggleReview').onclick=()=>{const el=$('reviewList');el.style.display=el.style.display==='block'?'none':'block'};
  $('homeBtn').onclick=$('homeResult').onclick=()=>location.href='../../index.html';
 }
-function startRound(mode){
+function startRound(mode){window.CMAAnalytics.start({mode:mode||"practice"});
  clearInterval(interval);let base=[...QUESTIONS];const selectedChapter=$('chapterSelect').value;if(selectedChapter!=='all')base=base.filter(q=>String(q.chapter)===selectedChapter);const st=storage();
  if(mode==='wrong'){const ids=new Set(st.wrong||[]);base=base.filter(q=>ids.has(q.id));if(!base.length){alert('No wrong questions available. Complete a round first.');return}}
  if(mode==='bookmarks'){base=base.filter(q=>bookmarks.has(q.id));if(!base.length){alert('No bookmarked questions available.');return}}
@@ -79,11 +79,27 @@ function answer(choice){if(answers[index]!==null)return;const q=pool[index];answ
 function nav(d){if(d>0){if(index===pool.length-1)finish();else{index++;renderQ()}}else if(index>0){index--;renderQ()}}
 function reveal(){const q=pool[index];roundResults[index]={choice:answers[index],correct:false,revealed:true};const fb=$('feedback');fb.className='feedback show miss';fb.textContent='Answer: '+q.options[q.ans??q.answer];$('next').disabled=false;}
 function toggleBookmark(){const id=pool[index].id;if(bookmarks.has(id))bookmarks.delete(id);else bookmarks.add(id);saveState();renderQ()}
-function finish(){clearInterval(interval);const st=storage();const wrongNow=new Set(st.wrong||[]);pool.forEach((q,i)=>{const r=roundResults[i];if(r&&r.correct)wrongNow.delete(q.id);else if(answers[i]!==null)wrongNow.add(q.id)});localStorage.setItem(KEY,JSON.stringify({...st,wrong:[...wrongNow],bookmarks:[...bookmarks]}));renderResults();show('results');}
+function finish(){clearInterval(interval);const st=storage();const wrongNow=new Set(st.wrong||[]);pool.forEach((q,i)=>{const r=roundResults[i];if(r&&r.correct)wrongNow.delete(q.id);else if(answers[i]!==null)wrongNow.add(q.id)});localStorage.setItem(KEY,JSON.stringify({...st,wrong:[...wrongNow],bookmarks:[...bookmarks]}));window.CMAAnalytics.record({
+  source:(pool[0]&&pool[0].source)||"MCQ Bank",
+  sourceAttempt:(pool[0]&&pool[0].attempt)||"",
+  mode:(typeof cfg!=="undefined"&&cfg.mode)||"practice",
+  questionCount:pool.length,
+  marksPerQuestion:cfg.marks,
+  maxMarks:pool.length*cfg.marks,
+  correct:correct,wrong:wrong,skipped:skipped,
+  score:correct*cfg.marks,
+  percentage:pool.length?Math.round(correct/pool.length*100):0,
+  questions:pool.map(function(q,i){
+    var r=roundResults[i]||{}, ci=r.choice??null, ai=q.answer??q.ans??null;
+    return {id:q.id, q:q.q, choice:ci, selectedAnswer:ci==null?"":(Array.isArray(q.options)?q.options[ci]:""),
+      correctIndex:ai, correctAnswer:Array.isArray(ai)?ai.map(function(x){return q.options[x]}).join(" / "):q.options[ai],
+      correct:!!r.correct, skipped:ci==null, topic:q.chapter||q.topic||"", source:q.source||"", attempt:q.attempt||""};
+  })
+});renderResults();show('results');}
 function renderResults(){const correct=roundResults.filter(x=>x&&x.correct).length;const wrong=roundResults.filter(x=>x&&x.choice!==null&&!x.correct).length;const skipped=pool.length-correct-wrong;$('score').textContent=`${correct*cfg.marks} / ${pool.length*cfg.marks}`;$('pct').textContent=Math.round(correct/pool.length*100)+'%';$('correct').textContent=correct;$('wrong').textContent=wrong;$('skipped').textContent=skipped;$('bookmarkedStat').textContent=pool.filter(q=>bookmarks.has(q.id)).length;const list=$('reviewList');list.innerHTML='';pool.forEach((q,i)=>{const r=roundResults[i],c=r&&r.correct;const d=document.createElement('div');d.className='review-item '+(c?'ok':(r&&r.choice!==null?'no':''));d.innerHTML=`<div class="review-q">${i+1}. ${escapeHtml(q.q)}</div><div class="review-meta">Your answer: <span class="${c?'good':'bad'}">${r&&r.choice!==null?escapeHtml(q.options[r.choice]):'Not answered'}</span><br>Correct answer: <span class="good">${escapeHtml(q.options[q.ans??q.answer])}</span></div>`;list.appendChild(d)});updateCounts();}
 function updateTimerUI(){clearInterval(interval);$('timer').textContent='';$('timerbar').style.display='none';if(cfg.timer==='off')return;if(cfg.timer==='round'){$('timerbar').style.display='block';tickRound();interval=setInterval(tickRound,1000)}else if(cfg.timer==='question'){$('timerbar').style.display='block';const end=Date.now()+cfg.seconds*1000;function tick(){const left=Math.max(0,end-Date.now());const sec=Math.ceil(left/1000);$('timer').textContent='⏱ '+format(sec);$('timerfill').style.width=(left/(cfg.seconds*1000)*100)+'%';$('timer').classList.toggle('urgent',sec<=10);$('timerfill').classList.toggle('urgent',sec<=10);if(left<=0){clearInterval(interval);if(answers[index]===null)roundResults[index]={choice:null,correct:false,timeout:true};if(index===pool.length-1)finish();else{index++;renderQ()}}}tick();interval=setInterval(tick,250)}}
 function tickRound(){const left=Math.max(0,roundEnd-Date.now());const sec=Math.ceil(left/1000);$('timer').textContent='⏱ '+format(sec);$('timerfill').style.width=(left/(cfg.roundMinutes*60000)*100)+'%';$('timer').classList.toggle('urgent',sec<=60);$('timerfill').classList.toggle('urgent',sec<=60);if(left<=0)finish()}
 function format(sec){const m=Math.floor(sec/60),s=sec%60;return String(m).padStart(2,'0')+':'+String(s).padStart(2,'0')}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 loadState();setupEvents();$('chapterSelect').value='all';updateChapterCount();$('mCount').textContent=cfg.marks;$('sCount').textContent=cfg.seconds;clampCount();
-</script></body></html>
+</script><script src="../../tracking.js"></script></body></html>
