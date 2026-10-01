@@ -71,6 +71,7 @@ window.CMAAnalytics={
      const data={
        attemptId:ref.id,
        uid:currentUser.uid,
+       userId:currentUser.uid,
        email:(currentUser.email||"").toLowerCase(),
        displayName:currentUser.displayName||"",
        examTitle:clean(payload.examTitle||document.title),
