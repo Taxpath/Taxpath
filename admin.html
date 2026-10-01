@@ -46,6 +46,8 @@ th{background:#f7f3e9;color:var(--teal-dark)}
 .link-stat b{display:block;font-size:28px;color:var(--teal)}
 .link-stat span{font-size:13px;color:#687572}
 
+
+.student-panel{display:none}.student-panel.show{display:block}.student-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.student-name{font-size:22px;font-weight:800;color:var(--teal)}.close-student{background:#6b7280;color:#fff}.student-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:16px 0}.student-stat{background:#f7f7f2;border:1px solid var(--border);border-radius:10px;padding:12px}.student-stat b{display:block;font-size:20px}.student-link{background:none;border:0;padding:0;color:#0d3b3e;font-weight:800;text-decoration:underline;cursor:pointer}.student-table{width:100%;border-collapse:collapse}.student-table th,.student-table td{padding:9px;border-bottom:1px solid #e5e7eb;text-align:left;font-size:13px;vertical-align:top}.student-table th{background:#f3f4f6;position:sticky;top:0}.detail-scroll{max-height:420px;overflow:auto;border:1px solid var(--border);border-radius:10px}.question-detail{white-space:normal;max-width:520px}
 </style>
 </head>
 <body>
@@ -70,6 +72,8 @@ th{background:#f7f3e9;color:var(--teal-dark)}
     <div class="stat"><b id="activeUsers">0</b><span>Active in last 10 minutes</span></div>
     <div class="stat"><b id="todayLogins">0</b><span>Logins today</span></div>
     <div class="stat"><b id="totalLogins">0</b><span>Login records loaded</span></div>
+    <div class="stat"><b id="totalExamAttempts">0</b><span>Exam attempts</span></div>
+    <div class="stat"><b id="studentsAttempted">0</b><span>Students who attempted</span></div>
   </div>
 
 
@@ -103,6 +107,40 @@ th{background:#f7f3e9;color:var(--teal-dark)}
         <tbody id="usersBody"></tbody>
       </table>
     </div>
+  </section>
+
+
+  <section class="panel student-panel" id="studentPanel">
+    <div class="student-head">
+      <div>
+        <div class="student-name" id="studentName">Student</div>
+        <div id="studentEmail"></div>
+      </div>
+      <button class="close-student" id="closeStudentBtn">Close Details</button>
+    </div>
+    <div class="student-stats">
+      <div class="student-stat"><b id="studentAttempts">0</b><span>Exam Attempts</span></div>
+      <div class="student-stat"><b id="studentAvg">0%</b><span>Average %</span></div>
+      <div class="student-stat"><b id="studentBest">0%</b><span>Highest %</span></div>
+      <div class="student-stat"><b id="studentLogins">0</b><span>Recorded Logins</span></div>
+      <div class="student-stat"><b id="studentLastExam">—</b><span>Last Exam</span></div>
+    </div>
+    <h3>Exam Attempts & Performance</h3>
+    <div class="detail-scroll">
+      <table class="student-table">
+        <thead><tr><th>Date & Time</th><th>Exam / Subject</th><th>Source</th><th>Questions</th><th>Score</th><th>%</th><th>Correct / Wrong / Skipped</th><th>Duration</th></tr></thead>
+        <tbody id="studentAttemptsBody"></tbody>
+      </table>
+    </div>
+    <h3 style="margin-top:22px">Login History</h3>
+    <div class="detail-scroll">
+      <table class="student-table">
+        <thead><tr><th>Login Date & Time</th><th>Provider</th></tr></thead>
+        <tbody id="studentLoginsBody"></tbody>
+      </table>
+    </div>
+    <h3 style="margin-top:22px">Question-Level Details</h3>
+    <div id="studentQuestionDetails"></div>
   </section>
 
   <section class="panel">
@@ -195,12 +233,14 @@ async function loadAnalytics(){
 }
 
 async function loadData(){
-  const [uSnap,lSnap]=await Promise.all([
+  const [uSnap,lSnap,aSnap]=await Promise.all([
     db.collection("portalUsers").get(),
-    db.collection("loginEvents").orderBy("loginAt","desc").limit(500).get()
+    db.collection("loginEvents").orderBy("loginAt","desc").limit(500).get(),
+    db.collection("examAttempts").limit(5000).get()
   ]);
   users=uSnap.docs.map(d=>d.data());
   logins=lSnap.docs.map(d=>d.data());
+  const allAttempts=aSnap.docs.map(d=>d.data());
 
   const now=Date.now();
   const today=new Date();today.setHours(0,0,0,0);
@@ -214,6 +254,8 @@ async function loadData(){
   document.getElementById("activeUsers").textContent=users.filter(x=>active(x.lastActive)).length;
   document.getElementById("todayLogins").textContent=todayCount;
   document.getElementById("totalLogins").textContent=logins.length;
+  document.getElementById("totalExamAttempts").textContent=allAttempts.length+(aSnap.size===5000?"+":"");
+  document.getElementById("studentsAttempted").textContent=new Set(allAttempts.map(x=>x.uid).filter(Boolean)).size+(aSnap.size===5000?"+":"");
   renderUsers();
   renderLogins();
 }
@@ -224,7 +266,7 @@ function renderUsers(){
   usersBody.innerHTML=rows.map(x=>{
     const isA=active(x.lastActive);
     return `<tr>
-      <td>${esc(x.displayName||"—")}</td>
+      <td><button class="student-link" onclick="openStudent(${JSON.stringify(x.uid||"")})">${esc(x.displayName||"—")}</button></td>
       <td>${esc(x.email||"—")}</td>
       <td>${fmt(x.lastLogin)}</td>
       <td>${fmt(x.lastActive)}</td>
@@ -252,6 +294,75 @@ function esc(v){
 function currentUserRows(){
   const q=norm(document.getElementById("userSearch").value);
   return users.filter(x=>!q||norm(x.email).includes(q)||norm(x.displayName).includes(q));
+}
+
+
+async function openStudent(uid){
+  if(!uid)return;
+  const panel=document.getElementById("studentPanel");
+  panel.classList.add("show");
+  panel.scrollIntoView({behavior:"smooth",block:"start"});
+  const user=users.find(x=>x.uid===uid)||{};
+  document.getElementById("studentName").textContent=user.displayName||"Unnamed Student";
+  document.getElementById("studentEmail").textContent=user.email||"";
+  document.getElementById("studentAttemptsBody").innerHTML='<tr><td colspan="8">Loading exam history…</td></tr>';
+  document.getElementById("studentLoginsBody").innerHTML='<tr><td colspan="2">Loading login history…</td></tr>';
+  document.getElementById("studentQuestionDetails").innerHTML="";
+  try{
+    const [aSnap,lSnap]=await Promise.all([
+      db.collection("examAttempts").where("uid","==",uid).get(),
+      db.collection("loginEvents").where("uid","==",uid).get()
+    ]);
+    const attempts=aSnap.docs.map(d=>d.data()).sort((a,b)=>{
+      const ta=a.completedAt&&a.completedAt.toMillis?a.completedAt.toMillis():0;
+      const tb=b.completedAt&&b.completedAt.toMillis?b.completedAt.toMillis():0;
+      return tb-ta;
+    });
+    const loginRows=lSnap.docs.map(d=>d.data()).sort((a,b)=>{
+      const ta=a.loginAt&&a.loginAt.toMillis?a.loginAt.toMillis():0;
+      const tb=b.loginAt&&b.loginAt.toMillis?b.loginAt.toMillis():0;
+      return tb-ta;
+    });
+    const avg=attempts.length?Math.round(attempts.reduce((s,a)=>s+Number(a.percentage||0),0)/attempts.length):0;
+    const best=attempts.length?Math.max.apply(null,attempts.map(a=>Number(a.percentage||0))):0;
+    document.getElementById("studentAttempts").textContent=attempts.length;
+    document.getElementById("studentAvg").textContent=avg+"%";
+    document.getElementById("studentBest").textContent=best+"%";
+    document.getElementById("studentLogins").textContent=loginRows.length;
+    document.getElementById("studentLastExam").textContent=attempts.length?fmt(attempts[0].completedAt):"—";
+    document.getElementById("studentAttemptsBody").innerHTML=attempts.map(a=>`<tr>
+      <td>${fmt(a.completedAt)}</td>
+      <td><b>${esc(a.examTitle||a.subject||"—")}</b><br><small>${esc(a.group||"")}</small></td>
+      <td>${esc(a.source||"—")}${a.sourceAttempt?"<br>"+esc(a.sourceAttempt):""}</td>
+      <td>${a.questionCount||0}</td>
+      <td>${a.score??0} / ${a.maxMarks??0}</td>
+      <td><b>${a.percentage??0}%</b></td>
+      <td>${a.correct??0} / ${a.wrong??0} / ${a.skipped??0}</td>
+      <td>${formatDuration(a.durationSeconds)}</td>
+    </tr>`).join("")||'<tr><td colspan="8">No exam attempts recorded yet.</td></tr>';
+    document.getElementById("studentLoginsBody").innerHTML=loginRows.map(l=>`<tr><td>${fmt(l.loginAt)}</td><td>${esc(l.provider||"—")}</td></tr>`).join("")||'<tr><td colspan="2">No login records found.</td></tr>';
+    document.getElementById("studentQuestionDetails").innerHTML=attempts.map((a,ai)=>{
+      const qs=Array.isArray(a.questions)?a.questions:[];
+      return `<details ${ai===0?"open":""} style="margin:10px 0;border:1px solid var(--border);border-radius:10px;padding:10px">
+        <summary><b>${esc(a.examTitle||a.subject||"Exam")}</b> — ${fmt(a.completedAt)} — ${a.score??0}/${a.maxMarks??0} (${a.percentage??0}%)</summary>
+        <div class="detail-scroll" style="margin-top:10px"><table class="student-table">
+        <thead><tr><th>#</th><th class="question-detail">Question</th><th>Your Answer</th><th>Correct Answer</th><th>Result</th></tr></thead>
+        <tbody>${qs.map(q=>`<tr><td>${q.number||""}</td><td class="question-detail">${esc(q.question||"")}</td><td>${esc(q.selectedAnswer||"Skipped")}</td><td>${esc(q.correctAnswer||"")}</td><td>${q.correct?"✓ Correct":(q.skipped?"Skipped":"✕ Wrong")}</td></tr>`).join("")}</tbody>
+        </table></div>
+      </details>`;
+    }).join("")||"<p>No question-level records available.</p>";
+  }catch(e){
+    console.error(e);
+    document.getElementById("studentAttemptsBody").innerHTML='<tr><td colspan="8">Could not load student analytics. Check Firestore rules for examAttempts.</td></tr>';
+  }
+}
+function formatDuration(sec){
+  sec=Number(sec||0); if(sec<60)return sec+" sec";
+  const m=Math.floor(sec/60),s=sec%60;
+  return m+"m "+String(s).padStart(2,"0")+"s";
+}
+function closeStudent(){
+  document.getElementById("studentPanel").classList.remove("show");
 }
 
 function exportFileDate(){
@@ -371,6 +482,7 @@ loginBtn.onclick=async()=>{
 };
 logoutBtn.onclick=()=>auth.signOut();
 document.getElementById("refreshBtn").onclick=()=>loadData();
+document.getElementById("closeStudentBtn").onclick=closeStudent;
 document.getElementById("exportUsersCsvBtn").onclick=exportUsersCsv;
 document.getElementById("exportUsersExcelBtn").onclick=exportUsersExcel;
 document.getElementById("exportUsersPdfBtn").onclick=exportUsersPdf;
