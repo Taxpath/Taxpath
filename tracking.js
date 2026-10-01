@@ -15,7 +15,9 @@ try{
 }catch(e){console.error("Firebase init failed",e);return;}
 const db=firebase.firestore(),auth=firebase.auth();
 let currentUser=null;
-auth.onAuthStateChanged(u=>{currentUser=u||null;});
+let authReadyResolve;
+const authReady = new Promise(resolve=>{ authReadyResolve=resolve; });
+auth.onAuthStateChanged(u=>{ currentUser=u||null; authReadyResolve(currentUser); });
 function pathParts(){
  const p=location.pathname.replace(/\/+$/,"").split("/").filter(Boolean);
  return p;
@@ -60,8 +62,16 @@ window.CMAAnalytics={
      if(!currentUser){
        currentUser=auth.currentUser;
      }
+     if(!currentUser){
+       currentUser=await Promise.race([
+         authReady,
+         new Promise(resolve=>setTimeout(()=>resolve(auth.currentUser||null),5000))
+       ]);
+     }
      if(!currentUser||!currentUser.uid){
-       console.warn("Exam result not saved: student is not authenticated.");
+       const err="Exam result not saved: Firebase user is not authenticated.";
+       console.error(err);
+       try{localStorage.setItem("cma_exam_analytics_error",err+" "+new Date().toISOString());}catch(_){}
        return null;
      }
      const started=window.__cmaExamStartAt||Date.now();
@@ -71,7 +81,6 @@ window.CMAAnalytics={
      const data={
        attemptId:ref.id,
        uid:currentUser.uid,
-       userId:currentUser.uid,
        email:(currentUser.email||"").toLowerCase(),
        displayName:currentUser.displayName||"",
        examTitle:clean(payload.examTitle||document.title),
@@ -96,6 +105,7 @@ window.CMAAnalytics={
        createdAt:firebase.firestore.FieldValue.serverTimestamp()
      };
      await ref.set(data);
+     try{localStorage.setItem("cma_last_exam_analytics_id",ref.id);}catch(_){}
      await db.collection("portalUsers").doc(currentUser.uid).set({
        uid:currentUser.uid,email:(currentUser.email||"").toLowerCase(),
        displayName:currentUser.displayName||"",
@@ -107,6 +117,7 @@ window.CMAAnalytics={
      return ref.id;
    }catch(e){
      console.error("Exam analytics save failed",e);
+     try{localStorage.setItem("cma_exam_analytics_error",String(e&&e.message||e)+" "+new Date().toISOString());}catch(_){}
      return null;
    }
  }
