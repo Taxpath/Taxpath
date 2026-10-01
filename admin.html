@@ -266,7 +266,7 @@ function renderUsers(){
   usersBody.innerHTML=rows.map(x=>{
     const isA=active(x.lastActive);
     return `<tr>
-      <td><button class="student-link" onclick="openStudent(${JSON.stringify(x.uid||"")})">${esc(x.displayName||"—")}</button></td>
+      <td><button type="button" class="student-link" data-student-uid="${esc(x.uid||"")}">${esc(x.displayName||"—")}</button></td>
       <td>${esc(x.email||"—")}</td>
       <td>${fmt(x.lastLogin)}</td>
       <td>${fmt(x.lastActive)}</td>
@@ -489,6 +489,15 @@ document.getElementById("exportUsersPdfBtn").onclick=exportUsersPdf;
 document.getElementById("refreshAnalyticsBtn").onclick=()=>loadAnalytics();
 document.getElementById("userSearch").oninput=renderUsers;
 document.getElementById("loginSearch").oninput=renderLogins;
+
+// Mobile-safe student click handling: use event delegation instead of inline onclick.
+usersBody.addEventListener("click",function(e){
+  const btn=e.target.closest("button.student-link[data-student-uid]");
+  if(!btn)return;
+  e.preventDefault();
+  const uid=btn.getAttribute("data-student-uid");
+  if(uid) window.openStudent(uid);
+});
 
 auth.onAuthStateChanged(async user=>{
   if(!user){
