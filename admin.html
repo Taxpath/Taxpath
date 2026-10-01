@@ -297,7 +297,7 @@ function currentUserRows(){
 }
 
 
-async function openStudent(uid){
+window.openStudent = async function openStudent(uid){
   if(!uid)return;
   const panel=document.getElementById("studentPanel");
   panel.classList.add("show");
