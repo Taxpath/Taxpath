@@ -71,7 +71,7 @@ select,input[type=number]{width:100%;border:1px solid #d6dce6;border-radius:9px;
 @media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}.formgrid{grid-template-columns:1fr}.qtext{font-size:17px}.timer{margin-left:0}}
 @media(max-width:430px){.app{padding:9px}.grid{grid-template-columns:1fr 1fr}.hero h1{font-size:21px}}
 </style>
-</head>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script></head>
 <body>
 <div class="app">
 
@@ -331,7 +331,7 @@ function startBookmarkedRound(){
   beginRound();
 }
 
-function beginRound(){
+function beginRound(){window.CMAAnalytics.start({mode:roundMode||"practice"});
   marks=Math.max(1,Math.min(5,+document.getElementById("marks").value||1));
   pos=0;roundScore=0;roundResults=[];
   document.getElementById("result").style.display="none";
@@ -500,6 +500,17 @@ function finishTest(){
   });
   state.history=state.history.slice(0,50);
   save();
+  window.CMAAnalytics.record({
+    subject:"Direct Tax Laws & International Taxation",
+    mode:roundMode||"practice",questionCount:round.length,marksPerQuestion:marks,maxMarks:total,
+    correct:correct,wrong:wrong,skipped:skipped,score:roundScore,percentage:pct,
+    questions:round.map(function(q){
+      var r=roundResults.find(function(x){return x.id===q.id})||{choice:null,correct:false};
+      var ci=r.choice;
+      return {id:q.id,q:q.q,choice:ci,selectedAnswer:ci===null?"":q.options[ci],correctIndex:q.answer,
+        correctAnswer:q.options[q.answer],correct:!!r.correct,skipped:ci===null,topic:q.topic||"",source:"MCQ Bank"};
+    })
+  });
 
   document.getElementById("test").style.display="none";
   const r=document.getElementById("result");
@@ -672,5 +683,5 @@ renderDashboard();
 renderWrong();
 renderBooks();
 </script>
-</body>
+<script src="../tracking.js"></script></body>
 </html>
