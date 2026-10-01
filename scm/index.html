@@ -519,7 +519,7 @@
   .bookmark-btn.on{border-color:var(--brass);color:var(--brass-deep)}
 
 </style>
-</head>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script></head>
 <body>
 
 <div id="subjectNav" style="display:flex;gap:10px;flex-wrap:wrap;margin:12px 0 18px;">
@@ -907,7 +907,7 @@ function scmChapterPool(value){
   });
 
   // ---------- round lifecycle ----------
-  function startRound(pool){ pool = pool || scmChapterPool(document.getElementById("chapterSelect").value);
+  function startRound(pool){window.CMAAnalytics.start({mode:"practice"}); pool = pool || scmChapterPool(document.getElementById("chapterSelect").value);
     state.specialMode = null;
     var base = chapterQuestions();
     var source = state.random ? shuffle(base) : base.slice().sort(function(a,b){return a.sl-b.sl;});
@@ -973,6 +973,16 @@ function scmChapterPool(value){
     el("bdWrong").textContent = wrongCount;
     el("bdSkipped").textContent = skippedCount;
     el("finalMarksLabel").textContent = state.score + " / " + maxMarks;
+    window.CMAAnalytics.record({
+      subject:"Strategic Cost Management",mode:state.specialMode||"practice",
+      questionCount:total,marksPerQuestion:state.marks,maxMarks:maxMarks,
+      correct:state.correctCount,wrong:wrongCount,skipped:skippedCount,score:state.score,percentage:pct,
+      questions:state.log.map(function(item){
+        return {id:item.sl,q:item.q,choice:item.chosenIdx,selectedAnswer:item.chosenIdx===null?"":item.opts[item.chosenIdx],
+          correctIndex:item.correctIdx,correctAnswer:item.opts[item.correctIdx],correct:item.chosenIdx===item.correctIdx,
+          skipped:item.chosenIdx===null,timedOut:!!item.timedOut,topic:chapterOf(item.sl)};
+      })
+    });
     buildReview();
     el("reviewList").classList.remove("show");
     el("toggleReview").textContent = "Review this round's answers";
@@ -1232,5 +1242,5 @@ function scmChapterPool(value){
 
 </script>
 
-</body>
+<script src="../tracking.js"></script></body>
 </html>
